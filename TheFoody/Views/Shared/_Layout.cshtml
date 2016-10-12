@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>@ViewBag.Title - Foodie App</title>
+    <!-- Fav and Touch Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+
+    <!-- CSS Plugins -->
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css" media="screen">
+    <link href="~/Content/animate.css" rel="stylesheet">
+    <link href="~/Content/main.css" rel="stylesheet">
+    <link href="~/Content/component.css" rel="stylesheet">
+
+    <!-- CSS Font Icons -->
+    <link rel="stylesheet" href="icons/linearicons/style.css">
+    <link rel="stylesheet" href="icons/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="icons/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="icons/ionicons/css/ionicons.css">
+    <link rel="stylesheet" href="icons/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="icons/rivolicons/style.css">
+    <link rel="stylesheet" href="icons/flaticon-line-icon-set/flaticon-line-icon-set.css">
+    <link rel="stylesheet" href="icons/flaticon-streamline-outline/flaticon-streamline-outline.css">
+    <link rel="stylesheet" href="icons/flaticon-thick-icons/flaticon-thick.css">
+    <link rel="stylesheet" href="icons/flaticon-ventures/flaticon-ventures.css">
+
+    <!-- CSS Custom -->
+    <link href="~/Content/style.css" rel="stylesheet">
+
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+
+</head>
+
+@*<body class="home">*@
+<body class="not-transparent-header">
+
+    @*<div id="introLoader" class="introLoading"></div>*@
+
+    <!-- start Container Wrapper -->
+    <div class="container-wrapper">
+
+        <!-- start Header -->
+        <header id="header">
+
+            <!-- start Navbar (Header) -->
+            @Html.Partial("_Navigation")
+            <!-- end Navbar (Header) -->
+            <!-- start Sign-in Modal -->
+            @Html.Partial("_SignInView")
+            <!-- end Sign-in Modal -->
+            <!-- start Register Modal -->
+            @Html.Partial("_RegisterView")
+
+            <!-- end Register Modal -->
+            <!-- start Forget Password Modal -->
+            @Html.Partial("_ForgotPwdView")
+            <!-- end Forget Password Modal -->
+
+        </header>
+        <!-- end Header -->
+        <!-- start Main Wrapper -->
+        <div class="main-wrapper">
+
+            @RenderBody()
+            <!-- start footer -->
+            @Html.Partial("_Footer")
+            <!-- end footer -->
+
+        </div>
+        <!-- end Main Wrapper -->
+
+    </div> <!-- / .wrapper -->
+    <!-- end Container Wrapper -->
+    <!-- start Back To Top -->
+    <div id="back-to-top">
+        <a href="#"><i class="ion-ios-arrow-up"></i></a>
+    </div>
+    <!-- end Back To Top -->
+    <!-- JS -->
+    <script type="text/javascript" src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-modalmanager.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="~/Scripts/smoothscroll.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.waypoints.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/wow.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.slicknav.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.placeholder.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-tokenfield.js"></script>
+    <script type="text/javascript" src="~/Scripts/typeahead.bundle.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-filestyle.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-select.js"></script>
+    <script type="text/javascript" src="~/Scripts/ion.rangeSlider.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/handlebars.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.countimator.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.countimator.wheel.js"></script>
+    <script type="text/javascript" src="~/Scripts/slick.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/easy-ticker.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.introLoader.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.responsivegrid.js"></script>
+    <script type="text/javascript" src="~/Scripts/customs.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+
+@*<body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>*@
+</html>

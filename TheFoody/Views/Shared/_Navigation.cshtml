@@ -1,0 +1,106 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top navbar-sticky-function">
+
+    <div class="container">
+
+        <div class="logo-wrapper">
+            <div class="logo">
+                <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/images/logo.png")" alt="Logo" /></a>
+            </div>
+        </div>
+
+        <div id="navbar" class="navbar-nav-wrapper navbar-arrow">
+
+            <ul class="nav navbar-nav" id="responsive-menu">
+
+                <li>
+                    @Html.ActionLink("Home", "Index", "Home")
+                    @*<ul>
+                            <li></li>
+                            <li><a href="index-02.html">Home - 02</a></li>
+                        </ul>*@
+                </li>
+
+                <li>
+                    @Html.ActionLink("Restaurants", "Index", "Restaurant")
+                    @*<ul>
+                            <li></li>
+                            <li><a href="restaurant-grid.html">Restaurant - Grid</a></li>
+                            <li><a href="restaurant-list-03.html">Restaurant - Sidebar</a></li>
+                        </ul>*@
+                </li>
+
+                <li>
+                    <a href="order-online.html">order</a>
+                    <ul>
+                        <li><a href="order-online.html">Order Online</a></li>
+                        <li><a href="order-process.html">Order Process</a></li>
+                        <li><a href="order-success.html">Order Success</a></li>
+                        <li><a href="reservation.html">Reservation</a></li>
+                        <li><a href="all-cuisines.html">All Cuisine</a></li>
+                        <li><a href="restaurant-search.html">Restaurant Search</a></li>
+                        <li><a href="how-it-work.html">How it works</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="blog.html">Blog</a>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="blog-single.html">Blog Single</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">Page</a>
+                    <ul>
+                        <li>
+                            <a href="user.html">User</a>
+                            <ul>
+                                <li><a href="user-empty.html">Dashboard - Empty</a></li>
+                                <li><a href="user-profile.html">Profile</a></li>
+                                <li><a href="user-profile-update.html">Profile Update</a></li>
+                                <li><a href="user-favourite-restaurant.html">Favourite Restaurant</a></li>
+                                <li><a href="user-change-pass.html">Change Password</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Account</a>
+                            <ul>
+                                <li><a href="account-login-page.html">Login Page</a></li>
+                                <li><a href="account-register-page.html">Register Page</a></li>
+                                <li><a href="account-forgot-password-page.html">Forgot Password Page</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#">Restaurant</a>
+                            <ul>
+                                <li><a href="restaurant-owner-dashboard.html">Restaurant Owner Dashboard</a></li>
+                                <li><a href="restaurant-detail.html">Restaurant Detail</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="staff.html">Our Staff</a></li>
+                        <li><a href="faq.html">Faq</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="404-error-page.html">404 - Error Page</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div><!--/.nav-collapse -->
+
+        <div class="nav-mini-wrapper">
+            @Html.Partial("_LoginPartial")
+        </div>
+
+    </div>
+
+    <div id="slicknav-mobile"></div>
+
+</nav>

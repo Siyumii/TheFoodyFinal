@@ -31,22 +31,35 @@ namespace TheFoody.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 using (TheFoodyContext db = new TheFoodyContext())
                 {
-                    User usr = new User();
-                    usr.email = model.Email;
-                    usr.fname = model.FirstName;
-                    usr.lname = model.LastName;
-                    usr.password = model.Password;
-                    usr.status = "Active";
-                    usr.user_type = "Admin";
-                    usr.created_date = DateTime.Now;
+                    if (db.Users.Any(u => u.email.Equals(model.Email)))
+                    {
+                        //TODO E.g. ModelState.AddModelError
+                        ModelState.AddModelError("", "Email already exists");
+                        
+                    }
+                    else
+                    {
+                        User usr = new User();
+                        usr.email = model.Email;
+                        usr.fname = model.FirstName;
+                        usr.lname = model.LastName;
+                        usr.password = model.Password;
+                        usr.status = "Active";
+                        usr.user_type = "Admin";
+                        usr.created_date = DateTime.Now;
 
-                    db.Users.Add(usr);
-                    db.SaveChanges();
+                        db.Users.Add(usr);
+                        db.SaveChanges();
+
+                        Session["UserEmail"] = model.Email;
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                Session["UserEmail"] = model.Email;
-                return RedirectToAction("Index", "Home");
+                
+                return View(model);
             }
 
             // If we got this far, something failed, redisplay form

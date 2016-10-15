@@ -91,7 +91,7 @@ namespace TheFoody.Controllers
                 else
                 {
                     Session["UserEmail"] = usr.email.ToString();
-                    return RedirectToAction(returnUrl);
+                    return RedirectToLocal(returnUrl);
                 }
                 
             }
@@ -103,6 +103,15 @@ namespace TheFoody.Controllers
         public ActionResult LogOff()
         {
             Session["UserEmail"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
             return RedirectToAction("Index", "Home");
         }
 

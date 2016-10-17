@@ -25,9 +25,10 @@ namespace TheFoody.DataAccess
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
-        public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Restaurant> Restaurants { get; set; }
+        public virtual DbSet<Restaurant_Type> Restaurant_Type { get; set; }
     }
 }

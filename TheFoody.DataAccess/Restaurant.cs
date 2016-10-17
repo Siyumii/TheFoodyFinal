@@ -17,7 +17,7 @@ namespace TheFoody.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Restaurant()
         {
-            this.Categories = new HashSet<Category>();
+            this.Restaurant_Type = new HashSet<Restaurant_Type>();
         }
     
         public int Id { get; set; }
@@ -38,8 +38,8 @@ namespace TheFoody.DataAccess
         public string TimetakentoDeliver { get; set; }
     
         public virtual Menu Menu { get; set; }
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Restaurant_Type> Restaurant_Type { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace TheFoody.DataAccess
         public string district { get; set; }
         public string user_type { get; set; }
         public string status { get; set; }
-        public DateTime created_date { get; set; }
+        public System.DateTime created_date { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Restaurant> Restaurants { get; set; }

@@ -17,13 +17,13 @@ namespace TheFoody.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.Restaurants = new HashSet<Restaurant>();
+            this.Restaurant_Type = new HashSet<Restaurant_Type>();
         }
     
         public int id { get; set; }
         public string category1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Restaurant> Restaurants { get; set; }
+        public virtual ICollection<Restaurant_Type> Restaurant_Type { get; set; }
     }
 }

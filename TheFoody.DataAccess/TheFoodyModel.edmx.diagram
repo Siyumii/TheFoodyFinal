@@ -5,13 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bd2e0a10ab054f07ac95731d152b1706" Name="Diagram1">
-        <EntityTypeShape EntityType="TheFoodyModel.Category" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TheFoodyModel.Menu" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TheFoodyModel.Restaurant" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="TheFoodyModel.User" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
-        <AssociationConnector Association="TheFoodyModel.FK_Menu_Restaurant" ManuallyRouted="false" />
-        <AssociationConnector Association="TheFoodyModel.FK_Restaurant_User" ManuallyRouted="false" />
-        <AssociationConnector Association="TheFoodyModel.Restaurant_Type" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TheFoodyModel.Category" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="TheFoodyModel.Restaurant" Width="1.5" PointX="3" PointY="6" />
+        <EntityTypeShape EntityType="TheFoodyModel.Restaurant_Type" Width="1.5" PointX="5.25" PointY="7.375" />
+        <AssociationConnector Association="TheFoodyModel.FK_Restaurant_Type_Category" />
+        <AssociationConnector Association="TheFoodyModel.FK_Menu_Restaurant" />
+        <AssociationConnector Association="TheFoodyModel.FK_Restaurant_Type_Restaurant" />
+        <AssociationConnector Association="TheFoodyModel.FK_Restaurant_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

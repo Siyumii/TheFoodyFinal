@@ -182,6 +182,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModel.cs" />
+    <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +211,12 @@
     <Content Include="images\logo_lato.png" />
     <Content Include="images\logo_open_regular.png" />
     <Content Include="images\logo_v1.png" />
+    <Content Include="images\menuimages\20100908sad.jpg" />
+    <Content Include="images\menuimages\checken-biryani.jpg" />
+    <Content Include="images\menuimages\Grilledsandwich.jpg" />
+    <Content Include="images\menuimages\lamb-biryani.jpg" />
+    <Content Include="images\menuimages\lambonthebone.jpg" />
+    <Content Include="images\menuimages\lambsujuc.png" />
     <Content Include="images\mobilev2.png" />
     <Content Include="images\reparallax-one.jpg" />
     <Content Include="images\reservation.jpg" />
@@ -245,6 +252,8 @@
     <Content Include="Scripts\jquery.responsivegrid.js" />
     <Content Include="Scripts\jquery.slicknav.min.js" />
     <Content Include="Scripts\jquery.sticky.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -253,6 +262,17 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\order-online.js" />
     <Content Include="Scripts\order-online__.js" />
+    <Content Include="Scripts\plugins\bootstrap-filestyle\bootstrap-filestyle.min.js" />
+    <Content Include="Scripts\plugins\datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\plugins\datepicker\datepicker.css" />
+    <Content Include="Scripts\plugins\magnific-popup\jquery.magnific-popup.min.js" />
+    <Content Include="Scripts\plugins\magnific-popup\magnific-popup.css" />
+    <Content Include="Scripts\plugins\owl-carousel\AjaxLoader.gif" />
+    <Content Include="Scripts\plugins\owl-carousel\grabbing.png" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.carousel.css" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.carousel.js" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.theme.css" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.transitions.css" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\slick.min.js" />
@@ -286,6 +306,10 @@
     <Content Include="Views\Shared\_RegisterView.cshtml" />
     <Content Include="Views\Shared\_SignInView.cshtml" />
     <Content Include="Views\Restaurant\Index.cshtml" />
+    <Content Include="Views\Restaurant\ViewMenu.cshtml" />
+    <Content Include="Views\Restaurant\Item.cshtml" />
+    <Content Include="Views\Restaurant\_MenuList.cshtml" />
+    <Content Include="Views\Restaurant\_MealCategoryList.cshtml" />
     <Content Include="Views\Manage\Manage.cshtml" />
     <Content Include="Views\ChangePassword\ChangePassword.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
@@ -319,7 +343,6 @@
     <Folder Include="images\post-grid\" />
     <Folder Include="images\restaurant-logo\" />
     <Folder Include="images\team\" />
-    <Folder Include="Scripts\plugins\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

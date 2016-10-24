@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TheFoody.DataAccess.Restaurant>
+﻿@model IEnumerable<TheFoody.Models.RestaurantViewModel>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -212,7 +212,7 @@
 
                     <div class="restaurant-list-wrapper">
 
-                        <div class="restaurant-item-list featured">
+                        @*<div class="restaurant-item-list featured">
 
                             <div class="featured-label"><span>featured</span></div>
 
@@ -292,7 +292,7 @@
 
                             </div>
 
-                        </div>
+                        </div>*@
                         @foreach (var item in Model)
                         {
                             <div class="restaurant-item-list">
@@ -311,9 +311,9 @@
                                                 <h4 class="heading">@Html.DisplayFor(modelItem => item.RestaurantName)</h4>
                                                 <div class="meta-div clearfix mb-25">
                                                     <span>at <a href="#">
-                                                    @foreach (var it in (item.Restaurant_Type.ToList()))
+                                                    @foreach (var it in item.categories)
                                                     {
-                                                        @Html.DisplayFor(modelItem=>it.Category.category1)
+                                                        @Html.DisplayFor(modelItem=>it)
                                                         <span></span> 
                                                     }
                                                     </a></span>
@@ -337,8 +337,7 @@
                                                     </li>
                                                     <li>
                                                         <span>Delivery: </span>
-                                                        30 min
-                                                        @*@Html.DisplayFor(modelItem => item.TimetakentoDeliver)*@
+                                                        @Html.DisplayFor(modelItem => item.TimetakentoDeliver)
                                                     </li>
                                                 </ul>
                                             </div>
@@ -367,7 +366,7 @@
                                             </div>
 
                                             <div class="col-sm-5 col-md-4">
-                                                <a href="#" class="btn btn-primary">View Menu</a>
+                                                <a href="@Url.Action("ViewMenu","Restaurant",new { id = item.RestId })" class="btn btn-primary">View Menu</a>
                                             </div>
 
                                         </div>

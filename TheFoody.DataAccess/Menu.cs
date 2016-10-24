@@ -19,8 +19,10 @@ namespace TheFoody.DataAccess
         public string Description { get; set; }
         public Nullable<decimal> Price { get; set; }
         public string Photo { get; set; }
-        public Nullable<int> Rest_id { get; set; }
+        public Nullable<int> Meal_Cat_IdFK { get; set; }
+        public Nullable<int> RestaurantId { get; set; }
     
         public virtual Restaurant Restaurant { get; set; }
+        public virtual Meal_Category Meal_Category { get; set; }
     }
 }

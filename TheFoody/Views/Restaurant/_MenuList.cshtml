@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TheFoody.Models.MenuVm>
+
+<p>
+    <img src="/images/banners/banner-discount.png" alt="Discount Banner" class="img-responsive img-center-xs">
+</p>
+
+
+@foreach (var item in Model)
+{
+        @*<h5>@Html.DisplayFor(modelItem => item.MealCategoryID)</h5>*@
+        <p>
+            <img src="~/images/menuimages/@Html.DisplayFor(modelItem => item.MenuPhoto)" alt="Banner" class="img-responsive img-center-xs" width="570" height="300">
+        </p>
+        <div class="spacer"></div>
+        <div class="order-menu-item clearfix">
+            <div class="pull-left" style="width:400px">
+                <h6>@Html.DisplayFor(modelItem => item.MenuName)</h6>
+                <p>@Html.DisplayFor(modelItem => item.MenuDescription)</p>
+            </div>
+            <div class="pull-right">
+                <a href="#" class="btn btn-primary animation"><span class="price-new">Rs. @Html.DisplayFor(modelItem => item.MenuPrice)</span> <i class="fa fa-plus-circle"></i></a>
+            </div>
+        </div>
+        <!-- Order Menu List #1 Ends -->
+        <!-- Spacer Starts -->
+        <div class="spacer big"></div>
+}
+
+

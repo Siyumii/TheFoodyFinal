@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using TheFoody.Models;
 using TheFoody.DataAccess;
+using System.Web.Security;
+using System.Web.Mail;
+using System.Net.Mail;
+using WebMatrix.WebData;
 
 namespace TheFoody.Controllers
 {
@@ -53,6 +57,7 @@ namespace TheFoody.Controllers
 
                         db.Users.Add(usr);
                         db.SaveChanges();
+                        
 
                         Session["UserEmail"] = model.Email;
                         return RedirectToAction("Index", "Home");
@@ -115,5 +120,102 @@ namespace TheFoody.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel resetpasswordmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                //User user;
+                MembershipUser member;
+                using (TheFoodyContext db = new TheFoodyContext())
+                {
+                    var foundemail = (from e in db.Users
+                                         where e.email == resetpasswordmodel.Email
+                                         select e.email).FirstOrDefault();
+
+                    if (foundemail != null)
+                    {
+                        
+                        member = Membership.GetUser(foundemail.ToString());    
+                    }
+                    else
+                    {
+                        member = null;
+                    }
+                }
+
+                if (member != null)
+                {
+                    //Generate password token that will be used in the email link to authenticate user
+                    var token = WebSecurity.GeneratePasswordResetToken(member.Email);
+                    // Generate the html link sent via email
+                    string resetLink = "<a href='"
+                       + Url.Action("ResetPasswordView", "Account", new { rt = token }, "http")
+                       + "'>Reset Password Link</a>";
+                    // Email stuff
+                    string subject = "Reset your password for TheFoody.com";
+                    string body = "You link: " + resetLink;
+                    string from = "punyabhagyani863@gmail.com";
+                    string to = resetpasswordmodel.Email;
+
+                    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage(from, to);
+                    message.Subject = subject;
+                    message.Body = body;
+                    SmtpClient client = new SmtpClient();
+
+                    // Attempt to send the email
+                    try
+                    {
+                        client.Send(message);
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddModelError("", "Issue sending email: " + e.Message);
+                    }
+                }
+                else // Email not found
+                {
+                    ModelState.AddModelError("", "No user found by that email.");
+                }
+            }
+            return View(resetpasswordmodel);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPasswordView(string rt)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel();
+            model.ReturnToken = rt;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPasswordView(ResetPasswordViewModel resetpasswordviewmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resetResponse = WebSecurity.ResetPassword(resetpasswordviewmodel.ReturnToken, resetpasswordviewmodel.Password);
+                if (resetResponse)
+                {
+                    ViewBag.Message = "Successfully Changed";
+                }
+                else
+                {
+                    ViewBag.Message = "Something went horribly wrong!";
+                }
+            }
+
+            return View(resetpasswordviewmodel);
+        }
     }
 }

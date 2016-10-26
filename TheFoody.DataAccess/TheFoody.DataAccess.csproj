@@ -103,6 +103,7 @@
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>
       <LastGenOutput>TheFoodyModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="TheFoodyModel.edmx.sql" />
     <Content Include="TheFoodyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>

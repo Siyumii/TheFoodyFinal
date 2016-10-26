@@ -36,6 +36,11 @@
     @*@Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")*@
 
+    @if (IsSectionDefined("RestaurantImageJavascript"))
+    {
+        @RenderSection("RestaurantImageJavascript");
+    }
+
 </head>
 
 @*<body class="home">*@

@@ -18,6 +18,7 @@ namespace TheFoody.DataAccess
         public Restaurant()
         {
             this.Restaurant_Type = new HashSet<Restaurant_Type>();
+            this.Menus = new HashSet<Menu>();
         }
     
         public int Id { get; set; }
@@ -27,7 +28,7 @@ namespace TheFoody.DataAccess
         public string Address { get; set; }
         public string City { get; set; }
         public string District { get; set; }
-        public decimal PostCode { get; set; }
+        public string PostCode { get; set; }
         public string Website { get; set; }
         public string Phone { get; set; }
         public string CompanyBackground { get; set; }
@@ -41,5 +42,7 @@ namespace TheFoody.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Restaurant_Type> Restaurant_Type { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Menu> Menus { get; set; }
     }
 }

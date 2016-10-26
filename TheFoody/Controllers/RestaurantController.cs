@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
 using System.Web.Mvc;
 using TheFoody.Models;
 using TheFoody.DataAccess;
 using System.IO;
+using System.Threading.Tasks;
 
 
 namespace TheFoody.Controllers
@@ -17,29 +19,151 @@ namespace TheFoody.Controllers
         // GET: Restaurant
         public ActionResult Index()
         {
-            TheFoodyContext db = new TheFoodyContext();
+            using (TheFoodyContext db = new TheFoodyContext())
+            {
 
-            //string query = "select * " 
-            //+"from Restaurant r inner join Restaurant_Type t on r.Id = t.Rest_id " 
-            //+"inner join Category c on t.Category_id = c.id";
-            //var query = from Restaurant in db.Restaurants
-            //            from Category in Restaurant.Categories
-            //            select new
-            //            {
-            //                OwnerEmail = Restaurant.OwnerEmail,
-            //                RestaurantName = Restaurant.RestaurantName,
-            //                Logo = Restaurant.Logo,
-            //                City = Restaurant.City,
-            //                TimetakenToDeliver = Restaurant.TimetakentoDeliver,
-            //                CatName=Category.category1
-            //            };
-            //IEnumerable<Restaurant> data = db.Database.SqlQuery<Restaurant>(query);
-            //var listOfFooId = <IList>.Select(m => m.Id).ToList;
-            //return db.Categories.Where(m => m.Restaurants.Any(x => listOfFooId.Contains(x.)));
-            //var prod = db.Categories.Where(x => x.Restaurants.Any(c => c.Id == x.id));
-            //var prod = db.Categories.SelectMany(c=>c.Restaurants).SelectMany(r=>r.Categories);
-            return View(db.Restaurants.ToList());
+                var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
 
+                return View(model.ToList());
+                //return View(db.Restaurants.ToList());
+            }
+
+        }
+        public ActionResult ViewMenu(int id)
+        {
+            RestaurantViewModel restaurantVm = new RestaurantViewModel();
+            using (TheFoodyContext context = new TheFoodyContext())
+            {
+                Restaurant restaurant = context.Restaurants.Where(x => x.Id == id).SingleOrDefault();
+
+                restaurantVm = TransformToRestaurantVm(restaurant);
+
+                //get meal categories
+                List<Meal_Category> mealCategoryList = context.Menus
+                    .Where(x => x.RestaurantId == id)
+                    .Select(x => x.Meal_Category).Distinct().ToList();
+
+                restaurantVm.MealCategories = new List<MealCategoryVm>();
+
+                for (int i = 0; i < mealCategoryList.Count; i++)
+                {
+                    restaurantVm.MealCategories.Add(TransformToMealCategoryVm(mealCategoryList[i]));
+                }
+
+                List<Menu> menuList = context.Menus.Where(x => x.RestaurantId == id).ToList();
+
+                restaurantVm.MenuList = new List<MenuVm>();
+
+                for (int j = 0; j < menuList.Count; j++)
+                {
+                    restaurantVm.MenuList.Add(TransformToMenuVm(menuList[j]));
+                }
+            }
+
+            return View(restaurantVm);
+        }
+
+        //
+       
+        public PartialViewResult GetMenus(int? restId, int? categoryId)
+        {
+            List<MenuVm> menuVmList = new List<MenuVm>();
+            using (TheFoodyContext context = new TheFoodyContext())
+            {
+                List<Menu> menuList = context.Menus.Where(x => x.RestaurantId == restId && x.Meal_Cat_IdFK == categoryId).ToList();
+
+                for (int j = 0; j < menuList.Count; j++)
+                {
+                    menuVmList.Add(TransformToMenuVm(menuList[j]));
+                }
+            }
+           
+                return PartialView("_MenuList", menuVmList);
+        }
+
+
+        //public ActionResult Item(int id)
+        //{
+        //    RestaurantViewModel restaurantVm = new RestaurantViewModel();
+        //    using (TheFoodyContext context = new TheFoodyContext())
+        //    {
+        //        Restaurant restaurant = context.Restaurants.Where(x => x.Id == id).SingleOrDefault();
+
+        //        restaurantVm = TransformToRestaurantVm(restaurant);
+
+        //        //get meal categories
+        //        List<Meal_Category> mealCategoryList = context.Menus
+        //            .Where(x => x.RestaurantId == id)
+        //            .Select(x => x.Meal_Category).Distinct().ToList();
+
+        //        restaurantVm.MealCategories = new List<MealCategoryVm>();
+
+        //        for (int i = 0; i < mealCategoryList.Count; i++)
+        //        {
+        //            restaurantVm.MealCategories.Add(TransformToMealCategoryVm(mealCategoryList[i]));
+        //        }
+
+        //        List<Menu> menuList = context.Menus.Where(x => x.RestaurantId == id).ToList();
+
+        //        restaurantVm.MenuList = new List<MenuVm>();
+
+        //        for (int j = 0; j < menuList.Count; j++)
+        //        {
+        //            restaurantVm.MenuList.Add(TransformToMenuVm(menuList[j]));
+        //        }
+        //    }
+
+        //    return View(restaurantVm);
+        //}
+
+        private MenuVm TransformToMenuVm(Menu menu)
+        {
+            if (menu == null)
+                return null;
+
+            MenuVm menuVm = new MenuVm();
+            menuVm.MenuID = menu.Menu_id;
+            menuVm.MenuName = menu.Menu_name;
+            menuVm.MenuDescription = menu.Description;
+            menuVm.MenuPhoto = menu.Photo;
+            menuVm.MenuPrice = Convert.ToDouble(menu.Price);
+
+            if (menu.Meal_Cat_IdFK.HasValue)
+                menuVm.MealCategoryID = menu.Meal_Cat_IdFK.Value;
+
+            return menuVm;
+        }
+
+        private MealCategoryVm TransformToMealCategoryVm(Meal_Category category)
+        {
+            if (category == null)
+                return null;
+
+            MealCategoryVm categoryVm = new MealCategoryVm();
+            categoryVm.MealCategoryID = category.Meal_Cat_Id;
+            categoryVm.MealCategoryName = category.CategoryName;
+
+            return categoryVm;
+        }
+
+        private RestaurantViewModel TransformToRestaurantVm(Restaurant restaurant)
+        {
+            if (restaurant == null)
+                return null;
+            
+            RestaurantViewModel restaurantVm = new RestaurantViewModel();
+            
 
         }
 
@@ -204,7 +328,7 @@ namespace TheFoody.Controllers
         [NonAction]
         public List<CategoryViewModel> getCategories()
         {
-           
+                
             var dbCategories = db.Categories.ToList();
 
             var categories = new List<CategoryViewModel>();

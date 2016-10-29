@@ -178,7 +178,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChangePasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Item.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -186,6 +186,7 @@
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\RestaurantModel.cs" />
+    <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +320,7 @@
     <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\Restaurant\Create.cshtml" />
     <Content Include="Views\Restaurant\CreateRestaurant.cshtml" />
+    <Content Include="Views\Restaurant\_AddtoCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -348,7 +350,6 @@
     <Folder Include="images\post-grid\" />
     <Folder Include="images\restaurant-logo\" />
     <Folder Include="images\team\" />
-    <Folder Include="Scripts\plugins\" />
     <Folder Include="Uploads\RestaurantLogo\" />
     <Folder Include="Uploads\RestaurantOwner\" />
   </ItemGroup>

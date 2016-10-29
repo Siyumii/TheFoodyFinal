@@ -18,74 +18,65 @@
 
 </div>
 <!-- end hero-header -->
-<div>
-    <h4>RestaurantViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RestId)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RestId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RestaurantName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RestaurantName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Logo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Logo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.District)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.District)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimetakentoDeliver)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimetakentoDeliver)
-        </dd>
-
-    </dl>
-</div>
 <div class="section sm">
-    <!-- Content Start -->
-    <!-- Start order-online-->
     <div id="order-online">
         <div class="container">
+            <div class="restaurant-item-list">
+                <div class="image">
+                    <img src="~/images/restaurant-logo/@Html.DisplayFor(model => model.Logo)" alt="image" />
+                </div>
+                <div class="content">
+                    <div class="restaurant-item-list-info">
 
+                        <div class="row">
+
+                            <div class="col-sm-7 col-md-8">
+
+                                <h4 class="heading">@Html.DisplayFor(model => model.RestaurantName)</h4>
+                                <div class="meta-div clearfix mb-25">
+                                    <span>
+                                        at <a href="#">
+                                            @foreach (var it in Model.categories)
+                                    {
+                                @Html.DisplayFor(modelItem => it)
+                                <span></span>
+                                    }
+                                        </a>
+                                    </span>
+                                    
+                                </div>
+                                @*<div class="col-sm-5 col-md-4">*@
+                                    <ul>
+                                        <li>
+                                            <span>Location:</span>
+                                            @Html.DisplayFor(model => model.City)
+                                        </li>
+                                        <li>
+                                            <span>Rating:</span>
+                                            3.2
+                                        </li>
+                                        <li>
+                                            <span>Min Order:</span>
+                                            &pound;15
+                                        </li>
+                                        <li>
+                                            <span>Delivery: </span>
+                                            @Html.DisplayFor(model => model.TimetakentoDeliver)
+                                        </li>
+                                    </ul>
+                                @*</div>*@
+                            </div>
+                           
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Content Start -->
+            <!-- Start order-online-->
             <!-- Nested Row Starts -->
             <div class="row">
                 <!-- Mainarea Starts -->
@@ -95,8 +86,6 @@
                         <!-- Menu Tabs List Starts -->
                         <ul class="nav nav-tabs nav-menu-tabs text-center-xs">
                             <li class="active"><a href="#menu" data-toggle="tab">Menu</a></li>
-                            <li><a href="#offer" data-toggle="tab">Offer</a></li>
-                            <li><a href="#gallery" data-toggle="tab">Gallery</a></li>
                             <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
                             <li><a href="#reachus" data-toggle="tab">Contact Us</a></li>
                         </ul>
@@ -113,19 +102,19 @@
                                             <h6>Delivery Menu</h6>
                                             @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
                                             @*<ul class="list-unstyled list-style-2">
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
-                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
-                                            </ul>*@
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
+                                                </ul>*@
                                         </div>
                                     </div>
                                     <!-- Left Column Ends -->
@@ -171,7 +160,8 @@
                                     <div class="col-sm-4 col-xs-12">
                                         <div class="side-block-1">
                                             <h6>Delivery Menu</h6>
-                                            <ul class="list-unstyled list-style-2">
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
@@ -184,7 +174,7 @@
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
-                                            </ul>
+                                            </ul>*@
                                         </div>
                                     </div>
                                     <!-- Left Column Ends -->
@@ -365,7 +355,8 @@
                                     <div class="col-sm-4 col-xs-12">
                                         <div class="side-block-1">
                                             <h6>Delivery Menu</h6>
-                                            <ul class="list-unstyled list-style-2">
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
@@ -378,7 +369,7 @@
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
-                                            </ul>
+                                            </ul>*@
                                         </div>
                                     </div>
                                     <!-- Left Column Ends -->
@@ -521,7 +512,8 @@
                                     <div class="col-sm-4 col-xs-12">
                                         <div class="side-block-1">
                                             <h6>Delivery Menu</h6>
-                                            <ul class="list-unstyled list-style-2">
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
@@ -534,7 +526,7 @@
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
                                                 <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
-                                            </ul>
+                                            </ul>*@
                                         </div>
                                     </div>
                                     <!-- Left Column Ends -->
@@ -644,48 +636,8 @@
                     <div class="spacer-1 medium hidden-lg hidden-md"></div>
                     <!-- Spacer Ends -->
                     <!-- Your Order Starts -->
-                    <div class="side-block-order border-radius-4">
-                        <!-- Heading Starts -->
-                        <h5 class="text-center"><i class="fa fa-shopping-basket"></i> Your Orders</h5>
-                        <!-- Heading Ends -->
-                        <!-- Order Content Starts -->
-                        <div class="side-block-order-content">
-                            <!-- Order Item List Starts -->
-                            <ul class="list-unstyled order-item-list">
-                                <li class="clearfix">
-                                    <span class="pull-left">Green Salad</span>
-                                    <span class="pull-right text-spl-color">$2.99</span>
-                                </li>
-                                <li class="clearfix">
-                                    <span class="pull-left">Cheese and Tomato</span>
-                                    <span class="pull-right text-spl-color">$8.45</span>
-                                </li>
-                                <li class="clearfix">
-                                    <span class="pull-left">Cheesy Nachos</span>
-                                    <span class="pull-right text-spl-color">$7.99</span>
-                                </li>
-                                <li class="clearfix">
-                                    <span class="pull-left">Pollo Ala Crema</span>
-                                    <span class="pull-right text-spl-color">$8.45</span>
-                                </li>
-                            </ul>
-                            <!-- Order Item List Ends -->
-                            <!-- Order Item Total Starts -->
-                            <dl class="dl-horizontal order-item-total">
-                                <dt class="text-light">Orders Amount :</dt>
-                                <dd class="text-spl-color text-right">$30.45</dd>
-                                <dt class="text-light">Delivery Charges :</dt>
-                                <dd class="text-spl-color text-right">$5.00</dd>
-                                <hr>
-                                <dt class="text-bold">Total  Amount :</dt>
-                                <dd class="text-bold text-spl-color text-right">$35.45</dd>
-                            </dl>
-                            <!-- Order Item Total Ends -->
-                            <div class="cfo-checkoutarea">
-                                <button type="submit" id="a" name="a" class="btn btn-primary btn-block custom-checkout">Proceed to Checkout</button>
-                            </div>
-                        </div>
-                        <!-- Order Content Ends -->
+                    <div class="side-block-order border-radius-4" id="shoppingcart">
+                        @{Html.RenderPartial("_AddtoCart");}
                     </div>
                     <!-- Your Order Ends -->
                     <!-- start add wrapper -->
@@ -704,7 +656,7 @@
     <!--end order-online-->
     <!-- Content End -->
     <!-- start mobile footer nav -->
-    <nav class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm mobile-cart-nav">
+    @*<nav class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm mobile-cart-nav">
         <div class="mobile-cart-inner-content">
             <div class="row">
                 <div class="col-md-4 col-xs-4">
@@ -720,7 +672,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav>*@
     <!-- end mobile footer nav -->
 
 </div>

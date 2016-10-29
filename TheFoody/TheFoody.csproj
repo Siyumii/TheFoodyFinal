@@ -130,6 +130,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Item.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -261,6 +262,7 @@
     <Content Include="Views\Restaurant\Item.cshtml" />
     <Content Include="Views\Restaurant\_MenuList.cshtml" />
     <Content Include="Views\Restaurant\_MealCategoryList.cshtml" />
+    <Content Include="Views\Restaurant\_AddtoCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

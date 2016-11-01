@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TheFoody.Models.MealCategoryVm>
+
+
+
+    <ul class="list-unstyled list-style-2">
+        @foreach (var item in Model)
+        {
+            <li>
+                <i class="text-primary ion-android-checkmark-circle"></i>
+                @Ajax.ActionLink(item.MealCategoryName, "GetMenus", new { restId = ViewData["RestaurantId"], categoryId = item.MealCategoryID }, new AjaxOptions
+               {
+                   UpdateTargetId = "menulist",
+                   InsertionMode = InsertionMode.Replace,
+                   HttpMethod = "GET",
+
+               })
+            </li>
+
+                }
+</ul>
+
+@section scripts{
+    @*@Scripts.Render("/Scripts/jquery.unobtrusive-ajax.min.js")*@
+}
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#menulink").click(function () {
+            var categoryId =  $("#ddlCategory").val();
+               $("#menulist").load('@(Url.Action("GetCategoryProducts","Home",null, Request.Url.Scheme))?categoryId=' + categoryId);
+        });
+    });
+</script>*@  

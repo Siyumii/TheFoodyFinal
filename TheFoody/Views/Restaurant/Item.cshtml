@@ -1,0 +1,122 @@
+﻿@model TheFoody.Models.RestaurantViewModel
+
+@{
+    ViewBag.Title = "Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Item</h2>
+
+<div>
+    <h4>RestaurantViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RestId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RestId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RestaurantName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RestaurantName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Logo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.District)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.District)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimetakentoDeliver)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimetakentoDeliver)
+        </dd>
+
+    </dl>
+</div>
+<h3>Categories</h3>
+<div id="categories">
+    
+    @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+</div>
+
+<h3>Menu List</h3>
+<div id="menulist">
+
+    @{Html.RenderPartial("_MenuList", Model.MenuList);}
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@*<script type="text/javascript">
+    //var RestaurantId = Model.RestId;
+    $.ajax({
+        url: '/Item/Categories',
+        type: 'POST',
+        async:false,
+        dataType: 'text',
+        processData: false,
+        data: {
+            input: JSON.stringify(IVRInstant.data),
+            
+        }
+    })
+    .success(function(result){
+        $('#categories').html(result);
+    })
+    .error(function(xhr,status)
+    {
+        alert(status);
+    })
+
+    $.ajax({
+        url: '/Item/Menus',
+        contentType: 'application/html;charset=utf-8',
+        method: 'GET',
+        dataType:'html'
+    })
+    .success(function (result) {
+        $('$menulist').html(result);
+    })
+    .error(function(xhr,status)
+    {
+        alert(status);
+    })
+</script>*@

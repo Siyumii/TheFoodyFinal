@@ -28,7 +28,8 @@ namespace TheFoody.DataAccess
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<Restaurant_Type> Restaurant_Type { get; set; }
+        public virtual DbSet<Restaurant> Restaurants { get; set; }
+        public virtual DbSet<Meal_Category> Meal_Category { get; set; }
     }
 }

@@ -29,6 +29,14 @@
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <p>
+                                @Html.ActionLink("Forgot Password?", "ResetPassword", "Account")
+                            </p>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">       
@@ -43,8 +51,18 @@
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Log in" class="btn btn-primary" />
+                            @*<input type="button" value="Facebook" class="btn btn-primary" />*@
                         </div>
                     </div>
+                
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            
+                            @*<input type="button" value="Facebook" class="btn btn-primary" />*@
+                            @*<a href="http://localhost:1672/App_Start/AuthConfig.cs">Fb</a>*@
+                        </div>
+                    </div>
+                
                     <p>
                         @Html.ActionLink("Register as a new user", "Register")
                     </p>

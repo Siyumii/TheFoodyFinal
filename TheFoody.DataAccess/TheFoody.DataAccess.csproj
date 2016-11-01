@@ -55,6 +55,9 @@
     <Compile Include="Category.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Meal_Category.cs">
+      <DependentUpon>TheFoodyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Menu.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
@@ -103,6 +106,7 @@
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>
       <LastGenOutput>TheFoodyModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="TheFoodyModel.edmx.sql" />
     <Content Include="TheFoodyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>

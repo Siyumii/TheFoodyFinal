@@ -1,0 +1,715 @@
+﻿@model TheFoody.Models.RestaurantViewModel
+@{
+    ViewBag.Title = "ViewMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- start hero-header -->
+<div class="breadcrumb-wrapper">
+
+    <div class="container">
+
+        <ol class="breadcrumb-list booking-step">
+            <li><a href="index.html">Home</a></li>
+            <li><span>Order Online</span></li>
+        </ol>
+
+    </div>
+
+</div>
+<!-- end hero-header -->
+
+<div class="section sm">
+    <div id="order-online">
+        <div class="container">
+            <div class="restaurant-item-list">
+                <div class="image">
+                    <img src="~/images/restaurant-logo/@Html.DisplayFor(model => model.Logo)" alt="image" />
+                </div>
+                <div class="content">
+                    <div class="restaurant-item-list-info">
+
+                        <div class="row">
+
+                            <div class="col-sm-7 col-md-8">
+
+                                <h4 class="heading">@Html.DisplayFor(model => model.RestaurantName)</h4>
+                                <div class="meta-div clearfix mb-25">
+                                    <span>
+                                        at <a href="#">
+                                            @foreach (var it in Model.categories)
+                                    {
+                                @Html.DisplayFor(modelItem => it)
+                                <span></span>
+                                    }
+                                        </a>
+                                    </span>
+                                    
+                                </div>
+                                @*<div class="col-sm-5 col-md-4">*@
+                                    <ul>
+                                        <li>
+                                            <span>Location:</span>
+                                            @Html.DisplayFor(model => model.City)
+                                        </li>
+                                        <li>
+                                            <span>Rating:</span>
+                                            3.2
+                                        </li>
+                                        <li>
+                                            <span>Min Order:</span>
+                                            &pound;15
+                                        </li>
+                                        <li>
+                                            <span>Delivery: </span>
+                                            @Html.DisplayFor(model => model.TimetakentoDeliver)
+                                        </li>
+                                    </ul>
+                                @*</div>*@
+                            </div>
+                           
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Content Start -->
+            <!-- Start order-online-->
+            <!-- Nested Row Starts -->
+            <div class="row">
+                <!-- Mainarea Starts -->
+                <div class="col-md-9 col-xs-12">
+                    <!-- Menu Tabs Starts -->
+                    <div class="menu-tabs-wrap">
+                        <!-- Menu Tabs List Starts -->
+                        <ul class="nav nav-tabs nav-menu-tabs text-center-xs">
+                            <li class="active"><a href="#menu" data-toggle="tab">Menu</a></li>
+                            <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
+                            <li><a href="#reachus" data-toggle="tab">Contact Us</a></li>
+                        </ul>
+                        <!-- Menu Tabs List Ends -->
+                        <!-- Menu Tabs Content Starts -->
+                        <div class="tab-content">
+                            <!-- Tab #1 Starts -->
+                            <div id="menu" class="tab-pane active">
+                                <!-- Tab #1 Nested Row Starts -->
+                                <div class="row">
+                                    <!-- Left Column Starts -->
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="side-block-1">
+                                            <h6>Delivery Menu</h6>
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
+                                                    <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
+                                                </ul>*@
+                                        </div>
+                                    </div>
+                                    <!-- Left Column Ends -->
+                                    <!-- Right Column Starts -->
+                                    <div class="col-sm-8 col-xs-12">
+                                        <!-- Order Menu Tab Pane Starts -->
+                                        <div class="order-menu-tab-pane text-center-xs" id="menulist">
+                                            @{Html.RenderPartial("_MenuList", Model.MenuList);}
+                                        </div>
+                                        <!-- Order Menu Tab Pane Ends -->
+                                        <!-- Pagination Starts -->
+                                        <div class="pagination-block text-right text-center-xs mb-10">
+                                            <ul class="pagination animation">
+                                                <li><a href="#">&laquo;</a></li>
+                                                <li class="active"><a href="#">1</a></li>
+                                                <li><a href="#">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li><a href="#">&raquo;</a></li>
+                                            </ul>
+                                        </div>
+                                        <!-- Pagination Ends -->
+                                        <!-- Banners Starts -->
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <img src="/images/banners/banner-img1.png" alt="Banner 1" class="img-responsive img-center-xs">
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <img src="/images/banners/banner-img2.png" alt="Banner 2" class="img-responsive img-center-xs">
+                                            </div>
+                                        </div>
+                                        <!-- Banners Ends -->
+                                    </div>
+                                    <!-- Right Column Ends -->
+                                </div>
+                                <!-- Tab #1 Nested Row Ends -->
+                            </div>
+                            <!-- Tab #1 Ends -->
+                            <!-- Tab #2 Starts -->
+                            <div id="offer" class="tab-pane">
+                                <!-- Tab #2 Nested Row Starts -->
+                                <div class="row">
+                                    <!-- Left Column Starts -->
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="side-block-1">
+                                            <h6>Delivery Menu</h6>
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
+                                            </ul>*@
+                                        </div>
+                                    </div>
+                                    <!-- Left Column Ends -->
+                                    <!-- Right Column Starts -->
+                                    <div class="col-sm-8 col-xs-12">
+                                        <!-- Information Tab Pane Starts -->
+                                        <div class="information-tab-pane">
+                                            <p>
+                                                <img src="/images/banners/banner-discount.png" alt="Discount Banner" class="img-responsive">
+                                            </p>
+                                            <!-- Spacer Starts -->
+                                            <div class="spacer big"></div>
+                                            <!-- Spacer Ends -->
+                                            <p>Thefoody is a nice restaurant offering Indian food to takeaway or eat in the restaurant. The restaurant offers Indian food takeaway.</p>
+                                            <p>Free bottle fo white wine.</p>
+                                            <p>Spend £39.95 or more</p>
+                                            <p>Only available through our online ordering system on orders over £24.95 or more.</p>
+
+                                            <hr>
+                                            <!-- Opening Hours Starts -->
+                                            <h5><i class="fa fa-clock-o"></i> Opening Hours</h5>
+                                            <ul class="list-unstyled timing-list">
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Monday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Tuesday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Wednesday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Thursday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Friday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Saturday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <span class="pull-left">Sunday</span>
+                                                    <span class="pull-right text-right">12:00 - 15:30, 18:00 - 22:30</span>
+                                                </li>
+                                            </ul>
+                                            <!-- Takeway Hours Ends -->
+                                            <hr>
+                                            <!-- Spacer Starts -->
+                                            <div class="spacer"></div>
+                                            <!-- Spacer Ends -->
+                                            <!-- Banners Starts -->
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img1.png" alt="Banner 1" class="img-responsive img-center-xs">
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img2.png" alt="Banner 2" class="img-responsive img-center-xs">
+                                                </div>
+                                            </div>
+                                            <!-- Banners Ends -->
+                                        </div>
+                                        <!-- Information Tab Pane Ends -->
+                                    </div>
+                                    <!-- Right Column Ends -->
+                                </div>
+                                <!-- Tab #1 Nested Row Ends -->
+                            </div>
+                            <!-- Tab #2 Ends -->
+                            <!-- Tab #3 Starts -->
+                            <div id="gallery" class="tab-pane">
+                                <!-- Image Gallery Starts -->
+                                <ul class="row list-unstyled gallery-grid">
+                                    <!-- Gallery Image #1 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio01.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio01.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #1 Ends -->
+                                    <!-- Gallery Image #2 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio02.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio02.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #2 Ends -->
+                                    <!-- Gallery Image #3 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio03.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio03.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #3 Ends -->
+                                    <!-- Gallery Image #4 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio04.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio04.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #4 Ends -->
+                                    <!-- Gallery Image #5 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio05.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio05.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #5 Ends -->
+                                    <!-- Gallery Image #6 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio06.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio06.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #6 Ends -->
+                                    <!-- Gallery Image #7 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio07.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio07.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #7 Ends -->
+                                    <!-- Gallery Image #8 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio08.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio08.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #8 Ends -->
+                                    <!-- Gallery Image #9 Starts -->
+                                    <li class="col-sm-4 col-xs-6">
+                                        <div class="hover-content">
+                                            <img src="/images/portfolio/portfolio02.png" alt="Gallery Image" class="img-responsive img-center-sm img-center-xs">
+                                            <div class="overlay animation">
+                                                <a href="/images/portfolio/portfolio02.png" class="btn btn-link zoom"><i class="fa fa-search-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Gallery Image #9 Ends -->
+                                </ul>
+                                <!-- Image Gallery Ends -->
+                            </div>
+                            <!-- Tab #3 Ends -->
+                            <!-- Tab #4 Starts -->
+                            <div id="reviews" class="tab-pane">
+                                <!-- Tab #4 Nested Row Starts -->
+                                <div class="row">
+                                    <!-- Left Column Starts -->
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="side-block-1">
+                                            <h6>Delivery Menu</h6>
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
+                                            </ul>*@
+                                        </div>
+                                    </div>
+                                    <!-- Left Column Ends -->
+                                    <!-- Right Column Starts -->
+                                    <div class="col-sm-8 col-xs-12">
+                                        <!-- Reviews Tab Pane Starts -->
+                                        <div class="reviews-tab-pane">
+                                            <!-- Reviews Form Box Starts -->
+                                            <div class="reviews-form-box">
+                                                <h6>Write a Review</h6>
+                                                <form>
+                                                    <textarea class="form-control" rows="4" placeholder="Message should be atleast 130 charecters"></textarea>
+                                                    <div class="clearfix">
+                                                        <ul class="list-unstyled list-inline rating-star pull-left">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                        <a href="#" class="btn btn-primary mt-5 pull-right">Submit</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- Reviews Form Box Ends -->
+                                            <!-- Reviews List Starts -->
+                                            <div class="reviews-box">
+                                                <!-- Review #1 Starts -->
+                                                <div class="review-list">
+                                                    <div class="clearfix">
+                                                        <div class="pull-left">
+                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
+                                                            <h6>By Sainath Chillapuram</h6>
+                                                            <ul class="list-unstyled list-inline rating-star-list">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
+                                                    </div>
+                                                    <div class="review-list-content">
+                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
+                                                    </div>
+                                                </div>
+                                                <!-- Review #1 Ends -->
+                                                <!-- Review #2 Starts -->
+                                                <div class="review-list">
+                                                    <div class="clearfix">
+                                                        <div class="pull-left">
+                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
+                                                            <h6>By Sainath Chillapuram</h6>
+                                                            <ul class="list-unstyled list-inline rating-star-list">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
+                                                    </div>
+                                                    <div class="review-list-content">
+                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
+                                                    </div>
+                                                </div>
+                                                <!-- Review #2 Ends -->
+                                                <!-- Review #3 Starts -->
+                                                <div class="review-list">
+                                                    <div class="clearfix">
+                                                        <div class="pull-left">
+                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
+                                                            <h6>By Sainath Chillapuram</h6>
+                                                            <ul class="list-unstyled list-inline rating-star-list">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
+                                                    </div>
+                                                    <div class="review-list-content">
+                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
+                                                    </div>
+                                                </div>
+                                                <!-- Review #3 Ends -->
+                                                <!-- Review #4 Starts -->
+                                                <div class="review-list">
+                                                    <div class="clearfix">
+                                                        <div class="pull-left">
+                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
+                                                            <h6>By Sainath Chillapuram</h6>
+                                                            <ul class="list-unstyled list-inline rating-star-list">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                <li><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
+                                                    </div>
+                                                    <div class="review-list-content">
+                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
+                                                    </div>
+                                                </div>
+                                                <!-- Review #4 Ends -->
+                                            </div>
+                                            <!-- Reviews List Ends -->
+                                            <!-- Spacer Starts -->
+                                            <div class="spacer-1 condensed"></div>
+                                            <!-- Spacer Ends -->
+                                            <!-- Banners Starts -->
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img1.png" alt="Banner 1" class="img-responsive img-center-xs">
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img2.png" alt="Banner 2" class="img-responsive img-center-xs">
+                                                </div>
+                                            </div>
+                                            <!-- Banners Ends -->
+                                        </div>
+                                        <!-- Reviews Tab Pane Ends -->
+                                    </div>
+                                    <!-- Right Column Ends -->
+                                </div>
+                                <!-- Tab #4 Nested Row Ends -->
+                            </div>
+                            <!-- Tab #4 Ends -->
+                            <!-- Tab #5 Starts -->
+                            <div id="reachus" class="tab-pane">
+                                <!-- Tab #5 Nested Row Starts -->
+                                <div class="row">
+                                    <!-- Left Column Starts -->
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="side-block-1">
+                                            <h6>Delivery Menu</h6>
+                                            @{Html.RenderPartial("_MealcategoryList", Model.MealCategories, new ViewDataDictionary { { "RestaurantId", Model.RestId } });}
+                                            @*<ul class="list-unstyled list-style-2">
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Top Kebab and Pizza</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Bombay Lancer</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Gillingham Grill</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Chinese Starters</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> North Indian Main Course</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Traditional Telugu Maincourse</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Indian Breads</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Rice, Biryani &amp; Pulao</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Accompaniments</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Desserts &amp; Beverages</li>
+                                                <li><i class="text-primary ion-android-checkmark-circle"></i> Flamers Pizza Ltd</li>
+                                            </ul>*@
+                                        </div>
+                                    </div>
+                                    <!-- Left Column Ends -->
+                                    <!-- Right Column Starts -->
+                                    <div class="col-sm-8 col-xs-12">
+                                        <!-- Reach Us Tab Pane Starts -->
+                                        <div class="reachus-tab-pane">
+                                            <!-- Map Starts -->
+                                            <div class="map"></div>
+                                            <!-- Map Ends -->
+                                            <!-- Address Block Starts -->
+                                            <div class="address-block">
+                                                <h5><i class="fa fa-tag"></i> Address</h5>
+                                                <ul class="list-unstyled">
+                                                    <li> # 3453 corn street, Sanford, FL 34232.,</li>
+                                                    <li>Cardiff, London.</li>
+                                                </ul>
+                                                <h5><i class="fa fa-phone"></i> Phone Numbers</h5>
+                                                <ul class="list-unstyled">
+                                                    <li>+0 (123) 456 - 7890,  +0 (123) 456 - 7890</li>
+                                                </ul>
+                                                <h5><i class="fa fa-mobile"></i> Can be in touch with Watsapp</h5>
+                                                <ul class="list-unstyled">
+                                                    <li>+0 (123) 456 - 7890</li>
+                                                </ul>
+                                            </div>
+                                            <!-- Address Block Ends -->
+                                            <!-- Reach Form Starts -->
+                                            <div class="reachus-form">
+                                                <h5>Drop us a mail for Table Reservation</h5>
+                                                <form action="#">
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="reachus-name">Name</label>
+                                                        <input type="text" class="form-control flat" id="reachus-name" placeholder="Name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="reachus-email">E-mail</label>
+                                                        <input type="email" class="form-control flat" id="reachus-email" placeholder="e-mail">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="reachus-mobileno">Mobile No</label>
+                                                        <input type="text" class="form-control flat" id="reachus-mobileno" placeholder="Mobile No">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <div class="form-group">
+                                                                <div class="input-group">
+                                                                    <label class="sr-only" for="reachus-date">Date</label>
+                                                                    <input type="text" class="form-control flat datepickerInput" id="reachus-date" placeholder="Date">
+                                                                    <span class="input-group-addon flat">
+                                                                        <span class="fa fa-calendar"></span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <div class="form-group">
+                                                                <label class="sr-only">No.of Persons</label>
+                                                                <select class="form-control flat">
+                                                                    <option>No.of Persons</option>
+                                                                    <option>1</option>
+                                                                    <option>2</option>
+                                                                    <option>3</option>
+                                                                    <option>4</option>
+                                                                    <option>5</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="reachus-info">Your Information</label>
+                                                        <textarea class="form-control flat" id="reachus-info" placeholder="Your Information" rows="5"></textarea>
+                                                    </div>
+                                                    <div class="clearfix">
+                                                        <button type="submit" class="btn btn-primary mt-5 animation pull-right">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- Reach Form Ends -->
+                                            <!-- Banners Starts -->
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img1.png" alt="Banner 1" class="img-responsive img-center-xs">
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <img src="/images/banners/banner-img2.png" alt="Banner 2" class="img-responsive img-center-xs">
+                                                </div>
+                                            </div>
+                                            <!-- Banners Ends -->
+                                        </div>
+                                        <!-- Reach Us Tab Pane Ends -->
+                                    </div>
+                                    <!-- Right Column Ends -->
+                                </div>
+                                <!-- Tab #5 Nested Row Ends -->
+                            </div>
+                            <!-- Tab #5 Ends -->
+                        </div>
+                        <!-- Menu Tabs Content Ends -->
+                    </div>
+                    <!-- Menu Tabs Ends -->
+                </div>
+                <!-- Mainarea Ends -->
+                <!-- Sidearea Starts -->
+                <div class="col-md-3 col-xs-12">
+                    <!-- Spacer Starts -->
+                    <div class="spacer-1 medium hidden-lg hidden-md"></div>
+                    <!-- Spacer Ends -->
+                    <!-- Your Order Starts -->
+                    <div class="side-block-order border-radius-4" id="shoppingcart">
+                        @{Html.RenderPartial("_AddtoCart");}
+                    </div>
+                    <!-- Your Order Ends -->
+                    <!-- start add wrapper -->
+                    <div id="ad-wrapper">
+                        <img class="img-responsive" src="/images/add-banner/add-banner.png" alt="">
+                    </div>
+                    <!-- end add wrapper -->
+                </div>
+                <!-- Sidearea Ends -->
+            </div>
+            <!-- Nested Row Ends -->
+        </div>
+        <!--.container-->
+    </div>
+    <!--#order-online-->
+    <!--end order-online-->
+    <!-- Content End -->
+    <!-- start mobile footer nav -->
+    @*<nav class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm mobile-cart-nav">
+        <div class="mobile-cart-inner-content">
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <div class="mobile-cart-item">
+                        <a id="mobileCartToggle" href="#"><i class="fa fa-shopping-basket"></i><span id="cart-item"> 10</span></a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <div class="mobile-total-amount">Total: &pound;<span id="total-cart-amount">50</span></div>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="#" class="btn mobile-btn-checkout">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </nav>*@
+    <!-- end mobile footer nav -->
+
+</div>
+
+<script src="/Scripts/jquery.easing.min.js"></script>
+<script src="/Scripts/jquery.sticky.js"></script>
+<script src="/Scripts/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="/Scripts/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"></script>
+<script type="text/javascript" src="/Scripts/customs.js"></script>
+<script type="text/javascript">
+		//MAGNIFIC POPUP
+		$(".gallery-grid").magnificPopup({
+			delegate: 'a.zoom',
+			type: 'image',
+			gallery: {
+				enabled: true
+			}
+		});
+
+		// Date Picker
+		$(".datepickerInput").datepicker({
+			format: "dd/mm/yyyy"
+		});
+
+
+		// GOOGLE MAP
+		$(".contact-page-map").height(440);
+		function initialize($) {
+			var mapOptions = {
+				zoom: 8,
+				center: new google.maps.LatLng(17.421306, 78.457553),
+				disableDefaultUI: true
+			};
+			var map = new google.maps.Map(document.querySelector('.map, .contact-page-map'), mapOptions);
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+

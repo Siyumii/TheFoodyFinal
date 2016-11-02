@@ -32,7 +32,18 @@
             filerdr.readAsDataURL(input.files[0]);
         }
     }
-    
+
+    function chooser() {
+        var res = confirm("Are you sure you want to delete your account?");
+        if (res === true) {
+            document.location = 'http://localhost:1672/DeleteAccount/DeleteAccount'
+        }
+        else {
+            dialog.dialog('close');
+        }
+    }
+
+
 </script>
 
 
@@ -78,8 +89,9 @@
                                 <a href="#"><i class="fa fa-bookmark"></i> Favourite Restaurant</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                                <a href="javascript:chooser();"><i class="fa fa-bookmark"></i> Delete Account</a>
                             </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -90,7 +102,7 @@
                             <p>Enquire explain another he in brandon enjoyed be service.</p>
                         </div>
                         <!--<form class="post-form-wrapper" action="http://localhost:33409/UpdateProfile/Edit" id="updateForm" method="POST">-->
-                        @using (Html.BeginForm("Manage", "Manage", new { @id = "updateForm", @class = "post-form-wrapper" }, FormMethod.Post))
+                        @using (Html.BeginForm("Manage", "Manage", System.Web.Mvc.FormMethod.Post,new { @id = "updateForm", @class = "post-form-wrapper", enctype = "multipart/form-data" } ))
                         {
                             @Html.AntiForgeryToken();
                             <div class="row gap-20">
@@ -99,6 +111,7 @@
                                     <div class="form-group bootstrap-fileinput-style-01">
                                         @Html.LabelFor(model => model.photo, htmlAttributes: new { @class = "control-label col-md-2" })
                                         @Html.EditorFor(model => model.photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "photo", @id = "photo", @onchange = "show(this)" } })
+                                        
                                         @Html.ValidationMessageFor(model => model.photo, "", new { @class = "text-danger" })
 
                                         <div class="col-md-6">
@@ -255,8 +268,9 @@
 
                                     <input type="submit" class="btn btn-primary" value="Save" />
 
-                                    <a href="#" class="btn btn-primary btn-inverse">Cancel</a>
-                                </div>
+                                    <a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>
+
+                                   </div>
                             </div>
                         }
                         <!--</form>-->

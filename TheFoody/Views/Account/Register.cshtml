@@ -5,6 +5,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="../../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Password").keyup(function () {
+            var length = $("#Password").val().length;
+            var colour = "";
+
+            if (length <= 4)
+                colour = "red";
+            else if (length <= 7)
+                colour = "orange";
+            else
+                colour = "green";
+
+            $("#strength").css("background-color", colour);
+        });
+    });
+</script>
+
 <div class="container">
     <div class="col-md-12">
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -43,6 +62,8 @@
                 <div class="col-md-6">
                     @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    <div id="strength" style="width:100px;height:20px;">
+                    </div>
                 </div>
             </div>
 
@@ -51,6 +72,8 @@
                 <div class="col-md-6">
                     @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                    <div id="strength" style="width:100px;height:20px;">
+                    </div>
                 </div>
             </div>
 

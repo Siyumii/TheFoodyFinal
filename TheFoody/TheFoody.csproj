@@ -34,6 +34,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -176,6 +178,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -183,11 +186,17 @@
     <Compile Include="Controllers\ChangePasswordController.cs" />
     <Compile Include="Controllers\DeleteAccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Item.cs" />
+    <Compile Include="Controllers\MenusController.cs" />
+    <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModel.cs" />
+    <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\RestaurantModel.cs" />
+    <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +225,12 @@
     <Content Include="images\logo_lato.png" />
     <Content Include="images\logo_open_regular.png" />
     <Content Include="images\logo_v1.png" />
+    <Content Include="images\menuimages\20100908sad.jpg" />
+    <Content Include="images\menuimages\checken-biryani.jpg" />
+    <Content Include="images\menuimages\Grilledsandwich.jpg" />
+    <Content Include="images\menuimages\lamb-biryani.jpg" />
+    <Content Include="images\menuimages\lambonthebone.jpg" />
+    <Content Include="images\menuimages\lambsujuc.png" />
     <Content Include="images\mobilev2.png" />
     <Content Include="images\reparallax-one.jpg" />
     <Content Include="images\reservation.jpg" />
@@ -251,6 +266,8 @@
     <Content Include="Scripts\jquery.responsivegrid.js" />
     <Content Include="Scripts\jquery.slicknav.min.js" />
     <Content Include="Scripts\jquery.sticky.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -259,6 +276,17 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\order-online.js" />
     <Content Include="Scripts\order-online__.js" />
+    <Content Include="Scripts\plugins\bootstrap-filestyle\bootstrap-filestyle.min.js" />
+    <Content Include="Scripts\plugins\datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\plugins\datepicker\datepicker.css" />
+    <Content Include="Scripts\plugins\magnific-popup\jquery.magnific-popup.min.js" />
+    <Content Include="Scripts\plugins\magnific-popup\magnific-popup.css" />
+    <Content Include="Scripts\plugins\owl-carousel\AjaxLoader.gif" />
+    <Content Include="Scripts\plugins\owl-carousel\grabbing.png" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.carousel.css" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.carousel.js" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.theme.css" />
+    <Content Include="Scripts\plugins\owl-carousel\owl.transitions.css" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\slick.min.js" />
@@ -292,12 +320,19 @@
     <Content Include="Views\Shared\_RegisterView.cshtml" />
     <Content Include="Views\Shared\_SignInView.cshtml" />
     <Content Include="Views\Restaurant\Index.cshtml" />
+    <Content Include="Views\Restaurant\ViewMenu.cshtml" />
+    <Content Include="Views\Restaurant\Item.cshtml" />
+    <Content Include="Views\Restaurant\_MenuList.cshtml" />
+    <Content Include="Views\Restaurant\_MealCategoryList.cshtml" />
     <Content Include="Views\Manage\Manage.cshtml" />
     <Content Include="Views\ChangePassword\ChangePassword.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordView.cshtml" />
     <Content Include="Views\DeleteAccount\DeleteAccount.cshtml" />
     <Content Include="Views\DeleteAccount\FeedbackForm.cshtml" />
+    <Content Include="Views\Restaurant\Create.cshtml" />
+    <Content Include="Views\Restaurant\CreateRestaurant.cshtml" />
+    <Content Include="Views\Restaurant\_AddtoCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -330,6 +365,8 @@
     <Folder Include="Img\" />
     <Folder Include="Scripts\plugins\" />
     <Folder Include="Views\Captcha\" />
+    <Folder Include="Uploads\RestaurantLogo\" />
+    <Folder Include="Uploads\RestaurantOwner\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -348,6 +385,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

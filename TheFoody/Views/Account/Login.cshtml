@@ -5,12 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 <div class="container">
     <div class="col-md-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", System.Web.Mvc.FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 <h4>Use a local account to log in.</h4>
@@ -62,7 +60,7 @@
                             
                             @*<input type="button" value="Facebook" class="btn btn-primary" />*@
                             @*<a href="http://localhost:1672/App_Start/AuthConfig.cs">Fb</a>*@
-</div>
+                        </div>
                     </div>
                 
                     <p>

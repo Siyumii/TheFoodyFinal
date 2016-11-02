@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<TheFoody.Models.MenuVm>
 
-<p>
+@*<p>
     <img src="/images/banners/banner-discount.png" alt="Discount Banner" class="img-responsive img-center-xs">
-</p>
+</p>*@
 
 
 @foreach (var item in Model)
@@ -18,7 +18,16 @@
                 <p>@Html.DisplayFor(modelItem => item.MenuDescription)</p>
             </div>
             <div class="pull-right">
-                <a href="#" class="btn btn-primary animation"><span class="price-new">Rs. @Html.DisplayFor(modelItem => item.MenuPrice)</span> <i class="fa fa-plus-circle"></i></a>
+                <span class="price-new">
+                @*@Html.ActionLink("Rs. " + item.MenuPrice.ToString(), "AddtoCart", new { Id = item.MenuID }, new { @class = "btn btn-primary animation" })*@
+                @Ajax.ActionLink("Rs. "+item.MenuPrice.ToString(),"AddtoCart", new { Id = item.MenuID }, new AjaxOptions
+           {
+               UpdateTargetId = "shoppingcart",
+               InsertionMode = InsertionMode.Replace,
+               HttpMethod = "GET",
+
+           }, new { @class = "btn btn-primary animation" })</span> <i class="fa fa-plus-circle"></i>
+                @*<a href="#" class="btn btn-primary animation"><span class="price-new">Rs. @Html.DisplayFor(modelItem => item.MenuPrice)</span> <i class="fa fa-plus-circle"></i></a>*@
             </div>
         </div>
         <!-- Order Menu List #1 Ends -->
@@ -27,3 +36,6 @@
 }
 
 
+@section scripts{
+    @*@Scripts.Render("/Scripts/jquery.unobtrusive-ajax.min.js")*@
+}

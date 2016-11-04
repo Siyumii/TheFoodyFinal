@@ -125,7 +125,7 @@ namespace TheFoody.Models
 
         [Required]
         [Display(Name = "Time taken to Deliver")]
-        [DataType(DataType.Time)]
+        
         public int TimetakentoDeliver { get; set; }
 
         [Display(Name = "Categories")]

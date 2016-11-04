@@ -47,5 +47,4 @@ namespace TheFoody.Models
         public double TotalPrice { get; set; }
     }
     
-    
 }

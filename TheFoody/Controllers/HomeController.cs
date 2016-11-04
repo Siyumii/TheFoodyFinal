@@ -10,6 +10,21 @@ namespace TheFoody.Controllers
     {
         public ActionResult Index()
         {
+            if (Session["UserEmail"] == null) {
+
+                Session["FirstName"] = "null";
+                Session["LastName"] = "null";
+                Session["Phone"] = "0111234567";
+                Session["Photo"] = "Not Set Yet";
+                Session["Address"] = "Not Set Yet";
+                Session["City"] = "Not Set Yet";
+                Session["PostCode"] = 00000;
+                Session["District"] = "Not Set Yet";
+                Session["UserType"] = "Admin";
+                Session["Status"] = "Active";
+
+            }
+
             return View();
         }
 

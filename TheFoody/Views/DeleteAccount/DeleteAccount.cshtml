@@ -1,0 +1,88 @@
+﻿@model TheFoody.Models.DeleteAccountViewModel
+@{
+    ViewBag.Title = "DeleteAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("DeleteAccount", "DeleteAccount", new { ReturnUrl = ViewBag.ReturnUrl }, System.Web.Mvc.FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Delete Account</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Query, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Query, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Query, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        
+        <div class="col-md-10">
+            Captcha Image <img src="@Url.Action("GetCaptchaImage", "DeleteAccount")">
+        </div>
+        <div class="col-md-10">
+            <input type="text" name="CaptchaText" id="CaptchaText" value="@ViewBag.CaptchaText" />
+        </div>
+    </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Delete" class="btn btn-primary" />
+                        <a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>
+                    </div>
+                </div>
+                
+                
+
+    <div>
+        @if (ViewBag.Message != null)
+        {
+            <div style="border:0px solid red; width:300px;">@ViewBag.Message</div>
+        }
+    </div>
+
+            }
+        </section>
+    </div>
+
+    @*@if (TempData["notice"] != null)
+        {
+            <p>@TempData["notice"]</p>
+        }*@
+
+
+
+
+
+
+
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @*@Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })*@
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+

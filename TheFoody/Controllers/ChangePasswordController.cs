@@ -12,6 +12,8 @@ namespace TheFoody.Controllers
     {
         //
         // GET: /ChangePassword/
+        
+        
         public ActionResult ChangePassword()
         {
             return View();
@@ -30,6 +32,7 @@ namespace TheFoody.Controllers
                 {
                     user_to_update.password = changepasswordviewmodel.NewPassword;
                     db.SaveChanges();
+                    TempData["notice"] = "Password Changed Successfully!";
                     return RedirectToAction("ChangePassword");
                     
                 }  

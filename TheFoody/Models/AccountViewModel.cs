@@ -22,6 +22,7 @@ namespace TheFoody.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
+
     public class RegisterViewModel
     {
 
@@ -52,11 +53,33 @@ namespace TheFoody.Models
 
     public class ManageViewModel
     {
+        
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public string Email { get; set; }
+        public string Phone { get; set; }
+
+        public string photo { get; set; }
+
+        public string Address { get; set; }
+
+        public string City { get; set; }
+
+        public int PostCode { get; set; }
+
+        public string District { get; set; }
+
+        public string UserType { get; set; }
+
+        public string Status { get; set; }
+    }
+
+    public class UserManageViewModel
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public string Phone { get; set; }
 
@@ -103,6 +126,29 @@ namespace TheFoody.Models
         [Display(Name = "Your account email")]
         [EmailAddress(ErrorMessage = "Not a valid email--what are you trying to do here?")]
         public string Email { get; set; }
+    }
+
+    public class DeleteAccountViewModel
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Required]
+        public string Query { get; set; }
+    }
+
+    public class CustomCaptchaViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        public string Query { get; set; }
     }
 
     public class ResetPasswordViewModel

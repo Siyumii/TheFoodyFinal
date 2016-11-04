@@ -33,10 +33,15 @@ namespace TheFoody.Controllers
             {
                 if ((deleteaccountviewmodel.Password == user_to_update.password) && (this.Session["CaptchaImageText"].ToString() == CaptchaText))
                 {
+                    ViewBag.Message = "Captcha Validation Success!";
                     db.Users.Remove(user_to_update);
                     Session["UserEmail"] = null;
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Message = "Captcha Validation Failed!";
                 }
             }
             return RedirectToAction("DeleteAccount");

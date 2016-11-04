@@ -1,15 +1,21 @@
-﻿@model TheFoody.Models.ManageViewModel
+﻿@model TheFoody.Models.UserManageViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <script>
+
+
+
+    window.onload = loadValues();
+
     function editFunc() {
+
         document.getElementById("photo").disabled = false;
         document.getElementById("FirstName").disabled = false;
         document.getElementById("LastName").disabled = false;
-        document.getElementById("Email").disabled = false;
         document.getElementById("UserType").disabled = false;
         document.getElementById("Address").disabled = false;
         document.getElementById("City").disabled = false;
@@ -131,7 +137,7 @@
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>First Name*</label>
-                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", disabled = "disabled"})
                                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -143,14 +149,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        @*<input type="email" class="form-control" value=Session["UserEmail"].tostring() id="email" name="email" disabled>*@
-                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", disabled = "disabled"})
-                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                                
                                 
                                 <div class="clear"></div>
                                 <div class="col-sm-6 col-md-4">
@@ -234,14 +233,14 @@
                                                     List<SelectListItem> listItemsStatus = new List<SelectListItem>();
                                                     listItemsStatus.Add(new SelectListItem
                                                          {
-                                                             Text = "Availble",
-                                                             Value = "Available",
+                                                             Text = "Active",
+                                                             Value = "Active",
                                                              Selected = true
                                                          });
                                                     listItemsStatus.Add(new SelectListItem
                                                          {
-                                                             Text = "Not Available",
-                                                             Value = "Not Available"
+                                                             Text = "Inactive",
+                                                             Value = "Inactive"
                                                          });
                                         }
 

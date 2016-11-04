@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="TheFoodyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TheFoodyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="id" />
@@ -12,53 +22,22 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="category" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Meal_Category">
+        <EntityType Name="ManageViewModels">
           <Key>
-            <PropertyRef Name="Meal_Cat_Id" />
+            <PropertyRef Name="ManageViewModelID" />
           </Key>
-          <Property Name="Meal_Cat_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryName" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="Menu">
-          <Key>
-            <PropertyRef Name="Menu_id" />
-          </Key>
-          <Property Name="Menu_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Menu_name" Type="varchar" MaxLength="200" />
-          <Property Name="Description" Type="varchar" MaxLength="1000" />
-          <Property Name="Price" Type="numeric" Precision="6" Scale="2" />
-          <Property Name="Photo" Type="varchar" MaxLength="200" />
-          <Property Name="Meal_Cat_IdFK" Type="int" />
-          <Property Name="RestaurantId" Type="int" />
-        </EntityType>
-        <EntityType Name="Restaurant">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OwnerEmail" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="RestaurantName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Logo" Type="varchar" MaxLength="200" />
-          <Property Name="Address" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="District" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PostCode" Type="char" MaxLength="5" />
-          <Property Name="Website" Type="varchar" MaxLength="200" />
-          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CompanyBackground" Type="varchar" MaxLength="1000" />
-          <Property Name="OpeningTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="ClosingTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="DeliveryStartingTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="DeliveryEndingTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="TimetakentoDeliver" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Restaurant_Type">
-          <Key>
-            <PropertyRef Name="Type_id" />
-          </Key>
-          <Property Name="Type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Rest_id" Type="int" />
-          <Property Name="Category_id" Type="int" />
+          <Property Name="ManageViewModelID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="fname" Type="nvarchar(max)" />
+          <Property Name="lname" Type="nvarchar(max)" />
+          <Property Name="email" Type="nvarchar(max)" />
+          <Property Name="phone" Type="nvarchar(max)" />
+          <Property Name="photo" Type="nvarchar(max)" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar(max)" />
+          <Property Name="postcode" Type="int" Nullable="false" />
+          <Property Name="district" Type="nvarchar(max)" />
+          <Property Name="user_type" Type="nvarchar(max)" />
+          <Property Name="status" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -69,7 +48,7 @@
           <Property Name="fname" Type="varchar" MaxLength="50" />
           <Property Name="lname" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="phone" Type="char" MaxLength="10" />
-          <Property Name="photo" Type="varchar" MaxLength="50" />
+          <Property Name="photo" Type="varchar" MaxLength="1000" />
           <Property Name="address" Type="varchar" MaxLength="200" />
           <Property Name="city" Type="varchar" MaxLength="50" />
           <Property Name="postcode" Type="numeric" Precision="5" Scale="0" />
@@ -78,109 +57,11 @@
           <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="created_date" Type="datetime" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Meal_Category_Restaurant">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="1" />
-          <End Role="Meal_Category" Type="Self.Meal_Category" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Meal_Category">
-              <PropertyRef Name="Meal_Cat_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Menu_Restaurant">
-          <End Role="Meal_Category" Type="Self.Meal_Category" Multiplicity="0..1" />
-          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meal_Category">
-              <PropertyRef Name="Meal_Cat_Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="Meal_Cat_IdFK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Menu_Restaurant1">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="RestaurantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_Type_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
-          <End Role="Restaurant_Type" Type="Self.Restaurant_Type" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Restaurant_Type">
-              <PropertyRef Name="Category_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_Type_Restaurant">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="Restaurant_Type" Type="Self.Restaurant_Type" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Restaurant_Type">
-              <PropertyRef Name="Rest_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="email" />
-            </Principal>
-            <Dependent Role="Restaurant">
-              <PropertyRef Name="OwnerEmail" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="TheFoodyModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Meal_Category" EntityType="Self.Meal_Category" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Restaurant_Type" EntityType="Self.Restaurant_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManageViewModels" EntityType="Self.ManageViewModels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Meal_Category_Restaurant" Association="Self.FK_Meal_Category_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="Meal_Category" EntitySet="Meal_Category" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Menu_Restaurant" Association="Self.FK_Menu_Restaurant">
-            <End Role="Meal_Category" EntitySet="Meal_Category" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Menu_Restaurant1" Association="Self.FK_Menu_Restaurant1">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_Type_Category" Association="Self.FK_Restaurant_Type_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_Type_Restaurant" Association="Self.FK_Restaurant_Type_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_User" Association="Self.FK_Restaurant_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Restaurant" EntitySet="Restaurant" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -209,7 +90,7 @@
           <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="lname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="photo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="postcode" Type="Decimal" Precision="5" Scale="0" />
@@ -254,6 +135,8 @@
             <End Role="Restaurant" EntitySet="Restaurants" />
             <End Role="Menu" EntitySet="Menus" />
           </AssociationSet>
+          <EntitySet Name="C__MigrationHistory" EntityType="TheFoodyModel.C__MigrationHistory" />
+          <EntitySet Name="ManageViewModels" EntityType="TheFoodyModel.ManageViewModel" />
           </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -390,25 +273,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ManageViewModel">
+          <Key>
+            <PropertyRef Name="ManageViewModelID" />
+          </Key>
+          <Property Name="ManageViewModelID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="fname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="postcode" Type="Int32" Nullable="false" />
+          <Property Name="district" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="user_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TheFoodyModelStoreContainer" CdmEntityContainer="TheFoodyContext">
-          <EntitySetMapping Name="Menus">
-            <EntityTypeMapping TypeName="TheFoodyModel.Menu">
-              <MappingFragment StoreEntitySet="Menu">
-                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
-                <ScalarProperty Name="Meal_Cat_IdFK" ColumnName="Meal_Cat_IdFK" />
-                <ScalarProperty Name="Menu_id" ColumnName="Menu_id" />
-                <ScalarProperty Name="Menu_name" ColumnName="Menu_name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="TheFoodyModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -436,46 +333,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Restaurant_Type">
-            <EntityTypeMapping TypeName="TheFoodyModel.Restaurant_Type">
-              <MappingFragment StoreEntitySet="Restaurant_Type">
-                <ScalarProperty Name="Category_id" ColumnName="Category_id" />
-                <ScalarProperty Name="Rest_id" ColumnName="Rest_id" />
-                <ScalarProperty Name="Type_id" ColumnName="Type_id" />
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="TheFoodyModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Restaurants">
-            <EntityTypeMapping TypeName="TheFoodyModel.Restaurant">
-              <MappingFragment StoreEntitySet="Restaurant">
-                <ScalarProperty Name="TimetakentoDeliver" ColumnName="TimetakentoDeliver" />
-                <ScalarProperty Name="DeliveryEndingTime" ColumnName="DeliveryEndingTime" />
-                <ScalarProperty Name="DeliveryStartingTime" ColumnName="DeliveryStartingTime" />
-                <ScalarProperty Name="ClosingTime" ColumnName="ClosingTime" />
-                <ScalarProperty Name="OpeningTime" ColumnName="OpeningTime" />
-                <ScalarProperty Name="CompanyBackground" ColumnName="CompanyBackground" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Logo" ColumnName="Logo" />
-                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
-                <ScalarProperty Name="OwnerEmail" ColumnName="OwnerEmail" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+          <EntitySetMapping Name="ManageViewModels">
+            <EntityTypeMapping TypeName="TheFoodyModel.ManageViewModel">
+              <MappingFragment StoreEntitySet="ManageViewModels">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="user_type" ColumnName="user_type" />
+                <ScalarProperty Name="district" ColumnName="district" />
+                <ScalarProperty Name="postcode" ColumnName="postcode" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="ManageViewModelID" ColumnName="ManageViewModelID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Meal_Category">
-            <EntityTypeMapping TypeName="TheFoodyModel.Meal_Category">
-              <MappingFragment StoreEntitySet="Meal_Category">
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="Meal_Cat_Id" ColumnName="Meal_Cat_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

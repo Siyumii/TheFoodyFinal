@@ -178,7 +178,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -363,10 +362,9 @@
     <Folder Include="images\restaurant-logo\" />
     <Folder Include="images\team\" />
     <Folder Include="Img\" />
-    <Folder Include="Scripts\plugins\" />
-    <Folder Include="Views\Captcha\" />
     <Folder Include="Uploads\RestaurantLogo\" />
     <Folder Include="Uploads\RestaurantOwner\" />
+    <Folder Include="Views\Captcha\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

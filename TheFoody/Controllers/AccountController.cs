@@ -39,19 +39,26 @@ namespace TheFoody.Controllers
                 
                 using (TheFoodyContext db = new TheFoodyContext())
                 {
-                    if (db.Users.Any(u => u.email.Equals(model.Email)))
-                    {
-                        //TODO E.g. ModelState.AddModelError
-                        ModelState.AddModelError("", "Email already exists");
+                    
                         
-                    }
-                    else
-                    {
-                        User usr = new User();
+                        if (db.Users.Any(u => u.email.Equals(model.Email)))
+                        {
+                        //TODO E.g. ModelState.AddModelError
+                            ModelState.AddModelError("", "Email already exists");
+                        }
+                        else
+                        {
+                            User usr = new User();
                         usr.email = model.Email;
                         usr.fname = model.FirstName;
                         usr.lname = model.LastName;
                         usr.password = model.Password;
+                        usr.phone = "0111234567";
+                        usr.photo = "Not Set Yet";
+                        usr.postcode = 00000;
+                        usr.address = "Not Set Yet";
+                        usr.city = "Not Set Yet";
+                        usr.district = "Not Set Yet";
                         usr.status = "Active";
                         usr.user_type = "Admin";
                         usr.created_date = DateTime.Now;
@@ -61,10 +68,20 @@ namespace TheFoody.Controllers
                         
 
                         Session["UserEmail"] = model.Email;
-                        Session["Fname"] = model.FirstName;
-                        Session["Lname"] = model.LastName;
+                        Session["FirstName"] = model.FirstName;
+                        Session["LastName"] = model.LastName;
+                            Session["Phone"] = "0111234567";
+                            Session["Address"] = "Not Set Yet";
+                            Session["City"] = "Not Set Yet";
+                            Session["PostCode"] = "00000";
+                            Session["District"] = "Not Set Yet";
+                            Session["UserType"] = "Admin";
+                            Session["Status"] = "Active";
+                            Session["Photo"] = "Not Set Yet";
+
                         return RedirectToAction("Index", "Home");
-                    }
+                        }
+                    
                 }
                 
                 return View(model);
@@ -110,7 +127,28 @@ namespace TheFoody.Controllers
                 }
                 else
                 {
+                    FormsAuthentication.SetAuthCookie(model.Email,model.RememberMe);
+                    
                     Session["UserEmail"] = usr.email.ToString();
+                    Session["FirstName"] = usr.fname.ToString();
+                    Session["LastName"] = usr.lname.ToString();
+                    Session["Address"] = usr.address.ToString();
+                        Session["City"] = usr.city.ToString();
+                        Session["PostCode"] = usr.postcode.ToString();
+                        Session["District"] = usr.district.ToString();
+                        Session["UserType"] = usr.user_type.ToString();
+                        Session["Status"] = usr.status.ToString();
+                        Session["Photo"] = usr.photo.ToString();
+                        Session["Phone"] = usr.phone.ToString();
+
+                    if(model.RememberMe)
+                    {
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Values.Add("UserEmail",usr.email);
+                        //cookie.Values.Add("Password", usr.password);
+                        cookie.Expires = DateTime.Now.AddDays(15);
+                        Response.Cookies.Add(cookie);
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 

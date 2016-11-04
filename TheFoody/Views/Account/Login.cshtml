@@ -37,21 +37,22 @@
                             </p>
                         </div>
                     </div>
+   
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">       
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(model => model.RememberMe)
-                                    @Html.LabelFor(model => model.RememberMe)
-                                    @*@Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })*@
-                                </div>    
+                            <div class="checkbox-block job-type-checkbox">
+                                <input style="float:left" type="checkbox" name="RememberMe" class="checkbox" >
+                                <label>Remember Me</label>
+                            </div>    
+
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Log in" class="btn btn-primary" />
-                            <input type="button" value="Facebook" class="btn btn-primary" />
+                            @*<input type="button" value="Facebook" class="btn btn-primary" />*@
                         </div>
                     </div>
                 
@@ -59,8 +60,8 @@
                         <div class="col-md-offset-2 col-md-10">
                             
                             @*<input type="button" value="Facebook" class="btn btn-primary" />*@
-                            <a href="http://localhost:1672/App_Start/AuthConfig.cs">Fb</a>
-</div>
+                            @*<a href="http://localhost:1672/App_Start/AuthConfig.cs">Fb</a>*@
+                        </div>
                     </div>
                 
                     <p>

@@ -1,15 +1,21 @@
-﻿@model TheFoody.Models.ManageViewModel
+﻿@model TheFoody.Models.UserManageViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <script>
+
+
+
+    window.onload = loadValues();
+
     function editFunc() {
+
         document.getElementById("photo").disabled = false;
         document.getElementById("FirstName").disabled = false;
         document.getElementById("LastName").disabled = false;
-        document.getElementById("Email").disabled = false;
         document.getElementById("UserType").disabled = false;
         document.getElementById("Address").disabled = false;
         document.getElementById("City").disabled = false;
@@ -32,7 +38,18 @@
             filerdr.readAsDataURL(input.files[0]);
         }
     }
-    
+
+    function chooser() {
+        var res = confirm("Are you sure you want to delete your account?");
+        if (res === true) {
+            document.location = 'http://localhost:1672/DeleteAccount/DeleteAccount'
+        }
+        else {
+            dialog.dialog('close');
+        }
+    }
+
+
 </script>
 
 
@@ -78,8 +95,9 @@
                                 <a href="#"><i class="fa fa-bookmark"></i> Favourite Restaurant</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                                <a href="javascript:chooser();"><i class="fa fa-bookmark"></i> Delete Account</a>
                             </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -90,7 +108,7 @@
                             <p>Enquire explain another he in brandon enjoyed be service.</p>
                         </div>
                         <!--<form class="post-form-wrapper" action="http://localhost:33409/UpdateProfile/Edit" id="updateForm" method="POST">-->
-                        @using (Html.BeginForm("Manage", "Manage", new { @id = "updateForm", @class = "post-form-wrapper" }, FormMethod.Post))
+                        @using (Html.BeginForm("Manage", "Manage", System.Web.Mvc.FormMethod.Post,new { @id = "updateForm", @class = "post-form-wrapper", enctype = "multipart/form-data" } ))
                         {
                             @Html.AntiForgeryToken();
                             <div class="row gap-20">
@@ -99,6 +117,7 @@
                                     <div class="form-group bootstrap-fileinput-style-01">
                                         @Html.LabelFor(model => model.photo, htmlAttributes: new { @class = "control-label col-md-2" })
                                         @Html.EditorFor(model => model.photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "photo", @id = "photo", @onchange = "show(this)" } })
+                                        
                                         @Html.ValidationMessageFor(model => model.photo, "", new { @class = "text-danger" })
 
                                         <div class="col-md-6">
@@ -118,7 +137,7 @@
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>First Name*</label>
-                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", disabled = "disabled"})
                                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -130,14 +149,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        @*<input type="email" class="form-control" value=Session["UserEmail"].tostring() id="email" name="email" disabled>*@
-                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", disabled = "disabled"})
-                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                                
                                 
                                 <div class="clear"></div>
                                 <div class="col-sm-6 col-md-4">
@@ -221,14 +233,14 @@
                                                     List<SelectListItem> listItemsStatus = new List<SelectListItem>();
                                                     listItemsStatus.Add(new SelectListItem
                                                          {
-                                                             Text = "Availble",
-                                                             Value = "Available",
+                                                             Text = "Active",
+                                                             Value = "Active",
                                                              Selected = true
                                                          });
                                                     listItemsStatus.Add(new SelectListItem
                                                          {
-                                                             Text = "Not Available",
-                                                             Value = "Not Available"
+                                                             Text = "Inactive",
+                                                             Value = "Inactive"
                                                          });
                                         }
 
@@ -255,8 +267,9 @@
 
                                     <input type="submit" class="btn btn-primary" value="Save" />
 
-                                    <a href="#" class="btn btn-primary btn-inverse">Cancel</a>
-                                </div>
+                                    <a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>
+
+                                   </div>
                             </div>
                         }
                         <!--</form>-->

@@ -53,7 +53,7 @@ namespace TheFoody.Models
 
         [Required]
         [Display(Name = "PostCode")]
-        public int postcode { get; set; }
+        public string postcode { get; set; }
 
         [Required]
         [Display(Name = "District")]
@@ -89,7 +89,7 @@ namespace TheFoody.Models
 
         [Required]
         [Display(Name = "PostCode")]
-        public int PostCode { get; set; }
+        public string PostCode { get; set; }
 
         [DataType(DataType.Url)]
         [Display(Name = "Website")]

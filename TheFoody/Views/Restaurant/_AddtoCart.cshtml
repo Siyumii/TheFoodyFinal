@@ -1,0 +1,70 @@
+﻿@*@model IEnumerable<TheFoody.Models.CartItem>*@
+@using TheFoody.Controllers
+<!-- Heading Starts -->
+<h5 class="text-center"><i class="fa fa-shopping-basket"></i> Your Orders</h5>
+<!-- Heading Ends -->
+<!-- Order Content Starts -->
+<div class="side-block-order-content">
+    <!-- Order Item List Starts -->
+    <ul class="list-unstyled order-item-list">
+        @if (Session["Cart"] == null)
+        {
+            <li class="clearfix">
+                <span class="pull-left">No Items in the basket</span>
+                <span class="pull-right text-spl-color">-</span>
+            </li>
+        }
+        else
+        {
+            double total = 0;
+            foreach (Item item in (List<Item>)Session["Cart"])
+            {
+
+                total = total + item.Cartitem.MenuPrice;
+                    <li class="clearfix">
+                        <span class="pull-left">@Html.DisplayFor(modelItem => item.Cartitem.MenuName)</span>
+                        <span class="pull-right text-spl-color">@Html.DisplayFor(modelItem => item.Cartitem.MenuPrice)</span>
+                    </li>
+            }
+        }
+    </ul>
+    <!-- Order Item List Ends -->
+    <!-- Order Item Total Starts -->
+    <dl class="dl-horizontal order-item-total">
+        <dt class="text-light">Orders Amount :</dt>
+        <dd class="text-spl-color text-right">Rs.0.00</dd>
+        <dt class="text-light">Delivery Charges :</dt>
+        <dd class="text-spl-color text-right">Rs.80.00</dd>
+        <hr>
+        <dt class="text-bold">Total  Amount :</dt>
+        <dd class="text-bold text-spl-color text-right">Rs.0.00</dd>
+    </dl>
+    <!-- Order Item Total Ends -->
+    <div class="cfo-checkoutarea">
+        <button type="submit" id="a" name="a" class="btn btn-primary btn-block custom-checkout">Proceed to Checkout</button>
+    </div>
+</div>
+<!-- Order Content Ends -->
+
+@*@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MenuID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MenuName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MenuPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalPrice)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}*@
+

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TheFoody.DataAccess.Menu>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Menu_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Restaurant.OwnerEmail)
+        </th> 
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Menu_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Photo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rest_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Restaurant.OwnerEmail)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Menu_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Menu_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Menu_id })
+        </td>
+    </tr>
+}
+
+</table>

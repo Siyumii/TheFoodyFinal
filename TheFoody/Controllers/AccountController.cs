@@ -9,6 +9,7 @@ using System.Web.Security;
 using System.Web.Mail;
 using System.Net.Mail;
 using WebMatrix.WebData;
+using DotNetOpenAuth.AspNet.Clients;
 
 namespace TheFoody.Controllers
 {
@@ -38,19 +39,26 @@ namespace TheFoody.Controllers
                 
                 using (TheFoodyContext db = new TheFoodyContext())
                 {
-                    if (db.Users.Any(u => u.email.Equals(model.Email)))
-                    {
-                        //TODO E.g. ModelState.AddModelError
-                        ModelState.AddModelError("", "Email already exists");
+                    
                         
-                    }
-                    else
-                    {
-                        User usr = new User();
+                        if (db.Users.Any(u => u.email.Equals(model.Email)))
+                        {
+                        //TODO E.g. ModelState.AddModelError
+                            ModelState.AddModelError("", "Email already exists");
+                        }
+                        else
+                        {
+                            User usr = new User();
                         usr.email = model.Email;
                         usr.fname = model.FirstName;
                         usr.lname = model.LastName;
                         usr.password = model.Password;
+                        usr.phone = "0111234567";
+                        usr.photo = "Not Set Yet";
+                        usr.postcode = 00000;
+                        usr.address = "Not Set Yet";
+                        usr.city = "Not Set Yet";
+                        usr.district = "Not Set Yet";
                         usr.status = "Active";
                         usr.user_type = "Admin";
                         usr.created_date = DateTime.Now;
@@ -60,8 +68,20 @@ namespace TheFoody.Controllers
                         
 
                         Session["UserEmail"] = model.Email;
+                        Session["FirstName"] = model.FirstName;
+                        Session["LastName"] = model.LastName;
+                            Session["Phone"] = "0111234567";
+                            Session["Address"] = "Not Set Yet";
+                            Session["City"] = "Not Set Yet";
+                            Session["PostCode"] = "00000";
+                            Session["District"] = "Not Set Yet";
+                            Session["UserType"] = "Admin";
+                            Session["Status"] = "Active";
+                            Session["Photo"] = "Not Set Yet";
+
                         return RedirectToAction("Index", "Home");
-                    }
+                        }
+                    
                 }
                 
                 return View(model);
@@ -70,6 +90,18 @@ namespace TheFoody.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        //private Uri RedirectUri
+        //{
+        //    get
+        //    {
+        //        var uriBuilder = new UriBuilder(Request.Url);
+        //        uriBuilder.Query = null;
+        //        uriBuilder.Fragment = null;
+        //        uriBuilder.Path = Url.Action("FacebookCallback");
+        //        return uriBuilder.Uri;
+        //    }
+        //}
 
         // GET: /Account/Login
         public ActionResult Login(string returnUrl)
@@ -95,7 +127,28 @@ namespace TheFoody.Controllers
                 }
                 else
                 {
+                    FormsAuthentication.SetAuthCookie(model.Email,model.RememberMe);
+                    
                     Session["UserEmail"] = usr.email.ToString();
+                    Session["FirstName"] = usr.fname.ToString();
+                    Session["LastName"] = usr.lname.ToString();
+                    Session["Address"] = usr.address.ToString();
+                        Session["City"] = usr.city.ToString();
+                        Session["PostCode"] = usr.postcode.ToString();
+                        Session["District"] = usr.district.ToString();
+                        Session["UserType"] = usr.user_type.ToString();
+                        Session["Status"] = usr.status.ToString();
+                        Session["Photo"] = usr.photo.ToString();
+                        Session["Phone"] = usr.phone.ToString();
+
+                    if(model.RememberMe)
+                    {
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Values.Add("UserEmail",usr.email);
+                        //cookie.Values.Add("Password", usr.password);
+                        cookie.Expires = DateTime.Now.AddDays(15);
+                        Response.Cookies.Add(cookie);
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 
@@ -217,5 +270,55 @@ namespace TheFoody.Controllers
 
             return View(resetpasswordviewmodel);
         }
+
+        
+
+        //[AllowAnonymous]
+        //public ActionResult Facebook()
+        //{
+        //    var fb = new FacebookClient();
+        //    var loginUrl = fb.GetLoginUrl(new
+        //    {
+        //        client_id = "CLIENT ID",
+        //        client_secret = "CLIENT SECRET",
+        //        redirect_uri = RedirectUri.AbsoluteUri,
+        //        response_type = "code",
+        //        scope = "email"
+        //    });
+
+        //    return Redirect(loginUrl.AbsoluteUri);
+        //}
+
+        //public ActionResult FacebookCallback(string code)
+        //{
+        //    var fb = new FacebookClient();
+        //    dynamic result = fb.Post("oauth/access_token", new
+        //    {
+        //        client_id = "CLIENT ID",
+        //        client_secret = "SECRET",
+        //        redirect_uri = RedirectUri.AbsoluteUri,
+        //        code = code
+        //    });
+
+        //    var accessToken = result.access_token;
+
+        //    // Store the access token in the session for farther use
+        //    Session["AccessToken"] = accessToken;
+
+        //    // update the facebook client with the access token so
+        //    // we can make requests on behalf of the user
+        //    fb.AccessToken = accessToken;
+
+        //    // Get the user's information, like email, first name, middle name etc
+        //    dynamic me = fb.Get("me?fields=first_name,middle_name,last_name,id,email");
+        //    string email = me.email;
+        //    string firstname = me.first_name;
+        //    string middlename = me.middle_name;
+        //    string lastname = me.last_name;
+
+        //    // Set the auth cookie
+        //    FormsAuthentication.SetAuthCookie(email, false);
+        //    return RedirectToAction("Index", "Home");
+        //}
     }
 }

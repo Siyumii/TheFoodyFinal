@@ -164,7 +164,7 @@ namespace TheFoody.Controllers
                 return null;
             
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
-
+            
             restaurantVm.Address = restaurant.Address;
             restaurantVm.categories = restaurant.Restaurant_Type.Select(x => x.Category.category1).ToList();
             restaurantVm.City = restaurant.City;
@@ -175,7 +175,50 @@ namespace TheFoody.Controllers
             restaurantVm.TimetakentoDeliver = restaurant.TimetakentoDeliver;
 
             return restaurantVm;
+        }
 
+        public PartialViewResult AddtoCart(int id)
+        {
+            if (Session["Cart"] == null)
+            {
+                List<Item> itemList = new List<Item>();
+                TheFoodyContext context = new TheFoodyContext();
+                //{
+                //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList() ;
+                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id)), 1));
+                //itemList.Add(TransformToCartItem(menulist[0]));
+                Session["Cart"] = itemList;
+                //}
+                return PartialView("_AddtoCart");
+            }
+            else
+            {
+                List<Item> itemList = (List<Item>)Session["Cart"];
+                TheFoodyContext context = new TheFoodyContext();
+                //{
+                //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
+                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id)), 1));
+                Session["Cart"] = itemList;
+                //}
+                return PartialView("_AddtoCart");
+            }
+
+        }
+
+        private CartItem TransformToCartItem(Menu menu)
+        {
+            if (menu == null)
+                return null;
+
+            CartItem item = new CartItem();
+            item.MenuID = menu.Menu_id;
+            item.MenuName = menu.Menu_name;
+            item.MenuPrice = Convert.ToDouble(menu.Price);
+
+            //if (menu.Meal_Cat_IdFK.HasValue)
+            //    item.MealCategoryID = menu.Meal_Cat_IdFK.Value;
+
+            return item;
         }
 
         // GET: Restaurant/Create
@@ -271,7 +314,7 @@ namespace TheFoody.Controllers
                                 var extension = Path.GetExtension(photo.FileName);
                                 restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
                                 var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
-                                photo.SaveAs(path);
+                                //photo.SaveAs(path);
                             }
 
                             restaurant.Phone = model.Phone.ToString();

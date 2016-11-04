@@ -38,5 +38,13 @@ namespace TheFoody.Models
         public double MenuPrice { get; set; }
         public string MenuPhoto { get; set; }
     }
+
+    public class CartItem
+    {
+        public int MenuID { get; set; }
+        public string MenuName { get; set; }
+        public double MenuPrice { get; set; }
+        public double TotalPrice { get; set; }
+    }
     
 }

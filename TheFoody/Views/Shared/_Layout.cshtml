@@ -43,6 +43,10 @@
     {
         @RenderSection("RestaurantImageJavascript");
     }
+    @if (IsSectionDefined("menuimagejavascript"))
+    {
+        @RenderSection("menuimagejavascript");
+    }
 
 </head>
 

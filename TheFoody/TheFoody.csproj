@@ -179,13 +179,14 @@
     <Compile Include="Controllers\ChangePasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Item.cs" />
-    <Compile Include="Controllers\MenusController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\RestaurantModel.cs" />
     <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -322,6 +323,8 @@
     <Content Include="Views\Restaurant\Create.cshtml" />
     <Content Include="Views\Restaurant\CreateRestaurant.cshtml" />
     <Content Include="Views\Restaurant\_AddtoCart.cshtml" />
+    <Content Include="Views\Menu\Create.cshtml" />
+    <Content Include="Views\Menu\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

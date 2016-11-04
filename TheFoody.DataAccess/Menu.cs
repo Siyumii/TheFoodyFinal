@@ -22,7 +22,7 @@ namespace TheFoody.DataAccess
         public Nullable<int> Meal_Cat_IdFK { get; set; }
         public Nullable<int> RestaurantId { get; set; }
     
-        public virtual Restaurant Restaurant { get; set; }
         public virtual Meal_Category Meal_Category { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
     }
 }

@@ -16,6 +16,18 @@ namespace TheFoody.Controllers
     {
         private TheFoodyContext db = new TheFoodyContext();
 
+        [HttpPost]
+        public void ServiceSearch(FormCollection form)
+        {
+            string serviceValue = form["Service"].ToString();
+
+            string currentTime = DateTime.Now.ToString("hh:mm:ss tt");
+
+
+
+
+        }
+
         // GET: Restaurant
         public ActionResult Index()
         {
@@ -23,6 +35,33 @@ namespace TheFoody.Controllers
             {
 
                 var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+
+                return View(model.ToList());
+                //return View(db.Restaurants.ToList());
+            }
+
+        }
+
+        [HttpPost]
+        // GET: Restaurant
+        public ActionResult Index(string search)
+        {
+            using (TheFoodyContext db = new TheFoodyContext())
+            {
+
+                var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                             where p.City.StartsWith(search) || search == null
                              select new RestaurantViewModel()
                              {
                                  RestId = p.Id,

@@ -39,5 +39,4 @@ namespace TheFoody.Models
         public string MenuPhoto { get; set; }
     }
     
-    
 }

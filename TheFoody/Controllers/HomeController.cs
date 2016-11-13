@@ -10,10 +10,26 @@ namespace TheFoody.Controllers
     {
         public ActionResult Index()
         {
-            if (Session["UserEmail"] == null) {
+            var cookie = Request.Cookies["Login"];
+            if ((cookie != null) && (cookie.Value != ""))
+            {
+                Session["UserEmail"] = (cookie.Values["UserEmail"].ToString());
+                Session["FirstName"] = (cookie.Values["FirstName"].ToString());
+                Session["LastName"] = (cookie.Values["LastName"].ToString());
+                Session["Phone"] = (cookie.Values["Phone"].ToString());
+                Session["Photo"] = (cookie.Values["Photo"].ToString());
+                Session["Address"] = (cookie.Values["Address"].ToString());
+                Session["City"] = (cookie.Values["City"].ToString());
+                Session["PostCode"] = (cookie.Values["PostCode"].ToString());
+                Session["District"] = (cookie.Values["District"].ToString());
+                Session["UserType"] = (cookie.Values["UserType"].ToString());
+                Session["Status"] = (cookie.Values["Status"].ToString());
+            }
+            if (Session["UserEmail"] == null)
+            {
 
-                Session["FirstName"] = "null";
-                Session["LastName"] = "null";
+                Session["FirstName"] = "";
+                Session["LastName"] = "";
                 Session["Phone"] = "0111234567";
                 Session["Photo"] = "Not Set Yet";
                 Session["Address"] = "Not Set Yet";
@@ -24,7 +40,6 @@ namespace TheFoody.Controllers
                 Session["Status"] = "Active";
 
             }
-
             return View();
         }
 

@@ -313,7 +313,7 @@ namespace TheFoody.Controllers
                                 var extension = Path.GetExtension(photo.FileName);
                                 restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
                                 var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
-                                //photo.SaveAs(path);
+                                photo.SaveAs(path);
                             }
 
                             restaurant.Phone = model.Phone.ToString();

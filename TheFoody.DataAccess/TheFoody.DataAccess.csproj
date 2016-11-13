@@ -59,12 +59,6 @@
     <Compile Include="Category.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>TheFoodyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ManageViewModel.cs">
-      <DependentUpon>TheFoodyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Meal_Category.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
@@ -105,7 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="TheFoodyModel.edmx.diagram">
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>
     </None>

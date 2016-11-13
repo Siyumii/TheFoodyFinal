@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TheFoody.DataAccess;
 
 namespace TheFoody.Controllers
 {
     public class HomeController : Controller
     {
+        TheFoodyContext db = new TheFoodyContext();
         public ActionResult Index()
         {
             var cookie = Request.Cookies["Login"];
@@ -55,6 +57,22 @@ namespace TheFoody.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public JsonResult getData(string term)
+        {
+
+
+            List<string> citylist = (from list in db.Restaurants
+                                     select list.City).ToList();
+
+            // Select the tags that match the query, and get the 
+            // number or tags specified by the limit.
+
+            List<string> getValues = citylist.Where(item => item.ToLower().StartsWith(term.ToLower())).ToList();
+
+            // Return the result set as JSON
+            return Json(getValues, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -37,11 +37,12 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Service:</label>
-                                    <select class="selectpicker form-control" data-show-subtext="true">
-                                        <option value="0">Reservation</option>
-                                        <option value="1">Delivery</option>
-                                        <option value="2">Collection</option>
+                                    <select class="selectpicker form-control" data-show-subtext="true" name="Service" id="Service" onchange="SelectChanged(this)">
+                                        <option value="Open Now">Open Now</option>
+                                        <option value="Delivery">Delivery</option>
+
                                     </select>
+
                                 </div>
                             </div>
 
@@ -552,3 +553,20 @@
         </div>
     </div>
 </div>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    $("#Service").change(function () {
+        var selectedText = this.options[this.selectedIndex].text;
+
+
+        $.ajax({
+            url: '@Url.Action("ServiceSearch", "Restaurant")',
+            type: 'POST',
+            //data: { id: rowid },
+            //success: function(result) {
+
+            //}
+        })
+
+    });
+</script>

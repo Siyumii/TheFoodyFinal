@@ -24,10 +24,15 @@ namespace TheFoody.Models
     }
     public class RegisterViewModel
     {
-
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40})$", ErrorMessage = "Invalid First Name")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "White space is not allowed")]
         [Display(Name = "FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         [Display(Name = "LastName")]
         public string LastName { get; set; }
 
@@ -42,6 +47,7 @@ namespace TheFoody.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

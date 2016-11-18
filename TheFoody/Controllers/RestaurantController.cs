@@ -80,8 +80,21 @@ namespace TheFoody.Controllers
             }
 
         }
+
+        [HttpPost]
+        public string ratingResponse()
+        {
+            int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
+            string userEmail = Request["UserEmail"];
+            int rating = Convert.ToInt16(Request["Rating"]);
+            string review = Request["Review"];
+            DateTime currentDateTime = DateTime.Now;
+            string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            return review;
+        }
         public ActionResult ViewMenu(int id)
         {
+            Session["CurrentRestaurentId"] = id;
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
             using (TheFoodyContext context = new TheFoodyContext())
             {
@@ -466,7 +479,7 @@ namespace TheFoody.Controllers
             restaurant.Address = user.Address;
             restaurant.Logo = user.Logo;
             restaurant.City = user.City;
-            restaurant.PostCode = Convert.ToInt16(user.PostCode);
+            restaurant.PostCode = user.PostCode;
             restaurant.District = user.District;
             restaurant.Website = user.Website;
             restaurant.CompanyBackground = user.CompanyBackground;

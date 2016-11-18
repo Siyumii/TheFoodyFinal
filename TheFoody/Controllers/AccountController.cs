@@ -162,6 +162,7 @@ namespace TheFoody.Controllers
                 if (usr == null)
                 {
                     ModelState.AddModelError("", "Invalid Email or password");
+                    return View(model);
                 }
                 else
                 {

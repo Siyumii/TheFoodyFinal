@@ -415,6 +415,7 @@
     <Content Include="Scripts\plugins\owl-carousel\owl.carousel.js" />
     <Content Include="Scripts\plugins\owl-carousel\owl.theme.css" />
     <Content Include="Scripts\plugins\owl-carousel\owl.transitions.css" />
+    <Content Include="Scripts\rating.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\slick.min.js" />

@@ -41,7 +41,8 @@
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">       
                                 <div class="checkbox">
-                                    @Html.CheckBoxFor(model => model.RememberMe)
+                                    @*@Html.CheckBoxFor(model => model.RememberMe)*@
+                                    <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
                                     @Html.LabelFor(model => model.RememberMe)
                                     @*@Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })*@
                                 </div>    

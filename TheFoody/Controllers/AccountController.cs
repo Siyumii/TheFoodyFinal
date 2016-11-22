@@ -6,12 +6,38 @@ using System.Web.Mvc;
 using TheFoody.Models;
 using TheFoody.DataAccess;
 using System.Web.Security;
-using System.Web.Mail;
 using System.Net.Mail;
 using WebMatrix.WebData;
+using DotNetOpenAuth.AspNet.Clients;
+using System.Net;
+using System.Net.Mail;
 
 namespace TheFoody.Controllers
 {
+
+
+    public class Gmail
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public Gmail(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
+        public void Send(MailMessage msg)
+        {
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Credentials = new NetworkCredential(Username, Password);
+            client.Send(msg);
+        }
+    }
+
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -51,16 +77,33 @@ namespace TheFoody.Controllers
                         usr.fname = model.FirstName;
                         usr.lname = model.LastName;
                         usr.password = model.Password;
+                        usr.phone = "0111234567";
+                        usr.photo = "Not Set Yet";
+                        usr.postcode = 00000;
+                        usr.address = "Not Set Yet";
+                        usr.city = "Not Set Yet";
+                        usr.district = "Not Set Yet";
                         usr.status = "Active";
                         usr.user_type = "Admin";
                         usr.created_date = DateTime.Now;
 
                         db.Users.Add(usr);
                         db.SaveChanges();
-                        
 
-                        Session["UserEmail"] = model.Email;
-                        return RedirectToAction("Index", "Home");
+
+                        /*Session["UserEmail"] = model.Email;
+                        Session["FirstName"] = model.FirstName;
+                        Session["LastName"] = model.LastName;
+                        Session["Phone"] = "0111234567";
+                        Session["Address"] = "Not Set Yet";
+                        Session["City"] = "Not Set Yet";
+                        Session["PostCode"] = "00000";
+                        Session["District"] = "Not Set Yet";
+                        Session["UserType"] = "Admin";
+                        Session["Status"] = "Active";
+                        Session["Photo"] = "Not Set Yet";*/
+
+                        return RedirectToAction("Index", "Account/Login");
                     }
                 }
                 
@@ -71,9 +114,36 @@ namespace TheFoody.Controllers
             return View(model);
         }
 
+        //private Uri RedirectUri
+        //{
+        //    get
+        //    {
+        //        var uriBuilder = new UriBuilder(Request.Url);
+        //        uriBuilder.Query = null;
+        //        uriBuilder.Fragment = null;
+        //        uriBuilder.Path = Url.Action("FacebookCallback");
+        //        return uriBuilder.Uri;
+        //    }
+        //}
+
         // GET: /Account/Login
         public ActionResult Login(string returnUrl)
         {
+            Session["UserEmail"] = null;
+            if (Session["UserEmail"] == null)
+            {
+                Session["FirstName"] = "";
+                Session["LastName"] = "";
+                Session["Phone"] = "0111234567";
+                Session["Photo"] = "Not Set Yet";
+                Session["Address"] = "Not Set Yet";
+                Session["City"] = "Not Set Yet";
+                Session["PostCode"] = 00000;
+                Session["District"] = "Not Set Yet";
+                Session["UserType"] = "Admin";
+                Session["Status"] = "Active";
+
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -92,10 +162,44 @@ namespace TheFoody.Controllers
                 if (usr == null)
                 {
                     ModelState.AddModelError("", "Invalid Email or password");
+                    return View(model);
                 }
                 else
                 {
-                    Session["UserEmail"] = usr.email.ToString();
+                    FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
+
+                    Session["UserEmail"] = Session["TempEmail"] = usr.email.ToString();
+                    Session["FirstName"] = usr.fname.ToString();
+                    Session["LastName"] = usr.lname.ToString();
+                    Session["Address"] = usr.address.ToString();
+                    Session["City"] = usr.city.ToString();
+                    Session["PostCode"] = usr.postcode.ToString();
+                    Session["District"] = usr.district.ToString();
+                    Session["UserType"] = usr.user_type.ToString();
+                    Session["Status"] = usr.status.ToString();
+                    Session["Photo"] = usr.photo.ToString();
+                    Session["Phone"] = usr.phone.ToString();
+                    Session["Path"] = usr.photo.ToString();
+
+
+                    if (model.RememberMe)
+                    {
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Values.Add("UserEmail", usr.email);
+                        cookie.Values.Add("FirstName", usr.fname);
+                        cookie.Values.Add("LastName", usr.lname);
+                        cookie.Values.Add("Phone", usr.phone);
+                        cookie.Values.Add("Photo", usr.photo);
+                        cookie.Values.Add("Address", usr.address);
+                        cookie.Values.Add("City", usr.city);
+                        cookie.Values.Add("PostCode", usr.postcode.ToString());
+                        cookie.Values.Add("District", usr.district);
+                        cookie.Values.Add("UserType", usr.user_type);
+                        cookie.Values.Add("Status", usr.status);
+                        //cookie.Values.Add("Password", usr.password);
+                        cookie.Expires = DateTime.Now.AddDays(15);
+                        Response.Cookies.Add(cookie);
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 
@@ -108,6 +212,15 @@ namespace TheFoody.Controllers
         public ActionResult LogOff()
         {
             Session["UserEmail"] = null;
+            if (Request.Cookies["Login"] != null)
+            {
+                var cookie = new HttpCookie("Login")
+                {
+                    Expires = DateTime.Now.AddDays(-1),
+                    Value = null
+                };
+                Response.SetCookie(cookie);
+            }
             return RedirectToAction("Index", "Home");
         }
 
@@ -131,55 +244,82 @@ namespace TheFoody.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPasswordModel resetpasswordmodel)
         {
+            var foundemail = "";
             if (ModelState.IsValid)
             {
-                //User user;
-                MembershipUser member;
+            //    //User user;
+            //    MembershipUser membe
                 using (TheFoodyContext db = new TheFoodyContext())
                 {
-                    var foundemail = (from e in db.Users
+                    /*var foundemail = (from e in db.Users
                                          where e.email == resetpasswordmodel.Email
-                                         select e.email).FirstOrDefault();
+                                         select e.email).FirstOrDefault();*/
 
-                    if (foundemail != null)
-                    {
+                    foundemail = (db.Users.Find(resetpasswordmodel.Email)).email.ToString();
+                    Session["TempEmail"] = resetpasswordmodel.Email;
+
+                    //if (foundemail != null)
+                    //{
                         
-                        member = Membership.GetUser(foundemail.ToString());    
-                    }
-                    else
-                    {
-                        member = null;
-                    }
+                    //    member = Membership.GetUser(foundemail);    
+                    //}
+                    //else
+                    //{
+                    //    member = null;
+                    //}
                 }
 
-                if (member != null)
+                if (foundemail != null)
                 {
-                    //Generate password token that will be used in the email link to authenticate user
-                    var token = WebSecurity.GeneratePasswordResetToken(member.Email);
-                    // Generate the html link sent via email
-                    string resetLink = "<a href='"
-                       + Url.Action("ResetPasswordView", "Account", new { rt = token }, "http")
-                       + "'>Reset Password Link</a>";
-                    // Email stuff
-                    string subject = "Reset your password for TheFoody.com";
-                    string body = "You link: " + resetLink;
-                    string from = "punyabhagyani863@gmail.com";
-                    string to = resetpasswordmodel.Email;
+                //    //Generate password token that will be used in the email link to authenticate user
+                //    var token = WebSecurity.GeneratePasswordResetToken(member.Email);
+                //    // Generate the html link sent via email
+                //    string resetLink = "<a href='"
+                //       + Url.Action("ResetPasswordView", "Account", new { rt = token }, "http")
+                //       + "'>Reset Password Link</a>";
+                //    // Email stuff
+                //    string subject = "Reset your password for TheFoody.com";
+                //    string body = "You link: " + resetLink;
+                //    string from = "punyabhagyani863@gmail.com";
+                //    string to = resetpasswordmodel.Email;
 
-                    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage(from, to);
-                    message.Subject = subject;
-                    message.Body = body;
-                    SmtpClient client = new SmtpClient();
+                //    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage(from, to);
+                //    message.Subject = subject;
+                //    message.Body = body;
+                //    SmtpClient client = new SmtpClient();
 
-                    // Attempt to send the email
-                    try
+                //    // Attempt to send the email
+                //    try
+                //    {
+                //        client.Send(message);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        ModelState.AddModelError("", "Issue sending email: " + e.Message);
+                //    }
+                    string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    int charactersLength = chars.Length;
+                    char[] charsArray = chars.ToCharArray();
+                    char[] randomString = new char[12];
+                    Random rand = new Random();
+                    for ( int i = 0 ; i < 12 ; i++ )
                     {
-                        client.Send(message);
+                        randomString[i] = charsArray[rand.Next(charactersLength)];
                     }
-                    catch (Exception e)
+                    var newPass = new string(randomString);
+                    using (TheFoodyContext db = new TheFoodyContext())
                     {
-                        ModelState.AddModelError("", "Issue sending email: " + e.Message);
+                        (db.Users.Find(resetpasswordmodel.Email)).password = newPass;
+                        db.SaveChanges();
                     }
+                    Gmail gmail = new Gmail("webfoody", "foodyweb@123");
+                    MailMessage msg = new System.Net.Mail.MailMessage("webfoody@gmail.com", foundemail);
+                    msg.Subject = "Reset password !";
+                    msg.Body = "Your new password is : " + newPass;
+                    gmail.Send(msg);
+
+
+                    return RedirectToAction("ChangePassword", "ChangePassword");
                 }
                 else // Email not found
                 {
@@ -217,5 +357,55 @@ namespace TheFoody.Controllers
 
             return View(resetpasswordviewmodel);
         }
+
+        
+
+        //[AllowAnonymous]
+        //public ActionResult Facebook()
+        //{
+        //    var fb = new FacebookClient();
+        //    var loginUrl = fb.GetLoginUrl(new
+        //    {
+        //        client_id = "CLIENT ID",
+        //        client_secret = "CLIENT SECRET",
+        //        redirect_uri = RedirectUri.AbsoluteUri,
+        //        response_type = "code",
+        //        scope = "email"
+        //    });
+
+        //    return Redirect(loginUrl.AbsoluteUri);
+        //}
+
+        //public ActionResult FacebookCallback(string code)
+        //{
+        //    var fb = new FacebookClient();
+        //    dynamic result = fb.Post("oauth/access_token", new
+        //    {
+        //        client_id = "CLIENT ID",
+        //        client_secret = "SECRET",
+        //        redirect_uri = RedirectUri.AbsoluteUri,
+        //        code = code
+        //    });
+
+        //    var accessToken = result.access_token;
+
+        //    // Store the access token in the session for farther use
+        //    Session["AccessToken"] = accessToken;
+
+        //    // update the facebook client with the access token so
+        //    // we can make requests on behalf of the user
+        //    fb.AccessToken = accessToken;
+
+        //    // Get the user's information, like email, first name, middle name etc
+        //    dynamic me = fb.Get("me?fields=first_name,middle_name,last_name,id,email");
+        //    string email = me.email;
+        //    string firstname = me.first_name;
+        //    string middlename = me.middle_name;
+        //    string lastname = me.last_name;
+
+        //    // Set the auth cookie
+        //    FormsAuthentication.SetAuthCookie(email, false);
+        //    return RedirectToAction("Index", "Home");
+        //}
     }
 }

@@ -24,10 +24,15 @@ namespace TheFoody.Models
     }
     public class RegisterViewModel
     {
-
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40})$", ErrorMessage = "Invalid First Name")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "White space is not allowed")]
         [Display(Name = "FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         [Display(Name = "LastName")]
         public string LastName { get; set; }
 
@@ -42,6 +47,7 @@ namespace TheFoody.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -52,6 +58,7 @@ namespace TheFoody.Models
 
     public class ManageViewModel
     {
+        
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -103,6 +110,29 @@ namespace TheFoody.Models
         [Display(Name = "Your account email")]
         [EmailAddress(ErrorMessage = "Not a valid email--what are you trying to do here?")]
         public string Email { get; set; }
+    }
+
+    public class DeleteAccountViewModel
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Required]
+        public string Query { get; set; }
+    }
+
+    public class CustomCaptchaViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        public string Query { get; set; }
     }
 
     public class ResetPasswordViewModel

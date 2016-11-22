@@ -8,6 +8,7 @@ using TheFoody.Models;
 using TheFoody.DataAccess;
 using System.IO;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 
 namespace TheFoody.Controllers
@@ -15,6 +16,18 @@ namespace TheFoody.Controllers
     public class RestaurantController : Controller
     {
         private TheFoodyContext db = new TheFoodyContext();
+
+        [HttpPost]
+        public void ServiceSearch(FormCollection form)
+        {
+            string serviceValue = form["Service"].ToString();
+
+            string currentTime = DateTime.Now.ToString("hh:mm:ss tt");
+
+
+
+
+        }
 
         // GET: Restaurant
         public ActionResult Index()
@@ -40,8 +53,48 @@ namespace TheFoody.Controllers
             }
 
         }
+
+        [HttpPost]
+        // GET: Restaurant
+        public ActionResult Index(string search)
+        {
+            using (TheFoodyContext db = new TheFoodyContext())
+            {
+
+                var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                             where p.City.StartsWith(search) || search == null
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+
+                return View(model.ToList());
+                //return View(db.Restaurants.ToList());
+            }
+
+        }
+
+        [HttpPost]
+        public string ratingResponse()
+        {
+            int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
+            string userEmail = Request["UserEmail"];
+            int rating = Convert.ToInt16(Request["Rating"]);
+            string review = Request["Review"];
+            DateTime currentDateTime = DateTime.Now;
+            string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            return review;
+        }
         public ActionResult ViewMenu(int id)
         {
+            Session["CurrentRestaurentId"] = id;
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
             using (TheFoodyContext context = new TheFoodyContext())
             {
@@ -163,7 +216,7 @@ namespace TheFoody.Controllers
                 return null;
             
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
-
+            
             restaurantVm.Address = restaurant.Address;
             restaurantVm.categories = restaurant.Restaurant_Type.Select(x => x.Category.category1).ToList();
             restaurantVm.City = restaurant.City;
@@ -351,7 +404,7 @@ namespace TheFoody.Controllers
                             restaurant.Phone = model.Phone.ToString();
                             restaurant.Address = model.Address;
                             restaurant.City = model.City;
-                            restaurant.PostCode = model.PostCode;
+                            restaurant.PostCode = model.PostCode.ToString();
                             restaurant.District = model.District;
                             restaurant.Website = model.Website;
                             restaurant.CompanyBackground = model.CompanyBackground;
@@ -389,9 +442,15 @@ namespace TheFoody.Controllers
                             }
 
                             db.SaveChanges();
-
+                            TempData["OwnerEmail"] = restaurant.OwnerEmail;
                             Session["UserEmail"] = restaurant.OwnerEmail;
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("EditRestaurant", "Restaurant", new
+                            {
+                                id = (from p in db.Restaurants
+                                      where p.OwnerEmail == restaurant.OwnerEmail
+                                      where p.RestaurantName == restaurant.RestaurantName
+                                      select p.Id).Single()
+                            });
                             
                         }
                         else {
@@ -429,6 +488,103 @@ namespace TheFoody.Controllers
             }
 
             return categories;
+        }
+
+        // GET: Restaurant/Edit/5
+        public ActionResult EditRestaurant(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Restaurant user = db.Restaurants.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            RestaurantDeatilModel restaurant = new RestaurantDeatilModel();
+
+            restaurant.RestaurantName = user.RestaurantName;
+
+            restaurant.Phone = user.Phone.ToString();
+            restaurant.Address = user.Address;
+            restaurant.Logo = user.Logo;
+            restaurant.City = user.City;
+            restaurant.PostCode = user.PostCode;
+            restaurant.District = user.District;
+            restaurant.Website = user.Website;
+            restaurant.CompanyBackground = user.CompanyBackground;
+            restaurant.OpeningTime = user.OpeningTime;
+            restaurant.ClosingTime = user.ClosingTime;
+            restaurant.DeliveryStartingTime = user.DeliveryStartingTime;
+            restaurant.DeliveryEndingTime = user.DeliveryEndingTime;
+            restaurant.TimetakentoDeliver = Convert.ToInt16(user.TimetakentoDeliver);
+
+            TempData["RestaurantId"] = id;
+            return View(restaurant);
+        }
+
+        // POST: Restaurant/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRestaurant(RestaurantDeatilModel model, FormCollection collection)
+        {
+            TempData.Keep();
+            if (ModelState.IsValid)
+            {
+                Restaurant restaurant = new Restaurant();
+                if (TempData.ContainsKey("OwnerEmail"))
+                    restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
+
+
+                if (restaurant.OwnerEmail != null)
+                {
+                    if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
+                    {
+                        HttpPostedFileBase photo = Request.Files["logo"];
+                        restaurant.RestaurantName = model.RestaurantName;
+
+                        if (photo != null && photo.ContentLength > 0)
+                        {
+                            var extension = Path.GetExtension(photo.FileName);
+                            restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
+                            var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
+                            photo.SaveAs(path);
+                        }
+                        restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
+                        restaurant.Phone = model.Phone.ToString();
+                        restaurant.Address = model.Address;
+                        restaurant.City = model.City;
+                        restaurant.PostCode = model.PostCode.ToString();
+                        restaurant.District = model.District;
+                        restaurant.Website = model.Website;
+                        restaurant.CompanyBackground = model.CompanyBackground;
+                        restaurant.OpeningTime = model.OpeningTime;
+                        restaurant.ClosingTime = model.ClosingTime;
+                        restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
+                        restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
+                        restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
+
+                        db.Entry(restaurant).State = EntityState.Modified;
+                        db.SaveChanges();
+                        Session["UserEmail"] = restaurant.OwnerEmail;
+                        return RedirectToAction("Index", "Home");
+
+
+                    }
+                    else
+                    {
+                        //TODO E.g. ModelState.AddModelError
+                        ModelState.AddModelError("", "Owner have not been registered successfully");
+
+                    }
+                }
+
+            }
+            return View(model);
         }
 
     }

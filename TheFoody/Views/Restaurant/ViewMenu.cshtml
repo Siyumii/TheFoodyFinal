@@ -4,6 +4,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+
+    function star1()
+    {
+        if ((((document.getElementById("star1")).className) == "fa fa-star") && (((document.getElementById("star2")).className) == "fa fa-star-o")) {
+            (document.getElementById("star1")).className = "fa fa-star-o";
+            (document.getElementById("star2")).className = "fa fa-star-o";
+            (document.getElementById("star3")).className = "fa fa-star-o";
+            (document.getElementById("star4")).className = "fa fa-star-o";
+            (document.getElementById("star5")).className = "fa fa-star-o";
+        }
+        else if (((document.getElementById("star1")).className) == "fa fa-star-o") {
+            (document.getElementById("star1")).className = "fa fa-star";
+            (document.getElementById("star2")).className = "fa fa-star-o";
+            (document.getElementById("star3")).className = "fa fa-star-o";
+            (document.getElementById("star4")).className = "fa fa-star-o";
+            (document.getElementById("star5")).className = "fa fa-star-o";
+        }
+        else if (((document.getElementById("star1")).className) == "fa fa-star") {
+            (document.getElementById("star1")).className = "fa fa-star";
+            (document.getElementById("star2")).className = "fa fa-star-o";
+            (document.getElementById("star3")).className = "fa fa-star-o";
+            (document.getElementById("star4")).className = "fa fa-star-o";
+            (document.getElementById("star5")).className = "fa fa-star-o";
+        }
+    }
+
+    function star2()
+    {
+        (document.getElementById("star1")).className = "fa fa-star";
+        (document.getElementById("star2")).className = "fa fa-star";
+        (document.getElementById("star3")).className = "fa fa-star-o";
+        (document.getElementById("star4")).className = "fa fa-star-o";
+        (document.getElementById("star5")).className = "fa fa-star-o";
+    }
+    function star3()
+    {
+        (document.getElementById("star1")).className = "fa fa-star";
+        (document.getElementById("star2")).className = "fa fa-star";
+        (document.getElementById("star3")).className = "fa fa-star";
+        (document.getElementById("star4")).className = "fa fa-star-o";
+        (document.getElementById("star5")).className = "fa fa-star-o";
+    }
+    function star4()
+    {
+        (document.getElementById("star1")).className = "fa fa-star";
+        (document.getElementById("star2")).className = "fa fa-star";
+        (document.getElementById("star3")).className = "fa fa-star";
+        (document.getElementById("star4")).className = "fa fa-star";
+        (document.getElementById("star5")).className = "fa fa-star-o";
+    }
+    function star5()
+    {
+        (document.getElementById("star1")).className = "fa fa-star";
+        (document.getElementById("star2")).className = "fa fa-star";
+        (document.getElementById("star3")).className = "fa fa-star";
+        (document.getElementById("star4")).className = "fa fa-star";
+        (document.getElementById("star5")).className = "fa fa-star";
+    }
+    function rate()
+    {
+        var xhttp = new XMLHttpRequest();
+        var rate = 0;
+        var restaurantId = '@Session["CurrentRestaurentId"]';
+        var email = '@Session["UserEmail"]';
+        if (((document.getElementById("star1")).className) == "fa fa-star")
+        {
+            rate = 1;
+        }
+        if (((document.getElementById("star2")).className) == "fa fa-star")
+        {
+            rate = 2;
+        }
+        if (((document.getElementById("star3")).className) == "fa fa-star")
+        {
+            rate = 3;
+        }
+        if (((document.getElementById("star4")).className) == "fa fa-star")
+        {
+            rate = 4;
+        }
+        if (((document.getElementById("star5")).className) == "fa fa-star")
+        {
+            rate = 5;
+        }
+        var review = document.getElementById("review").value;
+        xhttp.onreadystatechange = function ()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                alert(this.responseText);
+            }
+        };
+        xhttp.open("POST", "http://localhost:1672/Restaurant/ratingResponse", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var theRequest = "RestuarantId="+restaurantId+"&UserEmail="+email+"&Rating="+rate+"&Review="+review+"";
+        xhttp.send(theRequest);
+    }
+</script>
+
 <!-- start hero-header -->
 <div class="breadcrumb-wrapper">
 
@@ -381,22 +481,22 @@
                                             <div class="reviews-form-box">
                                                 <h6>Write a Review</h6>
                                                 <form>
-                                                    <textarea class="form-control" rows="4" placeholder="Message should be atleast 130 charecters"></textarea>
+                                                    <textarea id="review" class="form-control" rows="4" placeholder="Message should be atleast 130 charecters"></textarea>
                                                     <div class="clearfix">
                                                         <ul class="list-unstyled list-inline rating-star pull-left">
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i id="star1" onClick="star1();" class="fa fa-star-o"></i></li>
+                                                            <li><i id="star2" onclick="star2();" class="fa fa-star-o"></i></li>
+                                                            <li><i id="star3" onclick="star3();" class="fa fa-star-o"></i></li>
+                                                            <li><i id="star4" onclick="star4();" class="fa fa-star-o"></i></li>
+                                                            <li><i id="star5" onclick="star5();" class="fa fa-star-o"></i></li>
                                                         </ul>
-                                                        <a href="#" class="btn btn-primary mt-5 pull-right">Submit</a>
+                                                        <button onClick="rate()" class="btn btn-primary mt-5 pull-right">Submit</button>
                                                     </div>
                                                 </form>
                                             </div>
                                             <!-- Reviews Form Box Ends -->
                                             <!-- Reviews List Starts -->
-                                            <div class="reviews-box">
+                                            <div class="reviews-box" id="reviews-box">
                                                 <!-- Review #1 Starts -->
                                                 <div class="review-list">
                                                     <div class="clearfix">

@@ -3,6 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script>
+        function loadValues()
+        {
+            document.getElementById("FirstName").value = "@Session["FirstName"].ToString()";
+            document.getElementById("LastName").value = "@Session["LastName"].ToString()";
+            document.getElementById("Phone").value = "@Session["Phone"].ToString()";
+            document.getElementById("Address").value = "@Session["Address"].ToString()";
+            document.getElementById("City").value = "@Session["City"].ToString()";
+            document.getElementById("PostCode").value = "@Session["PostCode"].ToString()";
+            document.getElementById("District").value = "@Session["District"].ToString()";
+            document.getElementById("UserType").value = "@Session["UserType"].ToString()";
+            document.getElementById("Status").value = "@Session["Status"].ToString()";
+        }
+    </script>
 
     <title>@ViewBag.Title - Foodie App</title>
     <!-- Fav and Touch Icons -->
@@ -43,11 +57,15 @@
     {
         @RenderSection("RestaurantImageJavascript");
     }
+    @if (IsSectionDefined("menuimagejavascript"))
+    {
+        @RenderSection("menuimagejavascript");
+    }
 
 </head>
 
 @*<body class="home">*@
-<body class="not-transparent-header">
+<body class="not-transparent-header" onload="loadValues()">
 
     @*<div id="introLoader" class="introLoading"></div>*@
 

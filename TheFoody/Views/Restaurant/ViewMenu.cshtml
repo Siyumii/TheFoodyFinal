@@ -58,7 +58,7 @@
                                         </li>
                                         <li>
                                             <span>Min Order:</span>
-                                            &pound;15
+                                            Rs.@Html.DisplayFor(model => model.MinDelivery)
                                         </li>
                                         <li>
                                             <span>Delivery: </span>
@@ -637,7 +637,7 @@
                     <!-- Spacer Ends -->
                     <!-- Your Order Starts -->
                     <div class="side-block-order border-radius-4" id="shoppingcart">
-                        @{Html.RenderPartial("_AddtoCart");}
+                        @{Html.RenderPartial("_AddtoCart", new {mindelivery=Model.MinDelivery  });}
                     </div>
                     <!-- Your Order Ends -->
                     <!-- start add wrapper -->

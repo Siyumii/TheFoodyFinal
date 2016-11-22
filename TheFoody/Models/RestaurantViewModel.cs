@@ -16,6 +16,7 @@ namespace TheFoody.Models
         public string District { get; set; }
         public List<string> categories { get; set; }
         public string TimetakentoDeliver { get; set; }
+        public decimal MinDelivery { get; set; }
 
         public List<MealCategoryVm> MealCategories { get; set; }
         public List<MenuVm> MenuList { get; set; }

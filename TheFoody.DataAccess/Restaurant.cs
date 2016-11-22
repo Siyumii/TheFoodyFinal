@@ -17,8 +17,8 @@ namespace TheFoody.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Restaurant()
         {
-            this.Restaurant_Type = new HashSet<Restaurant_Type>();
             this.Menus = new HashSet<Menu>();
+            this.Restaurant_Type = new HashSet<Restaurant_Type>();
         }
     
         public int Id { get; set; }
@@ -37,12 +37,12 @@ namespace TheFoody.DataAccess
         public System.TimeSpan DeliveryStartingTime { get; set; }
         public System.TimeSpan DeliveryEndingTime { get; set; }
         public string TimetakentoDeliver { get; set; }
+        public Nullable<decimal> MinDelivery { get; set; }
     
-        public virtual Menu Menu { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Menu> Menus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Restaurant_Type> Restaurant_Type { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Menu> Menus { get; set; }
     }
 }

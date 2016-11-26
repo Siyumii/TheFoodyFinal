@@ -21,14 +21,14 @@
         document.getElementById("photo").disabled = false;
         document.getElementById("FirstName").disabled = false;
         document.getElementById("LastName").disabled = false;
-        document.getElementById("UserType").disabled = false;
+        //document.getElementById("UserType").disabled = false;
         document.getElementById("Address").disabled = false;
         document.getElementById("City").disabled = false;
         document.getElementById("District").disabled = false;
         document.getElementById("Phone").disabled = false;
         //document.getElementById("Photo").disabled = false;
         document.getElementById("PostCode").disabled = false;
-        document.getElementById("Status").disabled = false;
+        //document.getElementById("Status").disabled = false;
     }
     function reload() {
         window.location.href = "http://localhost:1672/Manage";
@@ -78,18 +78,17 @@
                         <div class="admin-user-item">
                             <div class="image">
 
-                                @*@{  var imagePath = "";
-                                  if (Session["photo"].ToString() != null)
-                                  {
-                                      imagePath = Session["photo"].ToString();
-                                      if (imagePath != "")
-                                      {*@
-                                <img src="@Session["Path"].ToString()" alt="image" class="img-circle" width="300px" height="300px" />
-                                      @*}
-                                  }
-                                 }*@
+                                @if (Model.photo == null)
+                                {
+                                    <img src="~/icons/images/user-images/default-user.png" alt="image" class="img-circle" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/user-images/@Html.DisplayFor(model => model.photo)" alt="image" class="img-circle"/>
+                                  
+                                 }
                             </div>
-                            <h4>@Session["FirstName"].ToString() @Session["LastName"].ToString()</h4>
+                            <h4>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h4>
                             <p class="user-role">Foodies</p>
                         </div>
                         <div class="admin-user-action text-center">
@@ -122,13 +121,14 @@
                             <h2>Profile</h2>
                             <p>Enquire explain another he in brandon enjoyed be service.</p>
                         </div>
-                        <!--<form class="post-form-wrapper" action="http://localhost:33409/UpdateProfile/Edit" id="updateForm" method="POST">-->
-                        @using (Html.BeginForm("Manage", "Manage", System.Web.Mvc.FormMethod.Post, new { @id = "updateForm", @class = "post-form-wrapper", enctype = "multipart/form-data" }))
+                       
+                        @using (Html.BeginForm("Manage", "Manage", FormMethod.Post, new { @id = "updateForm", @class = "post-form-wrapper", enctype = "multipart/form-data" }))
                         {
                             @Html.AntiForgeryToken();
                             <div class="row gap-20">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-sm-6 col-md-4">
-                                    @ViewBag.Error
+                                    @*@ViewBag.Error*@
                                     <div class="form-group bootstrap-fileinput-style-01">
                                         @Html.LabelFor(model => model.photo, htmlAttributes: new { @class = "control-label col-md-2" })
                                         @Html.EditorFor(model => model.photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "photo", @id = "photo", @onchange = "show(this)" } })
@@ -204,7 +204,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4">
+                                @*<div class="col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>UserType*</label>
                                     </div>
@@ -235,9 +235,9 @@
 
 
                                     </div>
-                                </div>
+                                </div>*@
 
-                                <div class="col-sm-6 col-md-4">
+                                @*<div class="col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>Status*</label>
                                     </div>
@@ -263,7 +263,7 @@
 
 
                                     </div>
-                                </div>
+                                </div>*@
 
 
                                 <div class="clear"></div>
@@ -282,8 +282,8 @@
 
                                     <input type="submit" class="btn btn-primary" value="Save" />
 
-                                    <a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>
-
+                                    @*<a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>*@
+                                    @Html.ActionLink("Cancel", "Index","Home",new { @class= "btn btn-primary btn-inverse" })
                                 </div>
                             </div>
                         }

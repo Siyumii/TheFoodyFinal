@@ -103,7 +103,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="SRVTextToImage">
-      <HintPath>C:\Users\Siyumi\Downloads\SRVTextToImage.dll\SRVTextToImage.dll</HintPath>
+      <HintPath>..\..\..\..\..\Resources\SRVTextToImage.dll\SRVTextToImage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -301,7 +301,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Controllers\order-online.css" />
+    <Content Include="Content\order-online.css" />
     <Content Include="Content\Stroke-Gap-Icons.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />

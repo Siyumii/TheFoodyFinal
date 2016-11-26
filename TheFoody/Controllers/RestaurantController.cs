@@ -344,7 +344,7 @@ namespace TheFoody.Controllers
                     user.phone = model.phone.ToString();
                     user.address = model.address;
                     user.city = model.city;
-                    user.postcode = Convert.ToDecimal(model.postcode);
+                    user.postcode = model.postcode;
                     user.district = model.district;
                     user.status = "Active";
                     user.user_type = "RestaurantOwner";

@@ -81,20 +81,110 @@ namespace TheFoody.Controllers
 
         }
 
+       
         [HttpPost]
         public string ratingResponse()
         {
+            TheFoodyContext db = new TheFoodyContext();
             int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
             string userEmail = Request["UserEmail"];
             int rating = Convert.ToInt16(Request["Rating"]);
             string review = Request["Review"];
             DateTime currentDateTime = DateTime.Now;
             string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            return review;
+            Rating rate = new Rating();
+            rate.RestuarantId = restuarantId;
+            rate.UserEmail = userEmail;
+            rate.Rating1 = rating;
+            rate.Review = review;
+            rate.Created_Date = currentDateTime;
+            db.Ratings.Add(rate);
+            db.SaveChanges();
+
+            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
+            int id = restuarantId;
+
+            string rev = Session["ReviewHtml"].ToString();
+
+            for (int x = 5; x > 0; x--)
+            {
+                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                if (theRating == null) { continue; }
+                rev = rev + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
+                    + theRating.Created_Date.ToString()
+                    + "</h6><h6>By " + theRating.UserEmail.ToString() + "</h6><ul class='list-unstyled list-inline rating-star-list'>";
+                switch (theRating.Rating1)
+                {
+                    case 0:
+                        rev = rev + "<li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 1:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 2:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 3:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 4:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 5:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li>";
+                        break;
+                }
+                rev = rev + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
+                rev = rev + theRating.Review.ToString() + "</p></div></div>";
+                ratings++;
+            }
+            return rev;
         }
+
         public ActionResult ViewMenu(int id)
         {
+            TheFoodyContext db = new TheFoodyContext();
+            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
             Session["CurrentRestaurentId"] = id;
+
+            string review = "<!-- -->";
+
+            for (int x = 5; x > 0 ; x-- )
+            {
+                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                if (theRating == null) { continue; }
+                review = review + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
+                    + theRating.Created_Date.ToString()
+                    + "</h6><h6>By " + theRating.UserEmail.ToString() + "</h6><ul class='list-unstyled list-inline rating-star-list'>";
+                switch (theRating.Rating1)
+                {
+                    case 0:
+                        review = review + "<li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 1:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 2:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 3:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 4:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 5:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li>";
+                        break;
+                }
+                review = review + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
+                review = review + theRating.Review.ToString() + "</p></div></div>";
+                ratings++;
+            }
+
+            Session["ReviewHtml"] = review;
+
+
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
             using (TheFoodyContext context = new TheFoodyContext())
             {

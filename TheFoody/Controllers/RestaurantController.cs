@@ -15,73 +15,161 @@ namespace TheFoody.Controllers
 {
     public class RestaurantController : Controller
     {
-        private TheFoodyContext db = new TheFoodyContext();
+        TheFoodyContext db = new TheFoodyContext();
 
         [HttpPost]
-        public void ServiceSearch(FormCollection form)
+        public ActionResult searchOpen_Restaurants(int openFlag)
         {
-            string serviceValue = form["Service"].ToString();
-
-            string currentTime = DateTime.Now.ToString("hh:mm:ss tt");
 
 
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
+            if (openFlag == 1)
+            {
+                var model = (from p in db.Restaurants
+                             where ((p.OpeningTime <= currentTime) &&( p.ClosingTime >= currentTime))
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
 
         }
 
+        [HttpPost]
+        public ActionResult searchDelivery_Restaurants(int delivery)
+        {
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            if (delivery == 2)
+            {
+                var model = (from p in db.Restaurants
+                             where ((p.DeliveryStartingTime <= currentTime) &&( p.ClosingTime >= currentTime))
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public ActionResult searchReservation_Restaurants(int reservation)
+        {
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            if (reservation == 3)
+            {
+                var model = (from p in db.Restaurants
+                             
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        //get values to meal category dropdoen from db
+        public JsonResult getCuisineListFromDb()
+        {
+
+            var getCuisineList = (from m in db.Categories
+                                  select new CategoryViewModel()
+                                  {
+                                      id = m.id.ToString(),
+                                      category = m.category1
+                                  }).ToList();
+
+            SelectList list = new SelectList(getCuisineList, "id", "category");
+            //ViewBag.cuisineList = list;
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: Restaurant
+        [HttpGet]
         public ActionResult Index()
         {
-            using (TheFoodyContext db = new TheFoodyContext())
-            {
 
-                var model = (from p in db.Restaurants // .Includes("Addresses") here?
-                             select new RestaurantViewModel()
-                             {
-                                 RestId = p.Id,
-                                 RestaurantName = p.RestaurantName,
-                                 Logo = p.Logo,
-                                 Address = p.Address,
-                                 City = p.City,
-                                 District = p.District,
-                                 TimetakentoDeliver = p.TimetakentoDeliver,
-                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
-                             });
+            var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                         select new RestaurantViewModel()
+                         {
+                             RestId = p.Id,
+                             RestaurantName = p.RestaurantName,
+                             Logo = p.Logo,
+                             Address = p.Address,
+                             City = p.City,
+                             District = p.District,
+                             TimetakentoDeliver = p.TimetakentoDeliver,
+                             categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                         });
 
-                return View(model.ToList());
-                //return View(db.Restaurants.ToList());
-            }
-
+            return View(model.ToList());
         }
 
+        //POST:Restaurant
         [HttpPost]
-        // GET: Restaurant
         public ActionResult Index(string search)
         {
-            using (TheFoodyContext db = new TheFoodyContext())
-            {
+            //using (TheFoodyContext db = new TheFoodyContext())
+            //{
 
-                var model = (from p in db.Restaurants // .Includes("Addresses") here?
-                             where p.City.StartsWith(search) || search == null
-                             select new RestaurantViewModel()
-                             {
-                                 RestId = p.Id,
-                                 RestaurantName = p.RestaurantName,
-                                 Logo = p.Logo,
-                                 Address = p.Address,
-                                 City = p.City,
-                                 District = p.District,
-                                 TimetakentoDeliver = p.TimetakentoDeliver,
-                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
-                             });
+            var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                         where p.City.StartsWith(search) || search == null
+                         select new RestaurantViewModel()
+                         {
+                             RestId = p.Id,
+                             RestaurantName = p.RestaurantName,
+                             Logo = p.Logo,
+                             Address = p.Address,
+                             City = p.City,
+                             District = p.District,
+                             TimetakentoDeliver = p.TimetakentoDeliver,
+                             categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                         });
 
-                return View(model.ToList());
-                //return View(db.Restaurants.ToList());
-            }
+            return View(model.ToList());
+
+            //}
 
         }
-
-       
+   
         [HttpPost]
         public string ratingResponse()
         {

@@ -17,6 +17,7 @@ namespace TheFoody.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.Ratings = new HashSet<Rating>();
             this.Restaurants = new HashSet<Restaurant>();
             this.Ratings = new HashSet<Rating>();
         }
@@ -29,12 +30,14 @@ namespace TheFoody.DataAccess
         public string photo { get; set; }
         public string address { get; set; }
         public string city { get; set; }
-        public Nullable<decimal> postcode { get; set; }
+        public string postcode { get; set; }
         public string district { get; set; }
         public string user_type { get; set; }
         public string status { get; set; }
         public System.DateTime created_date { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rating> Ratings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Restaurant> Restaurants { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

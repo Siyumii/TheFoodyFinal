@@ -189,7 +189,7 @@ namespace TheFoody.Controllers
             using (TheFoodyContext context = new TheFoodyContext())
             {
                 Restaurant restaurant = context.Restaurants.Where(x => x.Id == id).SingleOrDefault();
-
+                Session["MinDelivery"] = restaurant.MinDelivery;
                 restaurantVm = TransformToRestaurantVm(restaurant);
 
                 //get meal categories
@@ -281,7 +281,7 @@ namespace TheFoody.Controllers
             menuVm.MenuDescription = menu.Description;
             menuVm.MenuPhoto = menu.Photo;
             menuVm.MenuPrice = Convert.ToDouble(menu.Price);
-
+            
             if (menu.Meal_Cat_IdFK.HasValue)
                 menuVm.MealCategoryID = menu.Meal_Cat_IdFK.Value;
 
@@ -315,6 +315,7 @@ namespace TheFoody.Controllers
             restaurantVm.RestaurantName = restaurant.RestaurantName;
             restaurantVm.RestId = restaurant.Id;
             restaurantVm.TimetakentoDeliver = restaurant.TimetakentoDeliver;
+            restaurantVm.MinDelivery = Convert.ToDecimal(restaurant.MinDelivery);
 
             return restaurantVm;
         }
@@ -327,7 +328,7 @@ namespace TheFoody.Controllers
                 TheFoodyContext context = new TheFoodyContext();
                 //{
                 //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList() ;
-                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id)), 1));
+                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id))));
                 //itemList.Add(TransformToCartItem(menulist[0]));
                 Session["Cart"] = itemList;
                 //}
@@ -339,11 +340,42 @@ namespace TheFoody.Controllers
                 TheFoodyContext context = new TheFoodyContext();
                 //{
                 //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
-                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id)), 1));
+                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id))));
                 Session["Cart"] = itemList;
                 //}
                 return PartialView("_AddtoCart");
             }
+
+        }
+
+        public PartialViewResult RemovefromCart(Item item)
+        {
+            //if (Session["Cart"] == null)
+            //{
+            //    List<Item> itemList = new List<Item>();
+            //    TheFoodyContext context = new TheFoodyContext();
+            //    //{
+            //    //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList() ;
+            //    itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id)), 1));
+            //    //itemList.Add(TransformToCartItem(menulist[0]));
+            //    Session["Cart"] = itemList;
+            //    //}
+            //    return PartialView("_AddtoCart");
+            //}
+            //else
+            //{
+                List<Item> itemList = (List<Item>)Session["Cart"];
+                TheFoodyContext context = new TheFoodyContext();
+            //{
+            //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
+            //itemList.Remove(item);
+            int index=itemList.IndexOf(item);
+            itemList.RemoveAt(index);
+
+            Session["Cart"] = itemList;
+                //}
+            return PartialView("_AddtoCart");
+            //}
 
         }
 
@@ -402,7 +434,7 @@ namespace TheFoody.Controllers
                     user.phone = model.phone.ToString();
                     user.address = model.address;
                     user.city = model.city;
-                    user.postcode = Convert.ToDecimal(model.postcode);
+                    user.postcode = model.postcode;
                     user.district = model.district;
                     user.status = "Active";
                     user.user_type = "RestaurantOwner";

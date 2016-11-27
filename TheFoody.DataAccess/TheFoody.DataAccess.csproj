@@ -107,6 +107,7 @@
     </None>
     <None Include="TheFoodyModel.edmx.diagram">
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

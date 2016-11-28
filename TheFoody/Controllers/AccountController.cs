@@ -77,14 +77,8 @@ namespace TheFoody.Controllers
                         usr.fname = model.FirstName;
                         usr.lname = model.LastName;
                         usr.password = model.Password;
-                        usr.phone = "0111234567";
-                        usr.photo = "Not Set Yet";
-                        usr.postcode = 00000;
-                        usr.address = "Not Set Yet";
-                        usr.city = "Not Set Yet";
-                        usr.district = "Not Set Yet";
                         usr.status = "Active";
-                        usr.user_type = "Admin";
+                        usr.user_type = "Customer";
                         usr.created_date = DateTime.Now;
 
                         db.Users.Add(usr);
@@ -129,21 +123,21 @@ namespace TheFoody.Controllers
         // GET: /Account/Login
         public ActionResult Login(string returnUrl)
         {
-            Session["UserEmail"] = null;
-            if (Session["UserEmail"] == null)
-            {
-                Session["FirstName"] = "";
-                Session["LastName"] = "";
-                Session["Phone"] = "0111234567";
-                Session["Photo"] = "Not Set Yet";
-                Session["Address"] = "Not Set Yet";
-                Session["City"] = "Not Set Yet";
-                Session["PostCode"] = 00000;
-                Session["District"] = "Not Set Yet";
-                Session["UserType"] = "Admin";
-                Session["Status"] = "Active";
+            //Session["UserEmail"] = null;
+            //if (Session["UserEmail"] == null)
+            //{
+            //    Session["FirstName"] = "";
+            //    Session["LastName"] = "";
+            //    Session["Phone"] = "0111234567";
+            //    Session["Photo"] = "Not Set Yet";
+            //    Session["Address"] = "Not Set Yet";
+            //    Session["City"] = "Not Set Yet";
+            //    Session["PostCode"] = 00000;
+            //    Session["District"] = "Not Set Yet";
+            //    Session["UserType"] = "Admin";
+            //    Session["Status"] = "Active";
 
-            }
+            //}
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -162,40 +156,40 @@ namespace TheFoody.Controllers
                 if (usr == null)
                 {
                     ModelState.AddModelError("", "Invalid Email or password");
-                    return View(model);
+                    
                 }
                 else
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
 
-                    Session["UserEmail"] = Session["TempEmail"] = usr.email.ToString();
-                    Session["FirstName"] = usr.fname.ToString();
-                    Session["LastName"] = usr.lname.ToString();
-                    Session["Address"] = usr.address.ToString();
-                    Session["City"] = usr.city.ToString();
-                    Session["PostCode"] = usr.postcode.ToString();
-                    Session["District"] = usr.district.ToString();
-                    Session["UserType"] = usr.user_type.ToString();
-                    Session["Status"] = usr.status.ToString();
-                    Session["Photo"] = usr.photo.ToString();
-                    Session["Phone"] = usr.phone.ToString();
-                    Session["Path"] = usr.photo.ToString();
+                    Session["UserEmail"] /*= Session["TempEmail"]*/ = usr.email.ToString();
+                    //Session["FirstName"] = usr.fname.ToString();
+                    //Session["LastName"] = usr.lname.ToString();
+                    //Session["Address"] = usr.address.ToString();
+                    //Session["City"] = usr.city.ToString();
+                    //Session["PostCode"] = usr.postcode.ToString();
+                    //Session["District"] = usr.district.ToString();
+                    //Session["UserType"] = usr.user_type.ToString();
+                    //Session["Status"] = usr.status.ToString();
+                    //Session["Photo"] = usr.photo.ToString();
+                    //Session["Phone"] = usr.phone.ToString();
+                    //Session["Path"] = usr.photo.ToString();
 
 
                     if (model.RememberMe)
                     {
                         HttpCookie cookie = new HttpCookie("Login");
                         cookie.Values.Add("UserEmail", usr.email);
-                        cookie.Values.Add("FirstName", usr.fname);
-                        cookie.Values.Add("LastName", usr.lname);
-                        cookie.Values.Add("Phone", usr.phone);
-                        cookie.Values.Add("Photo", usr.photo);
-                        cookie.Values.Add("Address", usr.address);
-                        cookie.Values.Add("City", usr.city);
-                        cookie.Values.Add("PostCode", usr.postcode.ToString());
-                        cookie.Values.Add("District", usr.district);
-                        cookie.Values.Add("UserType", usr.user_type);
-                        cookie.Values.Add("Status", usr.status);
+                        //cookie.Values.Add("FirstName", usr.fname);
+                        //cookie.Values.Add("LastName", usr.lname);
+                        //cookie.Values.Add("Phone", usr.phone);
+                        //cookie.Values.Add("Photo", usr.photo);
+                        //cookie.Values.Add("Address", usr.address);
+                        //cookie.Values.Add("City", usr.city);
+                        //cookie.Values.Add("PostCode", usr.postcode.ToString());
+                        //cookie.Values.Add("District", usr.district);
+                        //cookie.Values.Add("UserType", usr.user_type);
+                        //cookie.Values.Add("Status", usr.status);
                         //cookie.Values.Add("Password", usr.password);
                         cookie.Expires = DateTime.Now.AddDays(15);
                         Response.Cookies.Add(cookie);

@@ -97,7 +97,7 @@ namespace TheFoody.Controllers
                 {
                     var extension = Path.GetExtension(photo.FileName);
                     menu.Photo = id + "_" + menu.Menu_name + extension;
-                    var path = Path.Combine(Server.MapPath("~/images/menuimages"), menu.Photo);
+                    var path = Path.Combine(Server.MapPath("~/icons/images/menuimages"), menu.Photo);
                     photo.SaveAs(path);
                 }
 

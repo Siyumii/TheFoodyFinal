@@ -29,7 +29,7 @@ namespace TheFoody.Controllers
             }
             if (Session["UserEmail"] == null)
             {
-
+                Session["ReviewHtml"] = "<!-- -->";
                 Session["FirstName"] = "";
                 Session["LastName"] = "";
                 Session["Phone"] = "0111234567";

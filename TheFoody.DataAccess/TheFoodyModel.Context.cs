@@ -10,26 +10,30 @@
 namespace TheFoody.DataAccess
 {
     using System;
+    using System.Data.SqlClient;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
     public partial class TheFoodyContext : DbContext
     {
+       
         public TheFoodyContext()
             : base("name=TheFoodyContext")
         {
         }
+    
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Restaurant_Type> Restaurant_Type { get; set; }
-        public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<Meal_Category> Meal_Category { get; set; }
-        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<Restaurant> Restaurants { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

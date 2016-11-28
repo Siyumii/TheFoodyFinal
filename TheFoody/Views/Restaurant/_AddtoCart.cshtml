@@ -7,6 +7,7 @@
 <div class="side-block-order-content">
     <!-- Order Item List Starts -->
     <ul class="list-unstyled order-item-list">
+        @{double total = 0; }
         @if (Session["Cart"] == null)
         {
             <li class="clearfix">
@@ -16,14 +17,25 @@
         }
         else
         {
-            double total = 0;
             foreach (Item item in (List<Item>)Session["Cart"])
             {
 
                 total = total + item.Cartitem.MenuPrice;
                     <li class="clearfix">
-                        <span class="pull-left">@Html.DisplayFor(modelItem => item.Cartitem.MenuName)</span>
-                        <span class="pull-right text-spl-color">@Html.DisplayFor(modelItem => item.Cartitem.MenuPrice)</span>
+                        @*@helper AjaxLink(string action, string controller, string icon_name)
+                        {
+                        <a href="@Url.Action(action, new { controller = controller })" data-ajax-update="#shoppingcart" data-ajax-mode="replace" data-ajax="true"><div class="icon @icon_name"></div></a>
+                        }*@
+
+                        @Ajax.ActionLink("Remove", "RemovefromCart", new { Item = item}, new AjaxOptions
+                   {
+                       UpdateTargetId = "shoppingcart",
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+
+                   },new { style= "background-image:url(~/images/remove.png)" })
+                        <span>@Html.DisplayFor(modelItem => item.Cartitem.MenuName)</span>
+                        <span class="pull-right text-spl-color">Rs.@Html.DisplayFor(modelItem => item.Cartitem.MenuPrice)</span>
                     </li>
             }
         }
@@ -32,7 +44,7 @@
     <!-- Order Item Total Starts -->
     <dl class="dl-horizontal order-item-total">
         <dt class="text-light">Orders Amount :</dt>
-        <dd class="text-spl-color text-right">Rs.0.00</dd>
+        <dd class="text-spl-color text-right">Rs.@total</dd>
         <dt class="text-light">Delivery Charges :</dt>
         <dd class="text-spl-color text-right">Rs.80.00</dd>
         <hr>
@@ -40,9 +52,21 @@
         <dd class="text-bold text-spl-color text-right">Rs.0.00</dd>
     </dl>
     <!-- Order Item Total Ends -->
-    <div class="cfo-checkoutarea">
-        <button type="submit" id="a" name="a" class="btn btn-primary btn-block custom-checkout">Proceed to Checkout</button>
-    </div>
+    @if (total >= Convert.ToInt32(Session["MinDelivery"]))
+    {
+        <div class="cfo-checkoutarea">
+            <button type="submit" id="a" name="a" class="btn btn-primary btn-block custom-checkout">Proceed to Checkout</button>
+        </div>
+    }
+    else
+    {
+        double dif = Convert.ToInt32(Session["MinDelivery"])-total;
+        <div class="cfo-checkoutarea">
+            <label>Spend Rs.@dif more for delivery</label>
+            <button type="submit" id="a" name="a" class="btn btn-primary btn-block custom-checkout" disabled>Proceed to Checkout</button>
+        </div>
+    }
+
 </div>
 <!-- Order Content Ends -->
 

@@ -9,7 +9,6 @@ namespace TheFoody.Controllers
     public class Item
     {
         private CartItem cartitem=new CartItem();
-        private int quantity;
 
         public CartItem Cartitem
         {
@@ -24,28 +23,16 @@ namespace TheFoody.Controllers
             }
         }
 
-        public int Quantity
-        {
-            get
-            {
-                return quantity;
-            }
-
-            set
-            {
-                quantity = value;
-            }
-        }
+        
 
         public Item()
         {
 
         }
 
-        public Item(CartItem cartitem,int quantity)
+        public Item(CartItem cartitem)
         {
             this.cartitem = cartitem;
-            this.quantity = quantity;
         }
 
         

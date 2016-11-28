@@ -95,6 +95,7 @@
             if (this.readyState == 4 && this.status == 200)
             {
                 alert(this.responseText);
+                document.getElementById("reviews-box").innerHTML = this.responseText;
             }
         };
         xhttp.open("POST", "http://localhost:1672/Restaurant/ratingResponse", true);
@@ -158,7 +159,7 @@
                                         </li>
                                         <li>
                                             <span>Min Order:</span>
-                                            &pound;15
+                                            Rs.@Html.DisplayFor(model => model.MinDelivery)
                                         </li>
                                         <li>
                                             <span>Delivery: </span>
@@ -497,8 +498,9 @@
                                             <!-- Reviews Form Box Ends -->
                                             <!-- Reviews List Starts -->
                                             <div class="reviews-box" id="reviews-box">
+
                                                 <!-- Review #1 Starts -->
-                                                <div class="review-list">
+                                                <!--<div class="review-list">
                                                     <div class="clearfix">
                                                         <div class="pull-left">
                                                             <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
@@ -516,71 +518,8 @@
                                                     <div class="review-list-content">
                                                         <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                                 <!-- Review #1 Ends -->
-                                                <!-- Review #2 Starts -->
-                                                <div class="review-list">
-                                                    <div class="clearfix">
-                                                        <div class="pull-left">
-                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
-                                                            <h6>By Sainath Chillapuram</h6>
-                                                            <ul class="list-unstyled list-inline rating-star-list">
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
-                                                    </div>
-                                                    <div class="review-list-content">
-                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Review #2 Ends -->
-                                                <!-- Review #3 Starts -->
-                                                <div class="review-list">
-                                                    <div class="clearfix">
-                                                        <div class="pull-left">
-                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
-                                                            <h6>By Sainath Chillapuram</h6>
-                                                            <ul class="list-unstyled list-inline rating-star-list">
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
-                                                    </div>
-                                                    <div class="review-list-content">
-                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Review #3 Ends -->
-                                                <!-- Review #4 Starts -->
-                                                <div class="review-list">
-                                                    <div class="clearfix">
-                                                        <div class="pull-left">
-                                                            <h6><i class="fa fa-calendar"></i> Mar 10, 2016</h6>
-                                                            <h6>By Sainath Chillapuram</h6>
-                                                            <ul class="list-unstyled list-inline rating-star-list">
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                                <li><i class="fa fa-star-o"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <img src="/images/review-thumb-img1.png" alt="Image" class="img-responsive pull-right">
-                                                    </div>
-                                                    <div class="review-list-content">
-                                                        <p>The delivery guy said he will be back in 10 mins with the missing items, but never came back. when I called the restaurant, they took another 30 mins to deliver.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Review #4 Ends -->
                                             </div>
                                             <!-- Reviews List Ends -->
                                             <!-- Spacer Starts -->
@@ -737,7 +676,7 @@
                     <!-- Spacer Ends -->
                     <!-- Your Order Starts -->
                     <div class="side-block-order border-radius-4" id="shoppingcart">
-                        @{Html.RenderPartial("_AddtoCart");}
+                        @{Html.RenderPartial("_AddtoCart", new {mindelivery=Model.MinDelivery  });}
                     </div>
                     <!-- Your Order Ends -->
                     <!-- start add wrapper -->

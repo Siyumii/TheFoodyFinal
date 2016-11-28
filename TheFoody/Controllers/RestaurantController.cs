@@ -742,7 +742,7 @@ namespace TheFoody.Controllers
                 Restaurant restaurant = new Restaurant();
                 if (TempData.ContainsKey("OwnerEmail"))
                     restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-                restaurant.OwnerEmail = "c2@gmail.com";
+                restaurant.OwnerEmail = "c1@gmail.com";
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))

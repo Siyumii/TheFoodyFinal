@@ -10,7 +10,7 @@
 namespace TheFoody.DataAccess
 {
     using System;
-    using System.Data.SqlClient;
+    //using System.Data.SqlClient;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     

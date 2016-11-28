@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <IncludeIisSettings>false</IncludeIisSettings>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -103,7 +104,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="SRVTextToImage">
-      <HintPath>C:\Users\Siyumi\Downloads\SRVTextToImage.dll\SRVTextToImage.dll</HintPath>
+      <HintPath>..\..\SRVTextToImage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -510,6 +511,9 @@
       <Project>{951e5dcb-a2bd-41d3-9994-1917bc296d66}</Project>
       <Name>TheFoody.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

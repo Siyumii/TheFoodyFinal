@@ -128,7 +128,7 @@ namespace TheFoody.Controllers
         }
 
         //
-       
+
         public PartialViewResult GetMenus(int? restId, int? categoryId)
         {
             List<MenuVm> menuVmList = new List<MenuVm>();
@@ -141,8 +141,8 @@ namespace TheFoody.Controllers
                     menuVmList.Add(TransformToMenuVm(menuList[j]));
                 }
             }
-           
-                return PartialView("_MenuList", menuVmList);
+
+            return PartialView("_MenuList", menuVmList);
         }
 
 
@@ -214,9 +214,9 @@ namespace TheFoody.Controllers
         {
             if (restaurant == null)
                 return null;
-            
+
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
-            
+
             restaurantVm.Address = restaurant.Address;
             restaurantVm.categories = restaurant.Restaurant_Type.Select(x => x.Category.category1).ToList();
             restaurantVm.City = restaurant.City;
@@ -351,7 +351,7 @@ namespace TheFoody.Controllers
                 Restaurant restaurant = new Restaurant();
                 if (TempData.ContainsKey("OwnerEmail"))
                     restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-               
+
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
@@ -419,9 +419,10 @@ namespace TheFoody.Controllers
                                       where p.RestaurantName == restaurant.RestaurantName
                                       select p.Id).Single()
                             });
-                            
+
                         }
-                        else {
+                        else
+                        {
                             ModelState.AddModelError("Categories", "Please select atleast one restaurant type");
                         }
                     }
@@ -433,14 +434,14 @@ namespace TheFoody.Controllers
                     }
                 }
             }
-            ViewBag.Categories = getCategories() ;
+            ViewBag.Categories = getCategories();
             return View();
         }
 
         [NonAction]
         public List<CategoryViewModel> getCategories()
         {
-                
+
             var dbCategories = db.Categories.ToList();
 
             var categories = new List<CategoryViewModel>();
@@ -456,6 +457,30 @@ namespace TheFoody.Controllers
             }
 
             return categories;
+        }
+
+        [NonAction]
+        public List<CategoryViewModel> getSelectedCategories(int id)
+        {
+
+            List<CategoryViewModel> allCategories = getCategories();
+
+            var categorieID = (from p in db.Restaurant_Type
+                               where p.Rest_id == id
+                               select p).ToList();
+
+            foreach (CategoryViewModel cat in allCategories)
+            {
+                foreach (Restaurant_Type res in categorieID)
+                {
+                    if (res.Category_id.ToString() == cat.id)
+                    {
+                        cat.isChecked = true;
+                    }
+                }
+            }
+
+            return allCategories;
         }
 
         // GET: Restaurant/Edit/5
@@ -490,6 +515,7 @@ namespace TheFoody.Controllers
             restaurant.TimetakentoDeliver = Convert.ToInt16(user.TimetakentoDeliver);
 
             TempData["RestaurantId"] = id;
+            ViewBag.Categories = getSelectedCategories(id);
             return View(restaurant);
         }
 
@@ -506,42 +532,96 @@ namespace TheFoody.Controllers
                 Restaurant restaurant = new Restaurant();
                 if (TempData.ContainsKey("OwnerEmail"))
                     restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-
-
+                restaurant.OwnerEmail = "c2@gmail.com";
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
                     {
-                        HttpPostedFileBase photo = Request.Files["logo"];
-                        restaurant.RestaurantName = model.RestaurantName;
-
-                        if (photo != null && photo.ContentLength > 0)
+                        if (collection["job_type_checkbox"] != null)
                         {
-                            var extension = Path.GetExtension(photo.FileName);
-                            restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
-                            var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
-                            photo.SaveAs(path);
+                            HttpPostedFileBase photo = Request.Files["logo"];
+                            restaurant.RestaurantName = model.RestaurantName;
+
+                            if (photo != null && photo.ContentLength > 0)
+                            {
+                                var extension = Path.GetExtension(photo.FileName);
+                                restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
+                                var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
+                                photo.SaveAs(path);
+                            }
+                            restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
+                            restaurant.Phone = model.Phone.ToString();
+                            restaurant.Address = model.Address;
+                            restaurant.City = model.City;
+                            restaurant.PostCode = model.PostCode.ToString();
+                            restaurant.District = model.District;
+                            restaurant.Website = model.Website;
+                            restaurant.CompanyBackground = model.CompanyBackground;
+                            restaurant.OpeningTime = model.OpeningTime;
+                            restaurant.ClosingTime = model.ClosingTime;
+                            restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
+                            restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
+                            restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
+
+                            db.Entry(restaurant).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            var categories = db.Categories.ToList();
+                            string type = collection["job_type_checkbox"];
+                            string[] tt = type.Split(',');
+
+                            restaurant.Restaurant_Type = new List<Restaurant_Type>();
+
+                            List<string> ca = new List<string>();
+
+                            foreach (var category in categories)
+                            {
+
+                                for (int i = 0; i < tt.Length; i++)
+                                {
+                                    if (category.category1 == tt[i])
+                                    {
+                                        ca.Add(tt[i]);
+                                        var categorieID = (from p in db.Restaurant_Type
+                                                           where p.Rest_id == restaurant.Id
+                                                           where p.Category_id == category.id
+                                                           select p).FirstOrDefault();
+                                        if (categorieID == null)
+                                        {
+                                            restaurant.Restaurant_Type.Add(new Restaurant_Type { Category_id = category.id, Rest_id = restaurant.Id });
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                            foreach (var category in categories)
+                            {
+
+                                if (!ca.Contains(category.category1))
+                                {
+                                    var categorieID = (from p in db.Restaurant_Type
+                                                       where p.Rest_id == restaurant.Id
+                                                       where p.Category_id == category.id
+                                                       select p).FirstOrDefault();
+                                    if (categorieID != null)
+                                    {
+                                        db.Restaurant_Type.Remove(categorieID);
+                                    }
+
+                                }
+
+                            }
+                            db.SaveChanges();
+
+                            Session["UserEmail"] = restaurant.OwnerEmail;
+                            return RedirectToAction("Index", "Home");
                         }
-                        restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
-                        restaurant.Phone = model.Phone.ToString();
-                        restaurant.Address = model.Address;
-                        restaurant.City = model.City;
-                        restaurant.PostCode = model.PostCode.ToString();
-                        restaurant.District = model.District;
-                        restaurant.Website = model.Website;
-                        restaurant.CompanyBackground = model.CompanyBackground;
-                        restaurant.OpeningTime = model.OpeningTime;
-                        restaurant.ClosingTime = model.ClosingTime;
-                        restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
-                        restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
-                        restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
-
-                        db.Entry(restaurant).State = EntityState.Modified;
-                        db.SaveChanges();
-                        Session["UserEmail"] = restaurant.OwnerEmail;
-                        return RedirectToAction("Index", "Home");
-
-
+                        else {
+                            ModelState.AddModelError("Categories", "Please select atleast one restaurant type");
+                        }
                     }
                     else
                     {
@@ -552,9 +632,11 @@ namespace TheFoody.Controllers
                 }
 
             }
+
+            ViewBag.Categories = getSelectedCategories(Convert.ToInt32(TempData["RestaurantId"]));
             return View(model);
         }
 
     }
-  
+
 }

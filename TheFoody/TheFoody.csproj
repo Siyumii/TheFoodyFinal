@@ -267,7 +267,6 @@
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
-    <Compile Include="Models\RestaurantModel.cs" />
     <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,7 +7,14 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "Manage", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @if (Session["UserType"].ToString() == "Customer")
+                {
+                    @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "Manage", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                }
+                else
+                {
+                    @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "EditRestaurant", "Restaurant", routeValues: null, htmlAttributes: new { title = "Edit Restaurant" })
+                }
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>

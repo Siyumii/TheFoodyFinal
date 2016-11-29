@@ -693,40 +693,78 @@ namespace TheFoody.Controllers
             return allCategories;
         }
 
-        // GET: Restaurant/Edit/5
-        public ActionResult EditRestaurant(int id)
+        public PartialViewResult RestaurantProfile(string partialViewType)
         {
-            if (id == null)
+            RestaurantDeatilModel restaurantDetailModel = (RestaurantDeatilModel)Session["RestaurantDetailModel"];
+            if (partialViewType == "Profile")
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                ViewBag.Categories = getSelectedCategories(restaurantDetailModel.id);
+                return PartialView("_RestaurantProfileDetails", restaurantDetailModel);
             }
-            Restaurant user = db.Restaurants.Find(id);
-            if (user == null)
+            else if (partialViewType == "Edit")
+            {
+
+                ViewBag.Categories = getSelectedCategories(restaurantDetailModel.id);
+                return PartialView("_EditRestaurantProfile", restaurantDetailModel);
+            }
+            else
+            {
+                return PartialView("_ChangePassword", restaurantDetailModel);
+            }
+
+        }
+
+        // GET: Restaurant/Edit/5
+        public ActionResult EditRestaurant()
+        {
+            string email = Session["UserEmail"].ToString();
+            Restaurant restaurant = db.Restaurants.Where(u => u.OwnerEmail == email).SingleOrDefault();
+            if (restaurant == null)
             {
                 return HttpNotFound();
             }
 
-            RestaurantDeatilModel restaurant = new RestaurantDeatilModel();
+            RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
+            Session["RestaurantDetailModel"] = restaurantDeatilModel;
+            restaurantDeatilModel.id = restaurant.Id;
+            restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
 
-            restaurant.RestaurantName = user.RestaurantName;
+            restaurantDeatilModel.Phone = restaurant.Phone.ToString();
+            restaurantDeatilModel.Address = restaurant.Address;
+            restaurantDeatilModel.Logo = restaurant.Logo;
+            restaurantDeatilModel.City = restaurant.City;
+            restaurantDeatilModel.PostCode = restaurant.PostCode;
+            restaurantDeatilModel.District = restaurant.District;
+            restaurantDeatilModel.Website = restaurant.Website;
+            restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
+            restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+            restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+            restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+            restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
 
-            restaurant.Phone = user.Phone.ToString();
-            restaurant.Address = user.Address;
-            restaurant.Logo = user.Logo;
-            restaurant.City = user.City;
-            restaurant.PostCode = user.PostCode;
-            restaurant.District = user.District;
-            restaurant.Website = user.Website;
-            restaurant.CompanyBackground = user.CompanyBackground;
-            restaurant.OpeningTime = user.OpeningTime;
-            restaurant.ClosingTime = user.ClosingTime;
-            restaurant.DeliveryStartingTime = user.DeliveryStartingTime;
-            restaurant.DeliveryEndingTime = user.DeliveryEndingTime;
-            restaurant.TimetakentoDeliver = Convert.ToInt16(user.TimetakentoDeliver);
+            restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+            DateTime time = DateTime.Today.Add(restaurantDeatilModel.OpeningTime);
+            restaurantDeatilModel.detailsOpeningTime = time.ToString("hh:mm tt");
 
-            TempData["RestaurantId"] = id;
-            ViewBag.Categories = getSelectedCategories(id);
-            return View(restaurant);
+            restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.ClosingTime);
+            restaurantDeatilModel.detailsClosingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryStartingTime);
+            restaurantDeatilModel.detailsDeliveryStartingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryEndingTime);
+            restaurantDeatilModel.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.TimetakentoDeliver = Convert.ToInt32(restaurant.TimetakentoDeliver);
+
+            TempData["RestaurantId"] = restaurantDeatilModel.id;
+            TempData["RestaurantLogo"] = restaurantDeatilModel.Logo;
+            ViewBag.Categories = getSelectedCategories(restaurantDeatilModel.id);
+            return View(restaurantDeatilModel);
         }
 
         // POST: Restaurant/Edit/5
@@ -740,9 +778,9 @@ namespace TheFoody.Controllers
             if (ModelState.IsValid)
             {
                 Restaurant restaurant = new Restaurant();
-                if (TempData.ContainsKey("OwnerEmail"))
-                    restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-                restaurant.OwnerEmail = "c1@gmail.com";
+                
+                restaurant.OwnerEmail = Session["UserEmail"].ToString();
+                
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
@@ -756,10 +794,16 @@ namespace TheFoody.Controllers
                             {
                                 var extension = Path.GetExtension(photo.FileName);
                                 restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
+                                model.Logo = restaurant.Logo;
                                 var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
                                 photo.SaveAs(path);
                             }
+                            else {
+                                restaurant.Logo = TempData["RestaurantLogo"].ToString();
+                                model.Logo = restaurant.Logo;
+                            }
                             restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
+                            model.id = restaurant.Id;
                             restaurant.Phone = model.Phone.ToString();
                             restaurant.Address = model.Address;
                             restaurant.City = model.City;
@@ -771,6 +815,23 @@ namespace TheFoody.Controllers
                             restaurant.ClosingTime = model.ClosingTime;
                             restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
                             restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
+
+
+                            DateTime time = DateTime.Today.Add(restaurant.OpeningTime);
+                            model.detailsOpeningTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.ClosingTime);
+                            model.detailsClosingTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.DeliveryStartingTime);
+                            model.detailsDeliveryStartingTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.DeliveryEndingTime);
+                            model.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
+
                             restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
 
                             db.Entry(restaurant).State = EntityState.Modified;
@@ -827,7 +888,10 @@ namespace TheFoody.Controllers
                             db.SaveChanges();
 
                             Session["UserEmail"] = restaurant.OwnerEmail;
-                            return RedirectToAction("Index", "Home");
+                            TempData["RestaurantLogo"] = model.Logo;
+                            Session["RestaurantDetailModel"] = model;
+                            ViewBag.Categories = getSelectedCategories(Convert.ToInt32(restaurant.Id));
+                            return View(model);
                         }
                         else {
                             ModelState.AddModelError("Categories", "Please select atleast one restaurant type");
@@ -836,13 +900,14 @@ namespace TheFoody.Controllers
                     else
                     {
                         //TODO E.g. ModelState.AddModelError
-                        ModelState.AddModelError("", "Owner have not been registered successfully");
+                        ModelState.AddModelError("", "Owner has not been logged in successfully");
 
                     }
                 }
 
             }
 
+            TempData["RestaurantLogo"] = model.Logo;
             ViewBag.Categories = getSelectedCategories(Convert.ToInt32(TempData["RestaurantId"]));
             return View(model);
         }

@@ -173,5 +173,14 @@ namespace TheFoody.Models
 
         [Display(Name = "Categories")]
         public List<CategoryViewModel> Categories { get; set; }
+
+        public int id { get; set; }
+        public string detailsOpeningTime { get; set; }
+
+        public string detailsClosingTime { get; set; }
+
+        public string detailsDeliveryStartingTime { get; set; }
+
+        public string detailsDeliveryEndingTime { get; set; }
     }
 }

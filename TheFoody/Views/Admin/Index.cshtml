@@ -109,7 +109,15 @@
                             <li>
                                 <a href="javascript:chooser();"><i class="fa fa-bookmark"></i> Delete Account</a>
                             </li>
+                            <li>
+                                @Ajax.ActionLink("New Restaurants", "AdminProfile", new { partialViewType = "NewRestaurants", restaurantId = 0 }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "newRestaurants",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
 
+                                            }, new { @class = "" })
+                            </li>
                         </ul>
                     </div>
                 </div>

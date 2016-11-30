@@ -35,14 +35,85 @@ namespace TheFoody.Controllers
 
         public PartialViewResult AdminProfile(string partialViewType, int restaurantId)
         {
-            ManageViewModel manageViewModel = (ManageViewModel)Session["AdminProfile"];
-            if (partialViewType == "Profile")
+            if (partialViewType == "NewRestaurants")
             {
-                
+                var NewRestaurants = getNewRestaurants();
+                ViewBag.NewRestaurants = getNewRestaurants();
+
+                return PartialView("_NewRestaurantDetails", NewRestaurants);
+            }
+            else if (partialViewType == "View")
+            {
+
+                var restaurant = (from p in db.Restaurants
+                                  where p.Id == restaurantId
+                                  select p).SingleOrDefault();
+                RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
+
+                Session["RestaurantDetailModel"] = restaurantDeatilModel;
+                restaurantDeatilModel.id = restaurant.Id;
+                restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
+
+                restaurantDeatilModel.Phone = restaurant.Phone.ToString();
+                restaurantDeatilModel.Address = restaurant.Address;
+                restaurantDeatilModel.Logo = restaurant.Logo;
+                restaurantDeatilModel.City = restaurant.City;
+                restaurantDeatilModel.PostCode = restaurant.PostCode;
+                restaurantDeatilModel.District = restaurant.District;
+                restaurantDeatilModel.Website = restaurant.Website;
+                restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
+                restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+                restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+                restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+                restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+
+                return PartialView("_RestaurantDetails", restaurantDeatilModel);
+            }
+            else
+            {
+                ManageViewModel manageViewModel = (ManageViewModel)Session["AdminProfile"];
                 return PartialView("_Manage", manageViewModel);
             }
-            return PartialView("_Manage", manageViewModel);
-            
+ 
+        }
+
+        [NonAction]
+        public List<RestaurantDeatilModel> getNewRestaurants()
+        {
+
+            var dbNewRestaurantOwners = db.Users.Where(u => u.status == "Deactive").ToList();
+
+            var newRestaurants = new List<RestaurantDeatilModel>();
+
+            foreach (var category in dbNewRestaurantOwners)
+            {
+                var restaurant = (from p in db.Restaurants
+                                  where p.OwnerEmail == category.email
+                                  select p).SingleOrDefault();
+                if (restaurant != null)
+                {
+                    RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
+                    Session["RestaurantDetailModel"] = restaurantDeatilModel;
+                    restaurantDeatilModel.id = restaurant.Id;
+                    restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
+
+                    restaurantDeatilModel.Phone = restaurant.Phone.ToString();
+                    restaurantDeatilModel.Address = restaurant.Address;
+                    restaurantDeatilModel.Logo = restaurant.Logo;
+                    restaurantDeatilModel.City = restaurant.City;
+                    restaurantDeatilModel.PostCode = restaurant.PostCode;
+                    restaurantDeatilModel.District = restaurant.District;
+                    restaurantDeatilModel.Website = restaurant.Website;
+                    restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
+                    restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+                    restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+                    restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+                    restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+                    newRestaurants.Add(restaurantDeatilModel);
+                }
+            }
+
+            return newRestaurants;
         }
     }
 }

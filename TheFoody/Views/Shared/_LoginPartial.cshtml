@@ -11,6 +11,10 @@
                 {
                     @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "Manage", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                 }
+                else if (Session["UserType"].ToString() == "Admin")
+                {
+                    @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "Index", "Admin", routeValues: null, htmlAttributes: new { title = "Admin" })
+                }
                 else
                 {
                     @Html.ActionLink("Hello " + Session["UserEmail"].ToString() + "!", "EditRestaurant", "Restaurant", routeValues: null, htmlAttributes: new { title = "Edit Restaurant" })

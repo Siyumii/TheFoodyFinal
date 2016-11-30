@@ -1,0 +1,127 @@
+﻿@model TheFoody.Models.ManageViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    window.onload = loadValues();
+
+    function editFunc() {
+
+        document.getElementById("photo").disabled = false;
+        document.getElementById("FirstName").disabled = false;
+        document.getElementById("LastName").disabled = false;
+        //document.getElementById("UserType").disabled = false;
+        document.getElementById("Address").disabled = false;
+        document.getElementById("City").disabled = false;
+        document.getElementById("District").disabled = false;
+        document.getElementById("Phone").disabled = false;
+        //document.getElementById("Photo").disabled = false;
+        document.getElementById("PostCode").disabled = false;
+        //document.getElementById("Status").disabled = false;
+    }
+    function reload() {
+        window.location.href = "http://localhost:1672/Manage";
+    }
+
+    function show(input) {
+        if (input.files && input.files[0]) {
+            var filerdr = new FileReader();
+            filerdr.onload = function (e) {
+                $('#user_img').attr('src', e.target.result);
+            }
+            filerdr.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function chooser() {
+        var res = confirm("Are you sure you want to delete your account?");
+        if (res === true) {
+            document.location = 'http://localhost:1672/DeleteAccount/DeleteAccount'
+        }
+        else {
+            dialog.dialog('close');
+        }
+    }
+
+
+</script>
+
+
+
+
+<div class="breadcrumb-wrapper">
+    <div class="container">
+        <ol class="breadcrumb-list booking-step">
+            <li><a href="#">Home</a></li>
+            <li><span>User Profile</span></li>
+        </ol>
+    </div>
+</div>
+
+<div class="admin-container-wrapper">
+    <div class="container">
+        <div class="GridLex-gap-15-wrappper">
+            <div class="GridLex-grid-noGutter-equalHeight">
+                <div class="GridLex-col-3_sm-4_xs-12">
+                    <div class="admin-sidebar">
+                        <div class="admin-user-item">
+                            <div class="image">
+
+                                @if (Model.photo == null)
+                                {
+                                    <img src="~/images/user-images/default-user.png" alt="image" class="img-circle" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/user-images/@Html.DisplayFor(model => model.photo)" alt="image" class="img-circle" />
+
+                                }
+                            </div>
+                            <h4>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h4>
+                            <p class="user-role">Foodies</p>
+                        </div>
+                        <div class="admin-user-action text-center">
+                            <a href="#" class="btn btn-primary btn-sm" onclick="editFunc()">Edit</a>
+                            <a href="#" class="btn btn-primary btn-sm btn-inverse">Deactivate</a>
+                        </div>
+                        <ul class="admin-user-menu clearfix">
+                            <li>
+                                <a href="#"><i class="fa fa-tachometer"></i> Dashboard</a>
+                            </li>
+                            <li class="active">
+                                @Ajax.ActionLink("Profile", "AdminProfile", new { partialViewType = "Profile", restaurantId = 0 }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "newRestaurants",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "fa fa-user" })
+                            </li>
+                            <li>
+                                <a href="http://localhost:1672/ChangePassword/ChangePassword"><i class="fa fa-key"></i> Change Password</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-bookmark"></i> Favourite Restaurant</a>
+                            </li>
+                            <li>
+                                <a href="javascript:chooser();"><i class="fa fa-bookmark"></i> Delete Account</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="GridLex-col-9_sm-8_xs-12">
+                    <div class="admin-content-wrapper" id="newRestaurants">
+                        @{Html.RenderPartial("_Manage", Model);}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

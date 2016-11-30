@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mvc.Mailer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -114,6 +115,72 @@ namespace TheFoody.Controllers
             }
 
             return newRestaurants;
+        }
+
+        public class UserMailer : MailerBase
+        {
+            public UserMailer()
+            {
+                //MasterName="_Layout";
+            }
+
+            public virtual MvcMailMessage Welcome(Models.MailModel _objModelMail)
+            {
+                //var resources = new Dictionary<string, string>();
+                //resources["logo"] = "~/Img/logo.png";
+                //LinkedResource logo = new LinkedResource(resources["logo"]);
+
+                //PopulateBody(mailMessage, "WelcomeMessage", resources);
+                ViewData.Model = _objModelMail;
+                return Populate(x =>
+                {
+                    x.Subject = _objModelMail.Subject;
+                    x.ViewName = "WelcomeEmail";
+                    x.To.Add(_objModelMail.To);
+                    //x.LinkedResources.Add("logo", resources["logo"]);
+                });
+            }
+
+            public virtual MvcMailMessage Reject(Models.MailModel _objModelMail)
+            {
+                ViewData.Model = _objModelMail;
+                return Populate(x =>
+                {
+                    x.Subject = _objModelMail.Subject;
+                    x.ViewName = "RejectedEmail";
+                    x.To.Add(_objModelMail.To);
+
+                });
+            }
+
+        }
+        UserMailer userMailer = new UserMailer();
+        public ActionResult SendAccaptedMail()
+        {
+            TheFoody.Models.MailModel _objModelMail = new TheFoody.Models.MailModel();
+            //change email to restaurant owner's email
+            _objModelMail.To = "c.wasala92@gmail.com";
+            _objModelMail.Subject = "Congratulation!";
+            _objModelMail.Body = "Dear user, You have been accepted as a new restaurant owner in TheFoody. You can now proceed with all the tasks available to you.";
+            userMailer.Welcome(_objModelMail).Send();
+            //UserMailer.Welcome().Send(); //Send() extension method: using Mvc.Mailer
+            return RedirectToAction("Index");
+
+
+        }
+
+        public ActionResult SendRejectedMail()
+        {
+            TheFoody.Models.MailModel _objModelMail = new TheFoody.Models.MailModel();
+            //change email to restaurant owner's email
+            _objModelMail.To = "c.wasala92@gmail.com";
+            _objModelMail.Subject = "Rejected";
+            _objModelMail.Body = "Dear user, We are sorry to inform you that you have not been accepted as a new restaurant owner in TheFoody.";
+            userMailer.Reject(_objModelMail).Send();
+            //UserMailer.Welcome().Send(); //Send() extension method: using Mvc.Mailer
+            return RedirectToAction("Index");
+
+
         }
     }
 }

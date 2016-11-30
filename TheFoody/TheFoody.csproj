@@ -90,6 +90,9 @@
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Mvc.Mailer">
+      <HintPath>F:\Jayani\SLIIT\3 YEAR\2 sem(3 year)\SEP_2\week9\TheFoodyFinal\packages\MvcMailer-vs2013.4.5.1-pre\lib\45\Mvc.Mailer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -267,6 +270,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\MailModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\RestaurantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -396,6 +400,8 @@
     <Content Include="Views\Admin\_Manage.cshtml" />
     <Content Include="Views\Admin\_NewRestaurantDetails.cshtml" />
     <Content Include="Views\Admin\_RestaurantDetails.cshtml" />
+    <Content Include="Views\UserMailer\RejectedEmail.cshtml" />
+    <Content Include="Views\UserMailer\WelcomeEmail.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />

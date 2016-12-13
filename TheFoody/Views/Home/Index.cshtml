@@ -6,7 +6,8 @@
         <p>Find amazing selection of local restaurant delivering food to your door</p>
 
         <div class="main-search-form-wrapper">
-
+@using (Html.BeginForm("Index", "Restaurant", FormMethod.Post))
+            {
             <form>
 
                 <div class="form-holder">
@@ -17,7 +18,7 @@
                         </div>
 
                         <div class="col-xss-6 col-xs-6 col-sm-6">
-                            <input class="form-control" placeholder="Find a restaurant" />
+                            <input class="form-control" placeholder="Find a restaurant" id="search" name="search" />
                         </div>
 
                     </div>
@@ -29,7 +30,7 @@
                 </div>
 
             </form>
-
+}
         </div>
 
 
@@ -435,3 +436,39 @@
 </div>
 <div class="clearfix"></div>
 <!-- Download App End -->
+
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+<script src="~/scripts/jquery-3.1.1.js"></script>
+
+<script src="~/Views/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+
+        $("#search").autocomplete({
+
+            source: function (request, response) {
+
+                $.getJSON("/Home/getData?term=" + request.term, function (data) {
+                    response(data);
+                },
+                function (data) {
+                    alert("error")
+                });
+            },
+            minLength: 1,
+        });
+    });
+
+
+</script>

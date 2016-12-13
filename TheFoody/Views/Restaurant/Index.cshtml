@@ -34,18 +34,30 @@
 
                         <div class="row gap-10">
 
+                            @*<div class="col-sm-4">*@
+                            @*<div class="form-group">
+                                <label>Service:</label>
+                                <select class="selectpicker form-control" data-show-subtext="true" name="Service" id="Service" onchange="SelectChanged(this)">
+                                    <option value="Open Now">Open Now</option>
+                                    <option value="Delivery">Delivery</option>
+
+                                </select>*@
+
+                            @*</div>*@
+
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label>Service:</label>
-                                    <select class="selectpicker form-control" data-show-subtext="true">
-                                        <option value="0">Reservation</option>
-                                        <option value="1">Delivery</option>
-                                        <option value="2">Collection</option>
+                                    <label>Cuisine</label>
+                                    @*<div class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>*@
+
+                                    <select class="selectpicker form-control" id="Cuisine">
+                                        <option value="Nothing Selected">Nothing Selected</option>
                                     </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-sm-4">
+                        @*<div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Popular City</label>
                                     <select class="selectpicker form-control" data-show-subtext="true">
@@ -57,9 +69,9 @@
                                         <option value="5">Dudley</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>*@
 
-                            <div class="col-sm-4">
+                        @*<div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Cuisine</label>
                                     <select class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>
@@ -75,480 +87,245 @@
                                         <option value="7">Thai</option>
                                     </select>
                                 </div>
+                            </div>*@
+
+
+
+                        <div class="col-sm-12 col-md-5">
+
+                            <div class="text-right hidden-sm hidden-xs">
+                                <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-md-5">
-
-                        <div class="text-right hidden-sm hidden-xs">
-                            <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
-                        </div>
-
-                        <div class="job-type-checkbox-wrapper clearfix">
-                            <div class="checkbox-block job-type-checkbox freelance-checkbox">
-                                <input id="job_type_checkbox-3" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" checked />
-                                <label class="" for="job_type_checkbox-3">Reservation</label>
-                            </div>
-
-                            <div class="checkbox-block job-type-checkbox part-time-checkbox">
-                                <input id="job_type_checkbox-2" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" checked />
-                                <label class="" for="job_type_checkbox-2">Delivery</label>
-                            </div>
-
-                            <div class="checkbox-block job-type-checkbox full-time-checkbox">
-                                <input id="job_type_checkbox-1" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" checked />
-                                <label class="" for="job_type_checkbox-1">Collection</label>
-                            </div>
-
-                        </div>
-
-                        <div class="clear"></div>
-
-                        <div class="text-right visible-sm visible-xs">
-                            <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
-                        </div>
-                    </div>
-
-                </div>
-                <div id="refine-result" class="collapse">
-                    <div class="collapse-inner clearfix">
-
-                        <div class="row">
-
-                            <div class="col-sm-12 col-md-7">
-
-                                <div class="job-type-checkbox-wrapper visible-sm visible-xs clearfix">
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-4-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-4-mobile">Open Now</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-5-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-5-mobile">Distance</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-6-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-6-mobile">User Rating</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-7-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-7-mobile">Restaurant Name</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-8-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-8-mobile">Permanent</label>
-                                    </div>
-
-                                </div>
-                                <div class="row gap-10">
-
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label>Rating:</label>
-                                            <div class="sidebar-module-inner">
-                                                <input id="price_range" />
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="job-type-checkbox-wrapper clearfix">
+                                <div class="checkbox-block job-type-checkbox freelance-checkbox">
+                                    <input id="job_type_checkbox-3" name="job_type_checkbox" type="radio" class="checkbox" value="Reservation" checked />
+                                    <label class="btn btn-success active" for="job_type_checkbox-3">Reservation</label>
                                 </div>
 
+                                <div class="checkbox-block job-type-checkbox part-time-checkbox">
+                                    <input id="job_type_checkbox-2" name="job_type_checkbox" type="radio" class="checkbox" value="Delivery" unchecked />
+                                    <label class="btn btn-primary" for="job_type_checkbox-2">Delivery</label>
+                                </div>
 
-                            </div>
-
-                            <div class="col-sm-12 col-md-5 hidden-sm hidden-xs">
-
-                                <div class="job-type-checkbox-wrapper clearfix">
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-4" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-4">Distance</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-5" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-5">Recommended</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-6" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-6">Price</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-7" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-7">Rating</label>
-                                    </div>
-
-                                    <div class="checkbox-block job-type-checkbox">
-                                        <input id="job_type_checkbox-8" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
-                                        <label class="" for="job_type_checkbox-8">Open Now</label>
-                                    </div>
-
+                                <div class="checkbox-block job-type-checkbox full-time-checkbox">
+                                    <input id="job_type_checkbox-1" name="job_type_checkbox" type="radio" class="checkbox" value="OpenNow" unchecked />
+                                    <label class="btn btn-info" for="job_type_checkbox-1">Open Now</label>
                                 </div>
                             </div>
+                            <div class="clear"></div>
 
+                            <div class="text-right visible-sm visible-xs">
+                                <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
+                            </div>
                         </div>
 
                     </div>
+                    <div id="refine-result" class="collapse">
+                        <div class="collapse-inner clearfix">
 
-                </div>
+                            <div class="row">
 
-            </div>
+                                <div class="col-sm-12 col-md-7">
 
-        </div>
+                                    <div class="job-type-checkbox-wrapper visible-sm visible-xs clearfix">
 
-        <div class="restaurant-wrapper">
-
-            <div class="row">
-
-                <div class="col-sm-8 col-md-9 mt-25">
-
-                    <div class="restaurant-list-wrapper">
-
-                        @*<div class="restaurant-item-list featured">
-
-                            <div class="featured-label"><span>featured</span></div>
-
-                            <div class="image">
-                                <img src="images/brands/06.png" alt="image" />
-                            </div>
-
-                            <div class="content">
-
-                                <div class="restaurant-item-list-info">
-
-                                    <div class="row">
-
-                                        <div class="col-sm-7 col-md-8">
-
-                                            <h4 class="heading">Arabiangrill Indiantakeaway</h4>
-                                            <div class="meta-div clearfix mb-25">
-                                                <span>at <a href="#">Indian</a></span>
-                                                <span class="res-btn label label-success">Get Offer</span>
-                                            </div>
-
-                                            <p class="texing">Forget hunting around for paper takeaway menus, at thefoody.io you can instantly access a wide array of takeaway restaurants in your local area.Browse through peer-reviewed takeaway menus that include opening times, accepted payment types and special offers.</p>
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-4-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-4-mobile">Open Now</label>
                                         </div>
 
-                                        <div class="col-sm-5 col-md-4">
-                                            <ul class="meta-list">
-                                                <li>
-                                                    <span>Location:</span>
-                                                    Paris, France
-                                                </li>
-                                                <li>
-                                                    <span>Rating:</span>
-                                                    3.2
-                                                </li>
-                                                <li>
-                                                    <span>Min Order:</span>
-                                                    &pound;15
-                                                </li>
-                                                <li>
-                                                    <span>Delivery: </span>
-                                                    60 min
-                                                </li>
-                                            </ul>
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-5-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-5-mobile">Distance</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-6-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-6-mobile">User Rating</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-7-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-7-mobile">Restaurant Name</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-8-mobile" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-8-mobile">Permanent</label>
                                         </div>
 
                                     </div>
+                                    <div class="row gap-10">
 
-                                </div>
-
-                                <div class="restaurant-item-list-bottom">
-
-                                    <div class="row">
-
-                                        <div class="col-sm-7 col-md-8">
-                                            <div class="sub-category">
-                                                <span>
-                                                    <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                    <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                    <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                    <span style="color: #CCCCCC;"><i class="fa fa-star"></i></span>
-                                                    <span style="color: #CCCCCC;"><i class="fa fa-star"></i></span>
-                                                    <span class="review">
-                                                        (<span>35</span>)
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-5 col-md-4">
-                                            <a href="#" class="btn btn-primary">Place order</a>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-                        </div>*@
-                        @foreach (var item in Model)
-                        {
-                            <div class="restaurant-item-list">
-
-                                <div class="image">
-                                    <img src="~/images/restaurant-logo/@Html.DisplayFor(modelItem => item.Logo)" alt="image" />
-                                </div>
-
-                                <div class="content">
-                                    <div class="restaurant-item-list-info">
-
-                                        <div class="row">
-
-                                            <div class="col-sm-7 col-md-8">
-
-                                                <h4 class="heading">@Html.DisplayFor(modelItem => item.RestaurantName)</h4>
-                                                <div class="meta-div clearfix mb-25">
-                                                    <span>at <a href="#">
-                                                    @foreach (var it in item.categories)
-                                                    {
-                                                        @Html.DisplayFor(modelItem=>it)
-                                                        <span></span> 
-                                                    }
-                                                    </a></span>
-                                                    <span class="res-btn label label-success">Get Offer</span>
-                                                </div>
-                                                <p class="texing">Forget hunting around for paper takeaway menus, at thefoody.io you can instantly access a wide array of takeaway restaurants in your local area.Browse through peer-reviewed takeaway menus that include opening times, accepted payment types and special offers.</p>
-                                            </div>
-                                            <div class="col-sm-5 col-md-4">
-                                                <ul class="meta-list">
-                                                    <li>
-                                                        <span>Location:</span>
-                                                        @Html.DisplayFor(modelItem => item.City)
-                                                    </li>
-                                                    <li>
-                                                        <span>Rating:</span>
-                                                        3.2
-                                                    </li>
-                                                    <li>
-                                                        <span>Min Order:</span>
-                                                        &pound;15
-                                                    </li>
-                                                    <li>
-                                                        <span>Delivery: </span>
-                                                        @Html.DisplayFor(modelItem => item.TimetakentoDeliver)
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="restaurant-item-list-bottom">
-
-                                        <div class="row">
-
-                                            <div class="col-sm-7 col-md-8">
-                                                <div class="sub-category">
-                                                    <span>
-                                                        <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                        <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                        <span style="color: #ED1C3B;"><i class="fa fa-star"></i></span>
-                                                        <span style="color: #CCCCCC;"><i class="fa fa-star"></i></span>
-                                                        <span style="color: #CCCCCC;"><i class="fa fa-star"></i></span>
-                                                        <span class="review">
-                                                            (<span>15</span>)
-                                                        </span>
-                                                    </span>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Rating:</label>
+                                                <div class="sidebar-module-inner">
+                                                    <input id="price_range" />
                                                 </div>
                                             </div>
-
-                                            <div class="col-sm-5 col-md-4">
-                                                <a href="@Url.Action("ViewMenu","Restaurant",new { id = item.RestId })" class="btn btn-primary">View Menu</a>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-                        }
-
-
-
-
-                    </div>
-
-                    <div class="pager-wrapper">
-
-                        <ul class="pager-list">
-                            <li class="paging-nav"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
-                            <li class="paging-nav"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                            <li class="number">
-                                <span class="mr-5"><span class="font600">page</span></span>
-                            </li>
-                            <li class="form">
-                                <form>
-                                    <input type="text" value="1" class="form-control">
-                                </form>
-                            </li>
-                            <li class="number">
-                                <span class="mr-5">/</span> <span class="font600">79</span>
-                            </li>
-                            <li class="paging-nav"><a href="#">go</a></li>
-                            <li class="paging-nav"><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                            <li class="paging-nav"><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
-                        </ul>
-
-                    </div>
-
-                </div>
-
-                <div class="col-sm-4 col-md-3 mt-25">
-
-                    <div class="restaurant-list-wrapper">
-
-                        <aside class="sidebar with-filter">
-
-                            <div class="sidebar-inner">
-
-                                <div class="sidebar-module">
-                                    <h4 class="sidebar-title">Featured Restaurant</h4>
-
-                                    <div class="top-company-2-wrapper">
-
-                                        <div class="GridLex-gap-10">
-
-                                            <div class="GridLex-grid-noGutter-equalHeight">
-
-                                                <div class="GridLex-col-12_sm-12_xs-6_xss-12">
-
-                                                    <div class="top-company-2">
-                                                        <a href="#">
-
-                                                            <div class="image">
-                                                                <img src="images/brands/08.png" alt="image" />
-                                                            </div>
-
-                                                            <div class="content">
-                                                                <h5 class="heading text-primary font700">Spice Delight</h5>
-                                                                <p class="texting font600">Lorem ipsum dolor sit amet, consectetur and much more...</p>
-                                                                <p class="mata-p clearfix"><span class="text-primary font700">&pound;15</span> <span class="font13">min order</span> <span class="pull-right icon"><i class="fa fa-long-arrow-right"></i></span></p>
-                                                            </div>
-
-                                                        </a>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="GridLex-col-12_sm-12_xs-6_xss-12">
-
-                                                    <div class="top-company-2">
-                                                        <a href="#">
-
-                                                            <div class="image">
-                                                                <img src="images/brands/09.png" alt="image" />
-                                                            </div>
-
-                                                            <div class="content">
-                                                                <h5 class="heading text-primary font700">Fish Chips</h5>
-                                                                <p class="texting font600">Lorem ipsum dolor sit amet, consectetur and much more...</p>
-                                                                <p class="mata-p clearfix"><span class="text-primary font700">&pound;15</span> <span class="font13">min order</span> <span class="pull-right icon"><i class="fa fa-long-arrow-right"></i></span></p>
-                                                            </div>
-
-                                                        </a>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="GridLex-col-12_sm-12_xs-6_xss-12">
-
-                                                    <div class="top-company-2">
-                                                        <a href="#">
-
-                                                            <div class="image">
-                                                                <img src="images/brands/05.png" alt="image" />
-                                                            </div>
-
-                                                            <div class="content">
-                                                                <h5 class="heading text-primary font700">Green Chilli</h5>
-                                                                <p class="texting font600">Lorem ipsum dolor sit amet, consectetur and much more...</p>
-                                                                <p class="mata-p clearfix"><span class="text-primary font700">&pound;15</span> <span class="font13">min order</span> <span class="pull-right icon"><i class="fa fa-long-arrow-right"></i></span></p>
-                                                            </div>
-
-                                                        </a>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
                                         </div>
                                     </div>
 
-                                </div>
-
-                                <div class="sidebar-module">
-                                    <h4 class="sidebar-title">Top Locations</h4>
-
-                                    <ul class="sidebar-link-list">
-                                        <li><a href="#">Louisville, KY <span>(432)</span></a></li>
-                                        <li><a href="#">Charleroi, PA <span>(123)</span></a></li>
-                                        <li>
-                                            <a href="#">New York, NY<span>(3332)</span></a>
-                                            <ul class="sidebar-link-list active">
-                                                <li><a href="#">Mahattan<span>(23)</span></a></li>
-                                                <li><a href="#">Broadway<span>(43)</span></a></li>
-                                                <li><a href="#">Midtown<span>(09)</span></a></li>
-                                                <li><a href="#">Brooklyn<span>(18)</span></a></li>
-                                                <li><a href="#">Wall Streat<span>(65)</span></a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Richmond, VA <span>(134)</span></a></li>
-                                        <li><a href="#">Overland Park, KS <span>(321)</span></a></li>
-                                        <li><a href="#">Dallas, TX <span>(554)</span></a></li>
-                                        <li><a href="#">Irvine, CA <span>(66)</span></a></li>
-                                        <li><a href="#">Escondido, CA <span>(78)</span></a></li>
-                                    </ul>
 
                                 </div>
 
-                                <div class="sidebar-module">
-                                    <h4 class="sidebar-title">New Restaurant</h4>
+                                <div class="col-sm-12 col-md-5 hidden-sm hidden-xs">
 
-                                    <div class="sub-category">
-                                        <a href="#">Bangkok Lounge</a>
-                                        <a href="#">Arabian Grill</a>
-                                        <a href="#">Curry Garden</a>
-                                        <a href="#">Green Chilli</a>
-                                        <a href="#">Bangkok Takeaway</a>
-                                        <a href="#">Curry Garden</a>
-                                        <a href="#">Bangkok Lounge</a>
-                                        <a href="#">Arabian Grill</a>
-                                        <a href="#">Curry Garden</a>
-                                        <a href="#">Green Chilli</a>
+                                    <div class="job-type-checkbox-wrapper clearfix">
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-4" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-4">Distance</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-5" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-5">Recommended</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-6" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-6">Price</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-7" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-7">Rating</label>
+                                        </div>
+
+                                        <div class="checkbox-block job-type-checkbox">
+                                            <input id="job_type_checkbox-8" name="job_type_checkbox" type="checkbox" class="checkbox" value="First Choice" />
+                                            <label class="" for="job_type_checkbox-8">Open Now</label>
+                                        </div>
+
                                     </div>
-
                                 </div>
 
                             </div>
 
-                        </aside>
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
+            <div id="restaurantList">
+                <!-- partial view content will be inserted here -->
+                @Html.Partial("_RestaurantViewer", Model)
+            </div>
 
         </div>
+
     </div>
 </div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<script src="~/scripts/jquery-3.1.1.js"></script>
+<script src="~/scripts/jquery-3.1.1.min.js"></script>
+<script src="~/scripts/jquery-ui-1.12.1.js"></script>
+
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    var Checkbox1 = document.getElementById('job_type_checkbox-1');
+    Checkbox1.onclick = function () {
+        if (this.checked) {
+            var flag = 1;
+            $.ajax({
+                url: '@Url.Action("searchOpen_Restaurants", "Restaurant")',
+                type: 'POST',
+                data: { openFlag: flag },
+
+            })
+            .done(function (partialViewResult) {
+                $("#restaurantList").html(partialViewResult);
+            });
+
+
+        }
+
+    };
+
+    var Checkbox2 = document.getElementById('job_type_checkbox-2');
+    Checkbox2.onclick = function () {
+        if (this.checked) {
+            var flag = 2;
+            $.ajax({
+                url: '@Url.Action("searchDelivery_Restaurants", "Restaurant")',
+                type: 'POST',
+                data: { delivery: flag },
+
+            })
+            .done(function (partialViewResult) {
+                $("#restaurantList").html(partialViewResult);
+            });
+
+
+        }
+
+    };
+
+
+    var Checkbox3 = document.getElementById('job_type_checkbox-3');
+    Checkbox3.onclick = function () {
+        if (this.checked) {
+            var flag = 3;
+            $.ajax({
+                url: '@Url.Action("searchReservation_Restaurants", "Restaurant")',
+                type: 'POST',
+                data: { reservation: flag },
+
+            })
+            .done(function (partialViewResult) {
+                $("#restaurantList").html(partialViewResult);
+            });
+
+
+        }
+
+    };
+
+    $(document).ready(function () {
+
+
+
+        $.ajax({
+            url: '/Restaurant/getCuisineListFromDb',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+
+
+
+
+                $.each(data, function (i, item) {
+
+                    //$('#Cuisine').append($('<option>', {
+                    //    value: i,
+                    //    text: item.Text
+                    //}));
+                    $("#Cuisine").append($("<option></option>").val(item.Text).html(item.Text));
+                });
+
+                //$.each(data, function (i, item) {
+
+                //    //alert(item.Value + " and" + item.Text);
+                //    //$('<option >' + item.Text + '</option>').appendTo('#Select1');
+                //    //alert("append"+item.Text)
+
+                //    trHTML += "<option value=" + item.Text + ">" + item.Text + "</option>";
+                //    alert(trHTML)
+
+                //});
+                //$("#Select1").html(data.join(""));
+            }
+        });
+    });
+
+
+</script>    
+}  

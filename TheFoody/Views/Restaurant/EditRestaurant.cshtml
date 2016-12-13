@@ -1,0 +1,127 @@
+﻿@model TheFoody.Models.RestaurantDeatilModel
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@{
+    ViewBag.Title = "EditRestaurant";
+    var obj = ViewBag.Categories;
+    TempData["Categories"] = ViewBag.Categories;
+}
+<div class="container">
+    <div class="col-md-12">
+        @section RestaurantImageJavascript {
+            <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+            <script type="text/javascript">
+
+                function show(input) {
+                    if (input.files && input.files[0]) {
+                        var filerdr = new FileReader();
+                        filerdr.onload = function (e) {
+                            $('#user_img').attr('src', e.target.result);
+                        }
+                        filerdr.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
+        }
+
+        @using (Html.BeginForm("EditRestaurant", "Restaurant", FormMethod.Post, new
+        {
+            enctype = "multipart/form-data"
+        }))
+        {
+            @Html.AntiForgeryToken()
+
+
+            <div class="admin-container-wrapper">
+
+                <div class="container">
+
+                    <div class="GridLex-gap-15-wrappper">
+
+                        <div class="GridLex-grid-noGutter-equalHeight">
+
+                            <div class="GridLex-col-3_sm-4_xs-12">
+
+                                <div class="admin-sidebar">
+
+                                    <div class="admin-user-item for-employer">
+
+                                        <div class="image">
+
+                                            @if (!String.IsNullOrEmpty(Model.Logo))
+                                            {
+                                                <img id="user_img" src="~/Uploads/RestaurantLogo/@Html.DisplayFor(model=> model.Logo)" alt="image" class="img-circle" />
+                                            }
+                                            else
+                                            {
+                                                <img id="user_img" src="" alt="image" class="img-circle" />
+                                            }
+
+                                        </div>
+
+                                        <h4>@Html.DisplayFor(model => model.RestaurantName)</h4>
+
+                                    </div>
+
+                                    <div class="admin-user-action text-center">
+                                        @Ajax.ActionLink("Edit", "RestaurantProfile", new { partialViewType = "Edit" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "btn btn-primary btn-sm" })
+                                       
+                                        <a href="#" class="btn btn-primary btn-sm btn-inverse">Deactivate</a>
+
+                                    </div>
+
+                                    <ul class="admin-user-menu clearfix">
+                                        <li class="active">
+                                            <a href="#"><i class="fa fa-tachometer"></i> Dashboard</a>
+                                        </li>
+                                        <li>
+                                            @Ajax.ActionLink("Profile", "RestaurantProfile", new { partialViewType = "Profile" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "fa fa-user" })
+                                        </li>
+                                        <li>
+                                           <a href="#"><i class="fa fa-key"></i> Change Password</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-bookmark"></i> Favourite Restaurant</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                            <div class="GridLex-col-9_sm-8_xs-12">
+
+                                <div class="admin-content-wrapper" id="restaurantProfile">
+
+                                    @{Html.RenderPartial("_RestaurantProfileDetails", Model);}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+</div>

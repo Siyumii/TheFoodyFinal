@@ -1,0 +1,180 @@
+﻿@model TheFoody.Models.RestaurantDeatilModel
+<div class="admin-section-title">
+    <h2>Restaurant Profile</h2>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+
+<form class="post-form-wrapper">
+
+    <div class="row gap-20">
+        <div class="col-sm-6 col-md-4">
+
+            <div class="form-group">
+
+                @if (!String.IsNullOrEmpty(Model.Logo))
+                {
+                    @Html.HiddenFor(model => model.Logo, new { htmlAttributes = new { @name = "logo", @id = "logo" } })
+
+                }
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+        <div class="col-sm-12 col-md-8">
+
+            @Html.LabelFor(model => model.RestaurantName)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.RestaurantName)
+
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+        <div class="col-sm-12 col-md-8">
+
+
+            @Html.LabelFor(model => model.Categories)
+            <div class="form-group" style="background-color: #e6ffff;">
+                <ul style="list-style-type:disc">
+                    @*@foreach (TheFoody.Models.CategoryViewModel category in ViewBag.Categories)
+                        {
+                            if (@category.isChecked)
+                            {
+                                <li>@category.category</li>
+                            }
+                        }*@
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Website)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Website)
+            </div>
+
+        </div>
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Phone)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Phone)
+
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Address)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Address)
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.City)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.City)
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.District)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.District)
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.PostCode)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.PostCode)
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.OpeningTime)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.detailsOpeningTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.ClosingTime)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.detailsClosingTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.DeliveryStartingTime)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.detailsDeliveryStartingTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.DeliveryEndingTime)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.detailsDeliveryEndingTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.TimetakentoDeliver)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.TimetakentoDeliver)
+
+            </div>
+
+        </div>
+        <p></p>
+        min
+        <div class="clear"></div>
+
+        <div class="col-sm-12 col-md-12">
+
+            @Html.LabelFor(model => model.CompanyBackground)
+            <div class="bootstrap3-wysihtml5-wrapper" style="background-color: #e6ffff; height:100px;">
+                @Html.DisplayFor(model => model.CompanyBackground)
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+
+</form>
+
+

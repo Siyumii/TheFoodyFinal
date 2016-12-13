@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/22/2016 11:10:24
--- Generated from EDMX file: C:\Users\Dure\Documents\Visual Studio 2013\Projects\TheFoodyFinal\TheFoody.DataAccess\TheFoodyModel.edmx
+-- Date Created: 11/20/2016 08:19:21
+-- Generated from EDMX file: F:\Jayani\SLIIT\3 YEAR\2 sem(3 year)\SEP_2\week12\TheFoodyFinal\TheFoody.DataAccess\TheFoodyModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -19,6 +19,9 @@ GO
 
 IF OBJECT_ID(N'[dbo].[FK_Menu_Restaurant]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Menu] DROP CONSTRAINT [FK_Menu_Restaurant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Menu_Restaurant1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Menu] DROP CONSTRAINT [FK_Menu_Restaurant1];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Restaurant_Type_Category]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Restaurant_Type] DROP CONSTRAINT [FK_Restaurant_Type_Category];
@@ -37,6 +40,9 @@ GO
 IF OBJECT_ID(N'[dbo].[Category]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Category];
 GO
+IF OBJECT_ID(N'[dbo].[Meal_Category]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Meal_Category];
+GO
 IF OBJECT_ID(N'[dbo].[Menu]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Menu];
 GO
@@ -53,17 +59,6 @@ GO
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
-
--- Creating table 'Menus'
-CREATE TABLE [dbo].[Menus] (
-    [Menu_id] int IDENTITY(1,1) NOT NULL,
-    [Menu_name] varchar(200)  NULL,
-    [Description] varchar(1000)  NULL,
-    [Price] decimal(6,2)  NULL,
-    [Photo] varchar(200)  NULL,
-    [Rest_id] int  NULL
-);
-GO
 
 -- Creating table 'Users'
 CREATE TABLE [dbo].[Users] (
@@ -90,6 +85,14 @@ CREATE TABLE [dbo].[Categories] (
 );
 GO
 
+-- Creating table 'Restaurant_Type'
+CREATE TABLE [dbo].[Restaurant_Type] (
+    [Type_id] int IDENTITY(1,1) NOT NULL,
+    [Rest_id] int  NULL,
+    [Category_id] int  NULL
+);
+GO
+
 -- Creating table 'Restaurants'
 CREATE TABLE [dbo].[Restaurants] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -99,7 +102,7 @@ CREATE TABLE [dbo].[Restaurants] (
     [Address] varchar(100)  NOT NULL,
     [City] varchar(50)  NOT NULL,
     [District] varchar(100)  NOT NULL,
-    [PostCode] decimal(5,0)  NOT NULL,
+    [PostCode] char(5)  NULL,
     [Website] varchar(200)  NULL,
     [Phone] varchar(50)  NOT NULL,
     [CompanyBackground] varchar(1000)  NULL,
@@ -111,23 +114,28 @@ CREATE TABLE [dbo].[Restaurants] (
 );
 GO
 
--- Creating table 'Restaurant_Type'
-CREATE TABLE [dbo].[Restaurant_Type] (
-    [Type_id] int IDENTITY(1,1) NOT NULL,
-    [Rest_id] int  NULL,
-    [Category_id] int  NULL
+-- Creating table 'Meal_Category'
+CREATE TABLE [dbo].[Meal_Category] (
+    [Meal_Cat_Id] int IDENTITY(1,1) NOT NULL,
+    [CategoryName] varchar(50)  NULL
+);
+GO
+
+-- Creating table 'Menus'
+CREATE TABLE [dbo].[Menus] (
+    [Menu_id] int IDENTITY(1,1) NOT NULL,
+    [Menu_name] varchar(200)  NULL,
+    [Description] varchar(1000)  NULL,
+    [Price] decimal(6,2)  NULL,
+    [Photo] varchar(200)  NULL,
+    [Meal_Cat_IdFK] int  NULL,
+    [RestaurantId] int  NULL
 );
 GO
 
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
-
--- Creating primary key on [Menu_id] in table 'Menus'
-ALTER TABLE [dbo].[Menus]
-ADD CONSTRAINT [PK_Menus]
-    PRIMARY KEY CLUSTERED ([Menu_id] ASC);
-GO
 
 -- Creating primary key on [email] in table 'Users'
 ALTER TABLE [dbo].[Users]
@@ -141,16 +149,28 @@ ADD CONSTRAINT [PK_Categories]
     PRIMARY KEY CLUSTERED ([id] ASC);
 GO
 
+-- Creating primary key on [Type_id] in table 'Restaurant_Type'
+ALTER TABLE [dbo].[Restaurant_Type]
+ADD CONSTRAINT [PK_Restaurant_Type]
+    PRIMARY KEY CLUSTERED ([Type_id] ASC);
+GO
+
 -- Creating primary key on [Id] in table 'Restaurants'
 ALTER TABLE [dbo].[Restaurants]
 ADD CONSTRAINT [PK_Restaurants]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Type_id] in table 'Restaurant_Type'
-ALTER TABLE [dbo].[Restaurant_Type]
-ADD CONSTRAINT [PK_Restaurant_Type]
-    PRIMARY KEY CLUSTERED ([Type_id] ASC);
+-- Creating primary key on [Meal_Cat_Id] in table 'Meal_Category'
+ALTER TABLE [dbo].[Meal_Category]
+ADD CONSTRAINT [PK_Meal_Category]
+    PRIMARY KEY CLUSTERED ([Meal_Cat_Id] ASC);
+GO
+
+-- Creating primary key on [Menu_id] in table 'Menus'
+ALTER TABLE [dbo].[Menus]
+ADD CONSTRAINT [PK_Menus]
+    PRIMARY KEY CLUSTERED ([Menu_id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -170,15 +190,6 @@ GO
 CREATE INDEX [IX_FK_Restaurant_Type_Category]
 ON [dbo].[Restaurant_Type]
     ([Category_id]);
-GO
-
--- Creating foreign key on [Menu_id] in table 'Menus'
-ALTER TABLE [dbo].[Menus]
-ADD CONSTRAINT [FK_Menu_Restaurant]
-    FOREIGN KEY ([Menu_id])
-    REFERENCES [dbo].[Restaurants]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Rest_id] in table 'Restaurant_Type'
@@ -209,6 +220,45 @@ GO
 CREATE INDEX [IX_FK_Restaurant_User]
 ON [dbo].[Restaurants]
     ([OwnerEmail]);
+GO
+
+-- Creating foreign key on [Meal_Cat_Id] in table 'Meal_Category'
+ALTER TABLE [dbo].[Meal_Category]
+ADD CONSTRAINT [FK_Meal_Category_Restaurant]
+    FOREIGN KEY ([Meal_Cat_Id])
+    REFERENCES [dbo].[Restaurants]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Meal_Cat_IdFK] in table 'Menus'
+ALTER TABLE [dbo].[Menus]
+ADD CONSTRAINT [FK_Menu_Restaurant]
+    FOREIGN KEY ([Meal_Cat_IdFK])
+    REFERENCES [dbo].[Meal_Category]
+        ([Meal_Cat_Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Menu_Restaurant'
+CREATE INDEX [IX_FK_Menu_Restaurant]
+ON [dbo].[Menus]
+    ([Meal_Cat_IdFK]);
+GO
+
+-- Creating foreign key on [RestaurantId] in table 'Menus'
+ALTER TABLE [dbo].[Menus]
+ADD CONSTRAINT [FK_Menu_Restaurant1]
+    FOREIGN KEY ([RestaurantId])
+    REFERENCES [dbo].[Restaurants]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Menu_Restaurant1'
+CREATE INDEX [IX_FK_Menu_Restaurant1]
+ON [dbo].[Menus]
+    ([RestaurantId]);
 GO
 
 -- --------------------------------------------------

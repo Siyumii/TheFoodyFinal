@@ -31,9 +31,9 @@
     </div>
 
     <div class="form-group">
-        
+        Captcha Image
         <div class="col-md-10">
-            Captcha Image <img src="@Url.Action("GetCaptchaImage", "DeleteAccount")">
+            <img src="@Url.Action("GetCaptchaImage", "DeleteAccount")">
         </div>
         <div class="col-md-10">
             <input type="text" name="CaptchaText" id="CaptchaText" value="@ViewBag.CaptchaText" />
@@ -43,11 +43,8 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Delete" class="btn btn-primary" />
-                        <a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>
                     </div>
                 </div>
-                
-                
 
     <div>
         @if (ViewBag.Message != null)

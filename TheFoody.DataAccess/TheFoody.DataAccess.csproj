@@ -66,6 +66,9 @@
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rating.cs">
+      <DependentUpon>TheFoodyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Restaurant.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
@@ -99,9 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="TheFoodyModel.edmx.diagram">
       <DependentUpon>TheFoodyModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

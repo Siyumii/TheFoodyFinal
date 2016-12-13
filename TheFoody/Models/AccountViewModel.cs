@@ -22,13 +22,17 @@ namespace TheFoody.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
-
     public class RegisterViewModel
     {
-
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40})$", ErrorMessage = "Invalid First Name")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "White space is not allowed")]
         [Display(Name = "FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         [Display(Name = "LastName")]
         public string LastName { get; set; }
 
@@ -43,6 +47,7 @@ namespace TheFoody.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -66,36 +71,11 @@ namespace TheFoody.Models
 
         public string City { get; set; }
 
-        public int PostCode { get; set; }
+        public string PostCode { get; set; }
 
         public string District { get; set; }
 
-        public string UserType { get; set; }
-
-        public string Status { get; set; }
-    }
-
-    public class UserManageViewModel
-    {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Phone { get; set; }
-
-        public string photo { get; set; }
-
-        public string Address { get; set; }
-
-        public string City { get; set; }
-
-        public int PostCode { get; set; }
-
-        public string District { get; set; }
-
-        public string UserType { get; set; }
-
-        public string Status { get; set; }
+        
     }
 
     public class ChangePasswordViewModel

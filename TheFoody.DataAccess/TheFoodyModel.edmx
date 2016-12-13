@@ -30,6 +30,9 @@
           <Property Name="Photo" Type="varchar" MaxLength="200" />
           <Property Name="Meal_Cat_IdFK" Type="int" />
           <Property Name="RestaurantId" Type="int" />
+          <Property Name="Daily_fixed_count" Type="int" />
+          <Property Name="Minimum_count" Type="int" />
+          <Property Name="Current_count" Type="int" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -330,6 +333,9 @@
           <Property Name="Photo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Meal_Cat_IdFK" Type="Int32" />
           <Property Name="RestaurantId" Type="Int32" />
+          <Property Name="Daily_fixed_count" Type="Int32" />
+          <Property Name="Minimum_count" Type="Int32" />
+          <Property Name="Current_count" Type="Int32" />
           <NavigationProperty Name="Meal_Category" Relationship="TheFoodyModel.FK_Menu_Restaurant" FromRole="Menu" ToRole="Meal_Category" />
           <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Menu" ToRole="Restaurant" />
         </EntityType>
@@ -432,6 +438,9 @@
           <EntitySetMapping Name="Menus">
             <EntityTypeMapping TypeName="TheFoodyModel.Menu">
               <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="Current_count" ColumnName="Current_count" />
+                <ScalarProperty Name="Minimum_count" ColumnName="Minimum_count" />
+                <ScalarProperty Name="Daily_fixed_count" ColumnName="Daily_fixed_count" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
                 <ScalarProperty Name="Meal_Cat_IdFK" ColumnName="Meal_Cat_IdFK" />
                 <ScalarProperty Name="Photo" ColumnName="Photo" />

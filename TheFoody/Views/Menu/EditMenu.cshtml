@@ -1,0 +1,175 @@
+﻿@model TheFoody.Models.MenuDetailModel
+
+@{
+    ViewBag.Title = "EditMenu";
+
+   var obj = ViewBag.Categories;
+   TempData["Categories"] = ViewBag.Categories;
+   
+}
+
+<h2>EditMenu</h2>
+
+@section menuimagejavascript{
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+        function show(input) {
+                if (input.files && input.files[0]) {
+                    var filerdr = new FileReader();
+                    filerdr.onload = function (e) {
+                        $('#menu_img').attr('src', e.target.result);
+                    }
+                    filerdr.readAsDataURL(input.files[0]);
+                }
+            }
+    </script>
+
+}
+@using (Html.BeginForm("EditMenu","Menu", FormMethod.Post, new
+{
+    enctype = "multipart/form-data"
+}))
+
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>@Html.DisplayFor(model => model.Menu_name)</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Menu_id, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Menu_id, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Menu_id, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        @*<div class="image">
+
+                @if (!String.IsNullOrEmpty(Model.Photo))
+                {
+                    <img id="user_img" src="~/images/menuimages/@Html.DisplayFor(model=> model.Photo)" alt="image" class="img-circle" />
+                }
+                else
+                {
+                    <img id="user_img" src="" alt="image" class="img-circle" />
+                }
+
+            </div>*@
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.MealCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.MealCategory, ViewBag.mealcategories as IEnumerable<SelectListItem>)
+                
+                @Html.ValidationMessageFor(model => model.MealCategory, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+                @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <div class="col-md-6">
+                <img id="menu_img" src="~/images/menuimages/@Html.DisplayFor(model => model.Photo)" alt="image" style="width:90px;height:100px " />
+                </div>
+
+                    @Html.EditorFor(model => model.Photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "photo", @id = "photo", @onchange = "show(this)", @style = "color:transparent;" } })
+                    @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+
+                <div class="col-md-6">
+                    <img id="menu_img"
+                         height="180"
+                         width="160"/>
+                    </div>
+                </div>
+            </div>
+
+
+
+        @*<div class="form-group ">
+        @Html.LabelFor(model => model.Photo)
+        @if (!String.IsNullOrEmpty(Model.Photo))
+                {
+            @Html.EditorFor(model => model.Photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "logo", @id = "logo", @onchange = "show(this)", @style = "color:transparent;" } })
+            @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+
+        }
+        else
+        {
+            @Html.EditorFor(model => model.Photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "logo", @id = "logo", @onchange = "show(this)" } })
+            @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+
+        }
+    </div>*@
+
+        <div class="clear"></div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Menu_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Menu_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Menu_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Daily_fixed_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Daily_fixed_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Daily_fixed_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Current_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Current_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Current_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Minimum_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Minimum_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Minimum_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+            
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    <input type="reset" value="Cancel" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+      
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+    

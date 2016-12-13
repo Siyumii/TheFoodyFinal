@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TheFoody.DataAccess.Menu>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "MinimumIndex";
 }
 
-<h2>Index</h2>
+<h2>MinimumIndex</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -27,11 +27,12 @@
             @Html.DisplayNameFor(model => model.Daily_fixed_count)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Current_count)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Minimum_count)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Current_count)
+        </th>
+        
         <th></th>
     </tr>
 
@@ -47,22 +48,21 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            
-            <img id="user_img" src="~/images/menuimages/@Html.DisplayFor(modelItem => item.Photo)" alt="image"style="width:100px;height:120px" />
+            <img id="user_img" src="~/images/menuimages/@Html.DisplayFor(modelItem => item.Photo)" alt="image" style="width:50px;height:50px" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Daily_fixed_count)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Current_count)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Minimum_count)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditMenu", new { id=item.Menu_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Menu_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Menu_id })        
+            @Html.DisplayFor(modelItem => item.Current_count)
+        </td>
+        
+        <td>
+            @Html.ActionLink("UpdateCurrentStock", "UpdateCurrentStock", new { id=item.Menu_id }) 
+          
         </td>
     </tr>
 }

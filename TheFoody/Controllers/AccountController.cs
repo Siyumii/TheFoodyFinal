@@ -130,16 +130,16 @@ namespace TheFoody.Controllers
                     FormsAuthentication.SetAuthCookie(model.Email,model.RememberMe);
                     
                     Session["UserEmail"] = usr.email.ToString();
-                    Session["FirstName"] = usr.fname.ToString();
-                    Session["LastName"] = usr.lname.ToString();
-                    Session["Address"] = usr.address.ToString();
-                        Session["City"] = usr.city.ToString();
-                        Session["PostCode"] = usr.postcode.ToString();
-                        Session["District"] = usr.district.ToString();
-                        Session["UserType"] = usr.user_type.ToString();
-                        Session["Status"] = usr.status.ToString();
-                        Session["Photo"] = usr.photo.ToString();
-                        Session["Phone"] = usr.phone.ToString();
+                    //Session["FirstName"] = usr.fname.ToString();
+                    //Session["LastName"] = usr.lname.ToString();
+                    //Session["Address"] = usr.address.ToString();
+                    //    Session["City"] = usr.city.ToString();
+                    //    Session["PostCode"] = usr.postcode.ToString();
+                    //    Session["District"] = usr.district.ToString();
+                    //    Session["UserType"] = usr.user_type.ToString();
+                    //    Session["Status"] = usr.status.ToString();
+                    //    Session["Photo"] = usr.photo.ToString();
+                    //    Session["Phone"] = usr.phone.ToString();
 
                     if(model.RememberMe)
                     {

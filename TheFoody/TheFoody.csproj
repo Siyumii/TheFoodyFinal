@@ -92,7 +92,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="SRVTextToImage">
-      <HintPath>F:\SLIIT_3rd_Year_2nd_Semester\SEP_II\SRVTextToImage.dll\SRVTextToImage.dll</HintPath>
+      <HintPath>C:\Users\Kasuni\Downloads\SRVTextToImage.dll\SRVTextToImage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -205,7 +205,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\component.css" />
     <Content Include="Content\main.css" />
-    <Content Include="Controllers\order-online.css" />
+    <Content Include="Content\order-online.css" />
     <Content Include="Content\Stroke-Gap-Icons.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
@@ -335,6 +335,10 @@
     <Content Include="Views\Restaurant\_AddtoCart.cshtml" />
     <Content Include="Views\Menu\Create.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Menu\EditMenu.cshtml" />
+    <Content Include="Views\Menu\Delete.cshtml" />
+    <Content Include="Views\Menu\UpdateCurrentStock.cshtml" />
+    <Content Include="Views\Menu\MinimumIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -59,12 +59,6 @@
     <Compile Include="Category.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>TheFoodyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ManageViewModel.cs">
-      <DependentUpon>TheFoodyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Meal_Category.cs">
       <DependentUpon>TheFoodyModel.tt</DependentUpon>
     </Compile>

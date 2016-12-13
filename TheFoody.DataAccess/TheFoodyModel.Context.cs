@@ -10,15 +10,18 @@
 namespace TheFoody.DataAccess
 {
     using System;
+    //using System.Data.SqlClient;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
     public partial class TheFoodyContext : DbContext
     {
+       
         public TheFoodyContext()
             : base("name=TheFoodyContext")
         {
         }
+    
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

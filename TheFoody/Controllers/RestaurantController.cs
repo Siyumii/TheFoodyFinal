@@ -15,86 +15,264 @@ namespace TheFoody.Controllers
 {
     public class RestaurantController : Controller
     {
-        private TheFoodyContext db = new TheFoodyContext();
+        TheFoodyContext db = new TheFoodyContext();
 
         [HttpPost]
-        public void ServiceSearch(FormCollection form)
+        public ActionResult searchOpen_Restaurants(int openFlag)
         {
-            string serviceValue = form["Service"].ToString();
-
-            string currentTime = DateTime.Now.ToString("hh:mm:ss tt");
 
 
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
+            if (openFlag == 1)
+            {
+                var model = (from p in db.Restaurants
+                             where ((p.OpeningTime <= currentTime) &&( p.ClosingTime >= currentTime))
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
 
         }
 
+        [HttpPost]
+        public ActionResult searchDelivery_Restaurants(int delivery)
+        {
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            if (delivery == 2)
+            {
+                var model = (from p in db.Restaurants
+                             where ((p.DeliveryStartingTime <= currentTime) &&( p.ClosingTime >= currentTime))
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public ActionResult searchReservation_Restaurants(int reservation)
+        {
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            if (reservation == 3)
+            {
+                var model = (from p in db.Restaurants
+                             
+                             select new RestaurantViewModel()
+                             {
+                                 RestId = p.Id,
+                                 RestaurantName = p.RestaurantName,
+                                 Logo = p.Logo,
+                                 Address = p.Address,
+                                 City = p.City,
+                                 District = p.District,
+                                 TimetakentoDeliver = p.TimetakentoDeliver,
+                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                             });
+                var no = model.Count();
+                return PartialView("_RestaurantViewer", model.ToList());
+
+            }
+            else
+                return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        //get values to meal category dropdoen from db
+        public JsonResult getCuisineListFromDb()
+        {
+
+            var getCuisineList = (from m in db.Categories
+                                  select new CategoryViewModel()
+                                  {
+                                      id = m.id.ToString(),
+                                      category = m.category1
+                                  }).ToList();
+
+            SelectList list = new SelectList(getCuisineList, "id", "category");
+            //ViewBag.cuisineList = list;
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: Restaurant
+        [HttpGet]
         public ActionResult Index()
         {
-            using (TheFoodyContext db = new TheFoodyContext())
-            {
 
-                var model = (from p in db.Restaurants // .Includes("Addresses") here?
-                             select new RestaurantViewModel()
-                             {
-                                 RestId = p.Id,
-                                 RestaurantName = p.RestaurantName,
-                                 Logo = p.Logo,
-                                 Address = p.Address,
-                                 City = p.City,
-                                 District = p.District,
-                                 TimetakentoDeliver = p.TimetakentoDeliver,
-                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
-                             });
+            var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                         select new RestaurantViewModel()
+                         {
+                             RestId = p.Id,
+                             RestaurantName = p.RestaurantName,
+                             Logo = p.Logo,
+                             Address = p.Address,
+                             City = p.City,
+                             District = p.District,
+                             TimetakentoDeliver = p.TimetakentoDeliver,
+                             categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                         });
 
-                return View(model.ToList());
-                //return View(db.Restaurants.ToList());
-            }
-
+            return View(model.ToList());
         }
 
+        //POST:Restaurant
         [HttpPost]
-        // GET: Restaurant
         public ActionResult Index(string search)
         {
-            using (TheFoodyContext db = new TheFoodyContext())
-            {
+            //using (TheFoodyContext db = new TheFoodyContext())
+            //{
 
-                var model = (from p in db.Restaurants // .Includes("Addresses") here?
-                             where p.City.StartsWith(search) || search == null
-                             select new RestaurantViewModel()
-                             {
-                                 RestId = p.Id,
-                                 RestaurantName = p.RestaurantName,
-                                 Logo = p.Logo,
-                                 Address = p.Address,
-                                 City = p.City,
-                                 District = p.District,
-                                 TimetakentoDeliver = p.TimetakentoDeliver,
-                                 categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
-                             });
+            var model = (from p in db.Restaurants // .Includes("Addresses") here?
+                         where p.City.StartsWith(search) || search == null
+                         select new RestaurantViewModel()
+                         {
+                             RestId = p.Id,
+                             RestaurantName = p.RestaurantName,
+                             Logo = p.Logo,
+                             Address = p.Address,
+                             City = p.City,
+                             District = p.District,
+                             TimetakentoDeliver = p.TimetakentoDeliver,
+                             categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+                         });
 
-                return View(model.ToList());
-                //return View(db.Restaurants.ToList());
-            }
+            return View(model.ToList());
+
+            //}
 
         }
-
+   
         [HttpPost]
         public string ratingResponse()
         {
+            TheFoodyContext db = new TheFoodyContext();
             int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
             string userEmail = Request["UserEmail"];
             int rating = Convert.ToInt16(Request["Rating"]);
             string review = Request["Review"];
             DateTime currentDateTime = DateTime.Now;
             string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            return review;
+            Rating rate = new Rating();
+            rate.RestuarantId = restuarantId;
+            rate.UserEmail = userEmail;
+            rate.Rating1 = rating;
+            rate.Review = review;
+            rate.Created_Date = currentDateTime;
+            db.Ratings.Add(rate);
+            db.SaveChanges();
+
+            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
+            int id = restuarantId;
+
+            string rev = Session["ReviewHtml"].ToString();
+
+            for (int x = 5; x > 0; x--)
+            {
+                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                if (theRating == null) { continue; }
+                rev = rev + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
+                    + theRating.Created_Date.ToString()
+                    + "</h6><h6>By " + theRating.UserEmail.ToString() + "</h6><ul class='list-unstyled list-inline rating-star-list'>";
+                switch (theRating.Rating1)
+                {
+                    case 0:
+                        rev = rev + "<li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 1:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 2:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 3:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 4:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 5:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li>";
+                        break;
+                }
+                rev = rev + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
+                rev = rev + theRating.Review.ToString() + "</p></div></div>";
+                ratings++;
+            }
+            return rev;
         }
+
         public ActionResult ViewMenu(int id)
         {
+            TheFoodyContext db = new TheFoodyContext();
+            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
             Session["CurrentRestaurentId"] = id;
+
+            string review = "<!-- -->";
+
+            for (int x = 5; x > 0 ; x-- )
+            {
+                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                if (theRating == null) { continue; }
+                review = review + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
+                    + theRating.Created_Date.ToString()
+                    + "</h6><h6>By " + theRating.UserEmail.ToString() + "</h6><ul class='list-unstyled list-inline rating-star-list'>";
+                switch (theRating.Rating1)
+                {
+                    case 0:
+                        review = review + "<li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 1:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 2:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 3:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 4:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 5:
+                        review = review + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li>";
+                        break;
+                }
+                review = review + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
+                review = review + theRating.Review.ToString() + "</p></div></div>";
+                ratings++;
+            }
+
+            Session["ReviewHtml"] = review;
+
+
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
             using (TheFoodyContext context = new TheFoodyContext())
             {
@@ -128,7 +306,7 @@ namespace TheFoody.Controllers
         }
 
         //
-       
+
         public PartialViewResult GetMenus(int? restId, int? categoryId)
         {
             List<MenuVm> menuVmList = new List<MenuVm>();
@@ -141,8 +319,8 @@ namespace TheFoody.Controllers
                     menuVmList.Add(TransformToMenuVm(menuList[j]));
                 }
             }
-           
-                return PartialView("_MenuList", menuVmList);
+
+            return PartialView("_MenuList", menuVmList);
         }
 
 
@@ -214,9 +392,9 @@ namespace TheFoody.Controllers
         {
             if (restaurant == null)
                 return null;
-            
+
             RestaurantViewModel restaurantVm = new RestaurantViewModel();
-            
+
             restaurantVm.Address = restaurant.Address;
             restaurantVm.categories = restaurant.Restaurant_Type.Select(x => x.Category.category1).ToList();
             restaurantVm.City = restaurant.City;
@@ -422,7 +600,7 @@ namespace TheFoody.Controllers
                 Restaurant restaurant = new Restaurant();
                 if (TempData.ContainsKey("OwnerEmail"))
                     restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-               
+
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
@@ -490,9 +668,10 @@ namespace TheFoody.Controllers
                                       where p.RestaurantName == restaurant.RestaurantName
                                       select p.Id).Single()
                             });
-                            
+
                         }
-                        else {
+                        else
+                        {
                             ModelState.AddModelError("Categories", "Please select atleast one restaurant type");
                         }
                     }
@@ -504,14 +683,14 @@ namespace TheFoody.Controllers
                     }
                 }
             }
-            ViewBag.Categories = getCategories() ;
+            ViewBag.Categories = getCategories();
             return View();
         }
 
         [NonAction]
         public List<CategoryViewModel> getCategories()
         {
-                
+
             var dbCategories = db.Categories.ToList();
 
             var categories = new List<CategoryViewModel>();
@@ -529,39 +708,102 @@ namespace TheFoody.Controllers
             return categories;
         }
 
-        // GET: Restaurant/Edit/5
-        public ActionResult EditRestaurant(int id)
+        [NonAction]
+        public List<CategoryViewModel> getSelectedCategories(int id)
         {
-            if (id == null)
+
+            List<CategoryViewModel> allCategories = getCategories();
+
+            var categorieID = (from p in db.Restaurant_Type
+                               where p.Rest_id == id
+                               select p).ToList();
+
+            foreach (CategoryViewModel cat in allCategories)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                foreach (Restaurant_Type res in categorieID)
+                {
+                    if (res.Category_id.ToString() == cat.id)
+                    {
+                        cat.isChecked = true;
+                    }
+                }
             }
-            Restaurant user = db.Restaurants.Find(id);
-            if (user == null)
+
+            return allCategories;
+        }
+
+        public PartialViewResult RestaurantProfile(string partialViewType)
+        {
+            RestaurantDeatilModel restaurantDetailModel = (RestaurantDeatilModel)Session["RestaurantDetailModel"];
+            if (partialViewType == "Profile")
+            {
+
+                ViewBag.Categories = getSelectedCategories(restaurantDetailModel.id);
+                return PartialView("_RestaurantProfileDetails", restaurantDetailModel);
+            }
+            else if (partialViewType == "Edit")
+            {
+
+                ViewBag.Categories = getSelectedCategories(restaurantDetailModel.id);
+                return PartialView("_EditRestaurantProfile", restaurantDetailModel);
+            }
+            else
+            {
+                return PartialView("_ChangePassword", restaurantDetailModel);
+            }
+
+        }
+
+        // GET: Restaurant/Edit/5
+        public ActionResult EditRestaurant()
+        {
+            string email = Session["UserEmail"].ToString();
+            Restaurant restaurant = db.Restaurants.Where(u => u.OwnerEmail == email).SingleOrDefault();
+            if (restaurant == null)
             {
                 return HttpNotFound();
             }
 
-            RestaurantDeatilModel restaurant = new RestaurantDeatilModel();
+            RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
+            Session["RestaurantDetailModel"] = restaurantDeatilModel;
+            restaurantDeatilModel.id = restaurant.Id;
+            restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
 
-            restaurant.RestaurantName = user.RestaurantName;
+            restaurantDeatilModel.Phone = restaurant.Phone.ToString();
+            restaurantDeatilModel.Address = restaurant.Address;
+            restaurantDeatilModel.Logo = restaurant.Logo;
+            restaurantDeatilModel.City = restaurant.City;
+            restaurantDeatilModel.PostCode = restaurant.PostCode;
+            restaurantDeatilModel.District = restaurant.District;
+            restaurantDeatilModel.Website = restaurant.Website;
+            restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
+            restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+            restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+            restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+            restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
 
-            restaurant.Phone = user.Phone.ToString();
-            restaurant.Address = user.Address;
-            restaurant.Logo = user.Logo;
-            restaurant.City = user.City;
-            restaurant.PostCode = user.PostCode;
-            restaurant.District = user.District;
-            restaurant.Website = user.Website;
-            restaurant.CompanyBackground = user.CompanyBackground;
-            restaurant.OpeningTime = user.OpeningTime;
-            restaurant.ClosingTime = user.ClosingTime;
-            restaurant.DeliveryStartingTime = user.DeliveryStartingTime;
-            restaurant.DeliveryEndingTime = user.DeliveryEndingTime;
-            restaurant.TimetakentoDeliver = Convert.ToInt16(user.TimetakentoDeliver);
+            restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+            DateTime time = DateTime.Today.Add(restaurantDeatilModel.OpeningTime);
+            restaurantDeatilModel.detailsOpeningTime = time.ToString("hh:mm tt");
 
-            TempData["RestaurantId"] = id;
-            return View(restaurant);
+            restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.ClosingTime);
+            restaurantDeatilModel.detailsClosingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryStartingTime);
+            restaurantDeatilModel.detailsDeliveryStartingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryEndingTime);
+            restaurantDeatilModel.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.TimetakentoDeliver = Convert.ToInt32(restaurant.TimetakentoDeliver);
+
+            TempData["RestaurantId"] = restaurantDeatilModel.id;
+            TempData["RestaurantLogo"] = restaurantDeatilModel.Logo;
+            ViewBag.Categories = getSelectedCategories(restaurantDeatilModel.id);
+            return View(restaurantDeatilModel);
         }
 
         // POST: Restaurant/Edit/5
@@ -575,57 +817,140 @@ namespace TheFoody.Controllers
             if (ModelState.IsValid)
             {
                 Restaurant restaurant = new Restaurant();
-                if (TempData.ContainsKey("OwnerEmail"))
-                    restaurant.OwnerEmail = TempData["OwnerEmail"].ToString();
-
-
+                
+                restaurant.OwnerEmail = Session["UserEmail"].ToString();
+                
                 if (restaurant.OwnerEmail != null)
                 {
                     if (db.Users.Any(u => u.email.Equals(restaurant.OwnerEmail)))
                     {
-                        HttpPostedFileBase photo = Request.Files["logo"];
-                        restaurant.RestaurantName = model.RestaurantName;
-
-                        if (photo != null && photo.ContentLength > 0)
+                        if (collection["job_type_checkbox"] != null)
                         {
-                            var extension = Path.GetExtension(photo.FileName);
-                            restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
-                            var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
-                            photo.SaveAs(path);
+                            HttpPostedFileBase photo = Request.Files["logo"];
+                            restaurant.RestaurantName = model.RestaurantName;
+
+                            if (photo != null && photo.ContentLength > 0)
+                            {
+                                var extension = Path.GetExtension(photo.FileName);
+                                restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
+                                model.Logo = restaurant.Logo;
+                                var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
+                                photo.SaveAs(path);
+                            }
+                            else {
+                                restaurant.Logo = TempData["RestaurantLogo"].ToString();
+                                model.Logo = restaurant.Logo;
+                            }
+                            restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
+                            model.id = restaurant.Id;
+                            restaurant.Phone = model.Phone.ToString();
+                            restaurant.Address = model.Address;
+                            restaurant.City = model.City;
+                            restaurant.PostCode = model.PostCode.ToString();
+                            restaurant.District = model.District;
+                            restaurant.Website = model.Website;
+                            restaurant.CompanyBackground = model.CompanyBackground;
+                            restaurant.OpeningTime = model.OpeningTime;
+                            restaurant.ClosingTime = model.ClosingTime;
+                            restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
+                            restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
+
+
+                            DateTime time = DateTime.Today.Add(restaurant.OpeningTime);
+                            model.detailsOpeningTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.ClosingTime);
+                            model.detailsClosingTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.DeliveryStartingTime);
+                            model.detailsDeliveryStartingTime = time.ToString("hh:mm tt");
+
+
+                            time = DateTime.Today.Add(restaurant.DeliveryEndingTime);
+                            model.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
+
+                            restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
+
+                            db.Entry(restaurant).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            var categories = db.Categories.ToList();
+                            string type = collection["job_type_checkbox"];
+                            string[] tt = type.Split(',');
+
+                            restaurant.Restaurant_Type = new List<Restaurant_Type>();
+
+                            List<string> ca = new List<string>();
+
+                            foreach (var category in categories)
+                            {
+
+                                for (int i = 0; i < tt.Length; i++)
+                                {
+                                    if (category.category1 == tt[i])
+                                    {
+                                        ca.Add(tt[i]);
+                                        var categorieID = (from p in db.Restaurant_Type
+                                                           where p.Rest_id == restaurant.Id
+                                                           where p.Category_id == category.id
+                                                           select p).FirstOrDefault();
+                                        if (categorieID == null)
+                                        {
+                                            restaurant.Restaurant_Type.Add(new Restaurant_Type { Category_id = category.id, Rest_id = restaurant.Id });
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                            foreach (var category in categories)
+                            {
+
+                                if (!ca.Contains(category.category1))
+                                {
+                                    var categorieID = (from p in db.Restaurant_Type
+                                                       where p.Rest_id == restaurant.Id
+                                                       where p.Category_id == category.id
+                                                       select p).FirstOrDefault();
+                                    if (categorieID != null)
+                                    {
+                                        db.Restaurant_Type.Remove(categorieID);
+                                    }
+
+                                }
+
+                            }
+                            db.SaveChanges();
+
+                            Session["UserEmail"] = restaurant.OwnerEmail;
+                            TempData["RestaurantLogo"] = model.Logo;
+                            Session["RestaurantDetailModel"] = model;
+                            ViewBag.Categories = getSelectedCategories(Convert.ToInt32(restaurant.Id));
+                            return View(model);
                         }
-                        restaurant.Id = Convert.ToInt16(TempData["RestaurantId"]);
-                        restaurant.Phone = model.Phone.ToString();
-                        restaurant.Address = model.Address;
-                        restaurant.City = model.City;
-                        restaurant.PostCode = model.PostCode.ToString();
-                        restaurant.District = model.District;
-                        restaurant.Website = model.Website;
-                        restaurant.CompanyBackground = model.CompanyBackground;
-                        restaurant.OpeningTime = model.OpeningTime;
-                        restaurant.ClosingTime = model.ClosingTime;
-                        restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
-                        restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
-                        restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
-
-                        db.Entry(restaurant).State = EntityState.Modified;
-                        db.SaveChanges();
-                        Session["UserEmail"] = restaurant.OwnerEmail;
-                        return RedirectToAction("Index", "Home");
-
-
+                        else {
+                            ModelState.AddModelError("Categories", "Please select atleast one restaurant type");
+                        }
                     }
                     else
                     {
                         //TODO E.g. ModelState.AddModelError
-                        ModelState.AddModelError("", "Owner have not been registered successfully");
+                        ModelState.AddModelError("", "Owner has not been logged in successfully");
 
                     }
                 }
 
             }
+
+            TempData["RestaurantLogo"] = model.Logo;
+            ViewBag.Categories = getSelectedCategories(Convert.ToInt32(TempData["RestaurantId"]));
             return View(model);
         }
 
     }
-  
+
 }

@@ -46,6 +46,5 @@ namespace TheFoody.DataAccess
         public virtual ICollection<Restaurant_Type> Restaurant_Type { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Ratings { get; set; }
-        public virtual User User { get; set; }
     }
 }

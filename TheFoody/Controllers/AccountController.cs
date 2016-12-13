@@ -162,7 +162,8 @@ namespace TheFoody.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
 
-                    Session["UserEmail"] /*= Session["TempEmail"]*/ = usr.email.ToString();
+                    Session["UserEmail"] = usr.email.ToString();
+                    Session["UserEmail"] = Session["TempEmail"];
                     //Session["FirstName"] = usr.fname.ToString();
                     //Session["LastName"] = usr.lname.ToString();
                     //Session["Address"] = usr.address.ToString();

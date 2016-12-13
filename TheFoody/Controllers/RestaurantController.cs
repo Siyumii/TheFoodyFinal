@@ -81,11 +81,57 @@ namespace TheFoody.Controllers
 
         }
 
-       
+        [HttpPost]
+        public string ratings()
+        {
+            TheFoodyContext db = new TheFoodyContext();
+            int ratings = db.Ratings.Where(u => u.Count >= 0).Count();
+            int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
+            int id = restuarantId;
+
+            string rev = Session["ReviewHtml"].ToString();
+
+            for (int x = 5; x > 0; x--)
+            {
+                Rating theRating = db.Ratings.Where(u => u.Count == ratings && u.RestuarantId == id).FirstOrDefault();
+                if (theRating == null) { continue; }
+                rev = rev + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
+                    + theRating.Created_Date.ToString()
+                    + "</h6><h6>By " + theRating.UserEmail.ToString() + "</h6><ul class='list-unstyled list-inline rating-star-list'>";
+                switch (theRating.Rating1)
+                {
+                    case 0:
+                        rev = rev + "<li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 1:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 2:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 3:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 4:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star-o'></i></li>";
+                        break;
+                    case 5:
+                        rev = rev + "<li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li><li><i class='fa fa-star'></i></li>";
+                        break;
+                }
+                rev = rev + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
+                rev = rev + theRating.Review.ToString() + "</p></div></div>";
+                ratings++;
+            }
+            return rev;
+        }
+
+
         [HttpPost]
         public string ratingResponse()
         {
-            TheFoodyContext db = new TheFoodyContext();
+            TheFoodyContext db = new TheFoodyContext(); 
+            int ratings = db.Ratings.Where(u => u.Count >= 0).Count();
             int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
             string userEmail = Request["UserEmail"];
             int rating = Convert.ToInt16(Request["Rating"]);
@@ -94,6 +140,7 @@ namespace TheFoody.Controllers
             string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             Rating rate = new Rating();
             rate.RestuarantId = restuarantId;
+            rate.Count = ratings + 1;
             rate.UserEmail = userEmail;
             rate.Rating1 = rating;
             rate.Review = review;
@@ -101,14 +148,13 @@ namespace TheFoody.Controllers
             db.Ratings.Add(rate);
             db.SaveChanges();
 
-            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
             int id = restuarantId;
 
             string rev = Session["ReviewHtml"].ToString();
 
             for (int x = 5; x > 0; x--)
             {
-                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                Rating theRating = db.Ratings.Where(u => u.Count ==  ratings && u.RestuarantId == id).FirstOrDefault();
                 if (theRating == null) { continue; }
                 rev = rev + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
                     + theRating.Created_Date.ToString()
@@ -144,14 +190,14 @@ namespace TheFoody.Controllers
         public ActionResult ViewMenu(int id)
         {
             TheFoodyContext db = new TheFoodyContext();
-            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
+            int ratings = db.Ratings.Where(u => u.Count >= 0).Count();
             Session["CurrentRestaurentId"] = id;
 
             string review = "<!-- -->";
 
             for (int x = 5; x > 0 ; x-- )
             {
-                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                Rating theRating = db.Ratings.Where(u => u.Count == ratings && u.RestuarantId == id).FirstOrDefault();
                 if (theRating == null) { continue; }
                 review = review + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
                     + theRating.Created_Date.ToString()
@@ -179,9 +225,9 @@ namespace TheFoody.Controllers
                 }
                 review = review + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
                 review = review + theRating.Review.ToString() + "</p></div></div>";
-                ratings++;
+                ratings--;
             }
-
+            review = review + "<!-- -->";
             Session["ReviewHtml"] = review;
 
 

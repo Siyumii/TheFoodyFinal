@@ -41,6 +41,7 @@
           <Property Name="Rating" Type="int" />
           <Property Name="Review" Type="varchar" MaxLength="2000" />
           <Property Name="Created_Date" Type="date" />
+          <Property Name="Count" Type="int" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -81,7 +82,7 @@
           <Property Name="fname" Type="varchar" MaxLength="50" />
           <Property Name="lname" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="phone" Type="char" MaxLength="10" />
-          <Property Name="photo" Type="varchar" MaxLength="500" />
+          <Property Name="photo" Type="varchar" MaxLength="1000" />
           <Property Name="address" Type="varchar" MaxLength="200" />
           <Property Name="city" Type="varchar" MaxLength="50" />
           <Property Name="postcode" Type="char" MaxLength="5" />
@@ -90,30 +91,6 @@
           <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="created_date" Type="datetime" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Menu_Restaurant">
-          <End Role="Meal_Category" Type="Self.Meal_Category" Multiplicity="0..1" />
-          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meal_Category">
-              <PropertyRef Name="Meal_Cat_Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="Meal_Cat_IdFK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Menu_Restaurant1">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="RestaurantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Rating_Restaurant">
           <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
@@ -138,42 +115,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Restaurant_Type_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
-          <End Role="Restaurant_Type" Type="Self.Restaurant_Type" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Restaurant_Type">
-              <PropertyRef Name="Category_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_Type_Restaurant">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="Restaurant_Type" Type="Self.Restaurant_Type" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Restaurant_Type">
-              <PropertyRef Name="Rest_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="email" />
-            </Principal>
-            <Dependent Role="Restaurant">
-              <PropertyRef Name="OwnerEmail" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="TheFoodyModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meal_Category" EntityType="Self.Meal_Category" Schema="dbo" store:Type="Tables" />
@@ -182,14 +123,6 @@
           <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurant_Type" EntityType="Self.Restaurant_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Menu_Restaurant" Association="Self.FK_Menu_Restaurant">
-            <End Role="Meal_Category" EntitySet="Meal_Category" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Menu_Restaurant1" Association="Self.FK_Menu_Restaurant1">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="Menu" EntitySet="Menu" />
-          </AssociationSet>
           <AssociationSet Name="FK_Rating_Restaurant" Association="Self.FK_Rating_Restaurant">
             <End Role="Restaurant" EntitySet="Restaurant" />
             <End Role="Rating" EntitySet="Rating" />
@@ -197,18 +130,6 @@
           <AssociationSet Name="FK_Rating_User" Association="Self.FK_Rating_User">
             <End Role="User" EntitySet="User" />
             <End Role="Rating" EntitySet="Rating" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_Type_Category" Association="Self.FK_Restaurant_Type_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_Type_Restaurant" Association="Self.FK_Restaurant_Type_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_User" Association="Self.FK_Restaurant_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Restaurant" EntitySet="Restaurant" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -260,10 +181,6 @@
           <AssociationSet Name="FK_Rating_User" Association="TheFoodyModel.FK_Rating_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Rating" EntitySet="Ratings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurant_User" Association="TheFoodyModel.FK_Restaurant_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Restaurant" EntitySet="Restaurants" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Category">
@@ -340,7 +257,6 @@
           <NavigationProperty Name="Menus" Relationship="TheFoodyModel.FK_Menu_Restaurant11" FromRole="Restaurant" ToRole="Menu" />
           <NavigationProperty Name="Restaurant_Type" Relationship="TheFoodyModel.FK_Restaurant_Type_Restaurant" FromRole="Restaurant" ToRole="Restaurant_Type" />
           <NavigationProperty Name="Ratings" Relationship="TheFoodyModel.FK_Rating_Restaurant" FromRole="Restaurant" ToRole="Rating" />
-          <NavigationProperty Name="User" Relationship="TheFoodyModel.FK_Restaurant_User" FromRole="Restaurant" ToRole="User" />
         </EntityType>
         <Association Name="FK_Menu_Restaurant11">
           <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
@@ -378,6 +294,7 @@
           <Property Name="Created_Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Rating_Restaurant" FromRole="Rating" ToRole="Restaurant" />
           <NavigationProperty Name="User" Relationship="TheFoodyModel.FK_Rating_User" FromRole="Rating" ToRole="User" />
+          <Property Name="Count" Type="Int32" />
         </EntityType>
         <Association Name="FK_Rating_Restaurant">
           <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
@@ -400,7 +317,7 @@
           <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="lname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="photo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="photo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="postcode" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
@@ -409,7 +326,6 @@
           <Property Name="status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Ratings" Relationship="TheFoodyModel.FK_Rating_User" FromRole="User" ToRole="Rating" />
-          <NavigationProperty Name="Restaurants" Relationship="TheFoodyModel.FK_Restaurant_User" FromRole="User" ToRole="Restaurant" />
         </EntityType>
         <Association Name="FK_Rating_User">
           <End Type="TheFoodyModel.User" Role="User" Multiplicity="0..1" />
@@ -420,18 +336,6 @@
             </Principal>
             <Dependent Role="Rating">
               <PropertyRef Name="UserEmail" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Restaurant_User">
-          <End Type="TheFoodyModel.User" Role="User" Multiplicity="1" />
-          <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="email" />
-            </Principal>
-            <Dependent Role="Restaurant">
-              <PropertyRef Name="OwnerEmail" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -505,6 +409,7 @@
           <EntitySetMapping Name="Ratings">
             <EntityTypeMapping TypeName="TheFoodyModel.Rating">
               <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="Created_Date" ColumnName="Created_Date" />
                 <ScalarProperty Name="Review" ColumnName="Review" />
                 <ScalarProperty Name="Rating1" ColumnName="Rating" />

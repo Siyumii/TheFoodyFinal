@@ -45,6 +45,7 @@ namespace TheFoody.Models
         public int MenuID { get; set; }
         public string MenuName { get; set; }
         public double MenuPrice { get; set; }
+        public int Quantity { get; set; }
         public double TotalPrice { get; set; }
     }
     

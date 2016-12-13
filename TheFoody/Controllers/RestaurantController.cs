@@ -248,10 +248,22 @@ namespace TheFoody.Controllers
             {
                 List<Item> itemList = (List<Item>)Session["Cart"];
                 TheFoodyContext context = new TheFoodyContext();
-                //{
-                //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
-                itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id))));
-                Session["Cart"] = itemList;
+                for(int i=0;i<itemList.Count;i++)
+                {
+                    if(itemList[i].Cartitem.MenuID==id)
+                    {
+                        itemList[i].Cartitem.Quantity++;
+                        Session["Cart"] = itemList;
+                        
+                        return PartialView("_AddtoCart");
+                    }
+                    
+                }
+                    //{
+                    //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
+                    itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id))));
+                
+                 Session["Cart"] = itemList;
                 //}
                 return PartialView("_AddtoCart");
             }
@@ -297,6 +309,7 @@ namespace TheFoody.Controllers
             CartItem item = new CartItem();
             item.MenuID = menu.Menu_id;
             item.MenuName = menu.Menu_name;
+            item.Quantity = 1;
             item.MenuPrice = Convert.ToDouble(menu.Price);
 
             //if (menu.Meal_Cat_IdFK.HasValue)
@@ -304,6 +317,32 @@ namespace TheFoody.Controllers
 
             return item;
         }
+
+        [HttpGet]
+        public ActionResult GetOrderForm(string deliverypriority)
+        {
+            if (deliverypriority == "Delivery")
+            {
+                return PartialView("_Delivery");
+            }
+            else
+            {
+                return PartialView("_Collection");
+            }
+        }
+        public ActionResult Checkout()
+        {
+            if(Session["UserEmail"]==null)
+            {
+                return RedirectToAction("Login", "Account",null);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
 
         // GET: Restaurant/Create
         public ActionResult Create()

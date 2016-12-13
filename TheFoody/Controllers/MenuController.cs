@@ -60,7 +60,9 @@ namespace TheFoody.Controllers
                 Value = c.Meal_Cat_Id.ToString(),
                 Selected = (c.Meal_Cat_Id == 1)
             }).ToList();
-
+            //x.Add(new SelectListItem{ Text="",Value=""});
+            
+            
             ViewBag.mealcategories = x;
             return View();
         }

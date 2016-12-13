@@ -24,6 +24,7 @@
         <div class="sorting-wrappper">
 
             <div class="sorting-header">
+               
                 <h3 class="sorting-title">We found 592 restaurant</h3>
             </div>
 
@@ -34,93 +35,69 @@
 
                         <div class="row gap-10">
 
-                            @*<div class="col-sm-4">*@
-                            @*<div class="form-group">
-                                <label>Service:</label>
-                                <select class="selectpicker form-control" data-show-subtext="true" name="Service" id="Service" onchange="SelectChanged(this)">
-                                    <option value="Open Now">Open Now</option>
-                                    <option value="Delivery">Delivery</option>
 
-                                </select>*@
-
-                            @*</div>*@
+                          
 
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Cuisine</label>
-                                    @*<div class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>*@
+                                    @Html.DropDownList("Cuisine", ViewBag.cuisines as IEnumerable<SelectListItem>, "Nothing Selected")
+                                    @*<select class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>*@
+                                        @*<div class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>*@
 
-                                    <select class="selectpicker form-control" id="Cuisine">
-                                        <option value="Nothing Selected">Nothing Selected</option>
-                                    </select>
-                                </div>
+                                    @*<select id="Cuisine">
+                                        @*<option value="0">Nothing Selected</option>*@
+                                    @*</select>*@
+
+
+                                 </div>
                             </div>
-                        </div>
-
-                        @*<div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Popular City</label>
-                                    <select class="selectpicker form-control" data-show-subtext="true">
-                                        <option value="0">Aberdeen</option>
-                                        <option value="1">Birmingham</option>
-                                        <option value="2">Blackburn</option>
-                                        <option value="3">Bristol</option>
-                                        <option value="4">Croydon</option>
-                                        <option value="5">Dudley</option>
-                                    </select>
-                                </div>
-                            </div>*@
-
-                        @*<div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Cuisine</label>
-                                    <select class="selectpicker show-tick form-control" data-selected-text-format="count > 3" data-done-button="true" data-done-button-text="OK" multiple>
-                                        <option value="0" selected>All</option>
-                                        <option value="1">Burger</option>
-                                        <option value="2">Chicken</option>
-                                        <option value="3">Chinese</option>
-                                        <option value="4">English</option>
-                                        <option value="6">Fast Food</option>
-                                        <option value="7">Grill</option>
-                                        <option value="7">Indian</option>
-                                        <option value="7">Italian</option>
-                                        <option value="7">Thai</option>
-                                    </select>
-                                </div>
-                            </div>*@
-
-
-
-                        <div class="col-sm-12 col-md-5">
-
-                            <div class="text-right hidden-sm hidden-xs">
-                                <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
-                            </div>
-
-                            <div class="job-type-checkbox-wrapper clearfix">
-                                <div class="checkbox-block job-type-checkbox freelance-checkbox">
-                                    <input id="job_type_checkbox-3" name="job_type_checkbox" type="radio" class="checkbox" value="Reservation" checked />
-                                    <label class="btn btn-success active" for="job_type_checkbox-3">Reservation</label>
-                                </div>
-
-                                <div class="checkbox-block job-type-checkbox part-time-checkbox">
-                                    <input id="job_type_checkbox-2" name="job_type_checkbox" type="radio" class="checkbox" value="Delivery" unchecked />
-                                    <label class="btn btn-primary" for="job_type_checkbox-2">Delivery</label>
-                                </div>
-
-                                <div class="checkbox-block job-type-checkbox full-time-checkbox">
-                                    <input id="job_type_checkbox-1" name="job_type_checkbox" type="radio" class="checkbox" value="OpenNow" unchecked />
-                                    <label class="btn btn-info" for="job_type_checkbox-1">Open Now</label>
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-
-                            <div class="text-right visible-sm visible-xs">
-                                <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
-                            </div>
-                        </div>
 
                     </div>
+
+                            <div class="col-sm-4">
+                               <div class="form-group">
+                  
+                            </div>
+                            </div>
+
+                    </div>                
+    
+  
+
+
+
+                            <div class="col-sm-12 col-md-5">
+
+                                <div class="text-right hidden-sm hidden-xs">
+                                    <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
+                                </div>
+
+                                <div class="job-type-checkbox-wrapper clearfix">
+                                    <div class="checkbox-block job-type-checkbox freelance-checkbox">
+                                        <input id="job_type_checkbox-3" name="job_type_checkbox" type="radio" class="checkbox" value="Reservation" checked />
+                                        <label class="btn btn-success active" for="job_type_checkbox-3">Reservation</label>
+                                    </div>
+
+                                    <div class="checkbox-block job-type-checkbox part-time-checkbox">
+                                        <input id="job_type_checkbox-2" name="job_type_checkbox" type="radio" class="checkbox" value="Delivery" unchecked />
+                                        <label class="btn btn-primary" for="job_type_checkbox-2">Delivery</label>
+                                    </div>
+
+                                    <div class="checkbox-block job-type-checkbox full-time-checkbox">
+                                        <input id="job_type_checkbox-1" name="job_type_checkbox" type="radio" class="checkbox" value="OpenNow" unchecked />
+                                        <label class="btn btn-info" for="job_type_checkbox-1">Open Now</label>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+
+                                <div class="text-right visible-sm visible-xs">
+                                    <button class="btn btn-toggle btn-refine collapsed" data-toggle="collapse" data-target="#refine-result">More filters</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    
                     <div id="refine-result" class="collapse">
                         <div class="collapse-inner clearfix">
 
@@ -221,18 +198,21 @@
 
     </div>
 </div>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 
-<script src="~/scripts/jquery-3.1.1.js"></script>
-<script src="~/scripts/jquery-3.1.1.min.js"></script>
-<script src="~/scripts/jquery-ui-1.12.1.js"></script>
+
+
+
 
 <script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
 <script type="text/javascript">
+   
     var Checkbox1 = document.getElementById('job_type_checkbox-1');
     Checkbox1.onclick = function () {
+       
         if (this.checked) {
+            
             var flag = 1;
             $.ajax({
                 url: '@Url.Action("searchOpen_Restaurants", "Restaurant")',
@@ -288,44 +268,38 @@
 
     };
 
-    $(document).ready(function () {
+    //$(document).ready(function () {
+       
 
 
+    //    $.ajax({
+    //        url: '/Restaurant/getCuisineListFromDb',
+    //        type: 'POST',
+    //        dataType: 'json',
+    //        success: function (data) {
+    //            $.each(data, function (i, item) {
+                  
+    //                $("#Cuisine").append($("<option></option>").val(i).html(item.Text));
+    //            });
 
-        $.ajax({
-            url: '/Restaurant/getCuisineListFromDb',
-            type: 'POST',
-            dataType: 'json',
-            success: function (data) {
+    //        }
+    //    });
+    //});
 
-
-
-
-
-                $.each(data, function (i, item) {
-
-                    //$('#Cuisine').append($('<option>', {
-                    //    value: i,
-                    //    text: item.Text
-                    //}));
-                    $("#Cuisine").append($("<option></option>").val(item.Text).html(item.Text));
-                });
-
-                //$.each(data, function (i, item) {
-
-                //    //alert(item.Value + " and" + item.Text);
-                //    //$('<option >' + item.Text + '</option>').appendTo('#Select1');
-                //    //alert("append"+item.Text)
-
-                //    trHTML += "<option value=" + item.Text + ">" + item.Text + "</option>";
-                //    alert(trHTML)
-
-                //});
-                //$("#Select1").html(data.join(""));
-            }
+  
+    $(function () {
+        $('select#Cuisine').change(function () {
+           var selectedCuisine = $(this).val();
+            $.ajax({
+               url: '/Restaurant/searchCuisine',
+                type: 'POST',
+                data: { find: selectedCuisine},
+            })
+               .done(function (partialViewResult) {
+                   $("#restaurantList").html(partialViewResult);
+               });
+            });
         });
-    });
-
-
-</script>    
+    
+    </script>    
 }  

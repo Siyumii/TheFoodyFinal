@@ -17,6 +17,76 @@ namespace TheFoody.Controllers
     {
         TheFoodyContext db = new TheFoodyContext();
 
+     
+        public ActionResult changeAddToFavouritesLabel()
+        {
+           List<int> restaurantIdList = (from f in db.Favourites
+                                       select f.FavouriteRestId).Distinct().ToList();
+       var c=    restaurantIdList.Count();
+           return Json(restaurantIdList);
+        }
+    
+        public int AddToFavourites(int id)
+        {
+
+
+            Favourite f = new Favourite();
+            f.FavouriteRestId = id;
+            
+                DateTime today = DateTime.Today;
+                f.CreatedDate = today;
+
+                if (ModelState.IsValid)
+                {
+                    db.Favourites.Add(f);
+                    db.SaveChanges();
+                }
+                else if (!ModelState.IsValid)
+                {
+
+                    return -1;
+                }
+                return 0;
+
+        }
+        public int removeFromFavourites(int id)
+        {
+            Favourite f = db.Favourites.Find(id);
+            db.Favourites.Remove(f);
+            db.SaveChanges();
+            return 0;
+        }
+
+
+        [HttpPost]
+        public ActionResult searchCuisine(int find)
+        {
+           var model =(from rt in db.Restaurant_Type
+        join r in db.Restaurants
+        on rt.Rest_id
+        equals r.Id 
+        where rt.Category_id == find
+         select new RestaurantViewModel()
+        {
+            RestId = rt.Restaurant.Id,
+            RestaurantName = rt.Restaurant.RestaurantName,
+            Logo = rt.Restaurant.Logo,
+            Address = rt.Restaurant.Address,
+            City = rt.Restaurant.City,
+            District = rt.Restaurant.District,
+            TimetakentoDeliver = rt.Restaurant.TimetakentoDeliver,
+            categories = rt.Restaurant.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+            
+           
+        });
+
+        
+            
+
+         return PartialView("_RestaurantViewer", model.ToList());
+
+        }
+
         [HttpPost]
         public ActionResult searchOpen_Restaurants(int openFlag)
         {
@@ -39,7 +109,7 @@ namespace TheFoody.Controllers
                                  TimetakentoDeliver = p.TimetakentoDeliver,
                                  categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
                              });
-                var no = model.Count();
+                
                 return PartialView("_RestaurantViewer", model.ToList());
 
             }
@@ -126,6 +196,14 @@ namespace TheFoody.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            var x = db.Categories.ToList().Select(c => new SelectListItem
+            {
+                Text = c.category1,
+                Value = c.id.ToString(),
+               
+            }).ToList();
+            x.Add(new SelectListItem { Text = "", Value = "" });
+            ViewBag.cuisines = x;
 
             var model = (from p in db.Restaurants // .Includes("Addresses") here?
                          select new RestaurantViewModel()
@@ -147,8 +225,14 @@ namespace TheFoody.Controllers
         [HttpPost]
         public ActionResult Index(string search)
         {
-            //using (TheFoodyContext db = new TheFoodyContext())
-            //{
+            var x = db.Categories.ToList().Select(c => new SelectListItem
+            {
+                Text = c.category1,
+                Value = c.id.ToString(),
+
+            }).ToList();
+            x.Add(new SelectListItem { Text = "", Value = "" });
+            ViewBag.cuisines = x;
 
             var model = (from p in db.Restaurants // .Includes("Addresses") here?
                          where p.City.StartsWith(search) || search == null
@@ -166,7 +250,7 @@ namespace TheFoody.Controllers
 
             return View(model.ToList());
 
-            //}
+            
 
         }
    

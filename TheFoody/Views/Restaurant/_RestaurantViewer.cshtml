@@ -1,9 +1,11 @@
-﻿@model IEnumerable<TheFoody.Models.RestaurantViewModel>
+﻿@using System.Linq;
+@using Newtonsoft.Json;
+@model IEnumerable<TheFoody.Models.RestaurantViewModel>
+
 @{
 
     Layout = null;
 }
-
 
 
 <div class="breadcrumb-wrapper">
@@ -15,7 +17,14 @@
 
                 <div class="restaurant-list-wrapper">
 
+                    @*@if (Model.Count() > 0)
+                        {*@
 
+
+
+                    @*//}
+                        //else
+                        //{*@
                     @foreach (var item in Model)
                     {
                         <div class="restaurant-item-list">
@@ -91,22 +100,24 @@
                                         </div>
 
                                         <div class="col-sm-5 col-md-4">
-                                            <a href="@Url.Action("ViewMenu","Restaurant",new { id = item.RestId })" class="btn btn-primary">View Menu</a>
+                                            <p><a href="@Url.Action("ViewMenu","Restaurant",new { id = item.RestId })" class="btn btn-primary">View Menu</a></p>
+                                            <p id="Favourites"><a id="@item.RestId" onclick="clickedfavourites(@item.RestId)" class="btn btn-primary">Add to Favourites</a></p>
+
+
                                         </div>
+
 
                                     </div>
 
-                                </div>
 
+                                </div>
 
                             </div>
 
+
                         </div>
+
                     }
-
-
-
-
                 </div>
 
                 <div class="pager-wrapper">
@@ -276,3 +287,105 @@
 
     </div>
 </div>
+
+
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Restaurant/changeAddToFavouritesLabel',
+            type: 'POST',
+            datatype: 'json',
+
+            success: function (restId) {
+                var modeldata =  @Html.Raw(JsonConvert.SerializeObject(this.Model));
+
+
+                $.each(restId, function (i, favouriteRestid) {
+                    $.each(modeldata, function (m, modelRestitem) {
+                        if(favouriteRestid.toString() == JSON.stringify(modelRestitem.RestId))
+                        {
+                            //$('#'+modelRestitem.RestId).remove();
+                            //$('#'+modelRestitem.RestId).append(
+                            //    $('<a></a>')
+                            //        .attr("id",modelRestitem.RestId)
+                            //        .addClass("btn btn-primary")
+                            //        .attr("onclick", "removeFromFavourites("+"#"+modelRestitem.RestId+")")
+                            //        .text("Remove From Favourite"))
+                            $('#'+modelRestitem.RestId).text('Remove From Favourite');
+                            $('#'+modelRestitem.RestId).attr("onclick", "removeFromFavourites("+"#"+modelRestitem.RestId+")");
+                        }
+
+                    });
+                })
+
+            }
+
+        })
+    });
+
+    function clickedfavourites(restid) {
+
+        $.ajax({
+            url: '/Restaurant/AddToFavourites',
+            type: 'POST',
+            data: { id: restid },
+
+            success: function (boolvalue) {
+                if (boolvalue == 0) {
+                        alert("came!")
+                    $('#'+restid).text('Remove From Favourite');
+                    $('#'+restid).attr("onclick", "removeFromFavourites("+"#"+restid+")");
+
+                    //$('#'+restid).remove();
+                    //alert("removed!!!")
+                    //var element="<a class='btn btn-primary' id='"+restid+"' onclick='"+"removeFromFavourites("+"#"+restid+")'"+">"+"Remove From Favourite"+"</a>"
+                    //alert(element)
+                    //$("#Favourites").append(element);
+                   
+                   
+                   
+                    //$('#'+restid).append(
+                    //    $('<a></a>')
+                    //        .attr("id",restid)
+                    //        .addClass("btn btn-primary")
+                    //        .attr("onclick", "removeFromFavourites("+"#"+restid+")")
+                    //        .text("Remove From Favourite"));
+                    alert("Removed label set")
+                     }
+                else {
+                    alert("Favourite not Added!!")
+                }
+            }
+        });
+    }
+
+
+    function removeFromFavourites(restid)
+    {
+        alert("remove function called")
+        $.ajax({
+            url: '/Restaurant/removeFromFavourites',
+            type: 'POST',
+            data: { id: restid },
+
+            success: function (boolvalue) {
+                if (boolvalue == 0) {
+                    $('#'+restid).text('Add to Favourites');
+                    $('#'+restid).attr("onclick", "clickedfavourites("+"#"+restid+")");
+                    //$('#'+restid).remove();
+                    //$('#'+restid).append(
+                    //    $('<a></a>')
+                    //        .attr("id",restid)
+                    //        .addClass("btn btn-primary")
+                    //        .attr("onclick", "clickedfavourites("+"#"+restid+")")
+                    //        .text("Add to Favourites"));
+
+                }
+                else {
+                    alert("Favourite removing cancelled!!")
+                }
+            }
+        });
+    }
+</script>

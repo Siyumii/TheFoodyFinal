@@ -12,18 +12,12 @@ namespace TheFoody.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Menu
+    public partial class Favourite
     {
-        public int Menu_id { get; set; }
-        public string Menu_name { get; set; }
-        public string Description { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public string Photo { get; set; }
-        public Nullable<int> Meal_Cat_IdFK { get; set; }
-        public Nullable<int> RestaurantId { get; set; }
-        public Nullable<System.DateTime> Created_date { get; set; }
+        public int Favourite_id { get; set; }
+        public int FavouriteRestId { get; set; }
+        public System.DateTime CreatedDate { get; set; }
     
-        public virtual Meal_Category Meal_Category { get; set; }
         public virtual Restaurant Restaurant { get; set; }
     }
 }

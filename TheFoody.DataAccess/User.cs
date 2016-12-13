@@ -19,7 +19,6 @@ namespace TheFoody.DataAccess
         {
             this.Ratings = new HashSet<Rating>();
             this.Restaurants = new HashSet<Restaurant>();
-            this.Ratings = new HashSet<Rating>();
         }
     
         public string email { get; set; }
@@ -40,7 +39,5 @@ namespace TheFoody.DataAccess
         public virtual ICollection<Rating> Ratings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Restaurant> Restaurants { get; set; }
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<Rating> Ratings { get; set; }
     }
 }

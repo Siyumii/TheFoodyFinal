@@ -12,6 +12,14 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="category" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Favourites">
+          <Key>
+            <PropertyRef Name="Favourite_id" />
+          </Key>
+          <Property Name="Favourite_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FavouriteRestId" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Meal_Category">
           <Key>
             <PropertyRef Name="Meal_Cat_Id" />
@@ -30,6 +38,7 @@
           <Property Name="Photo" Type="varchar" MaxLength="200" />
           <Property Name="Meal_Cat_IdFK" Type="int" />
           <Property Name="RestaurantId" Type="int" />
+          <Property Name="Created_date" Type="date" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -90,6 +99,18 @@
           <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="created_date" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Favourites_Restaurant">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="Favourites" Type="Self.Favourites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favourites">
+              <PropertyRef Name="FavouriteRestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Menu_Restaurant">
           <End Role="Meal_Category" Type="Self.Meal_Category" Multiplicity="0..1" />
           <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
@@ -176,12 +197,17 @@
         </Association>
         <EntityContainer Name="TheFoodyModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favourites" EntityType="Self.Favourites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meal_Category" EntityType="Self.Meal_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurant_Type" EntityType="Self.Restaurant_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Favourites_Restaurant" Association="Self.FK_Favourites_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="Favourites" EntitySet="Favourites" />
+          </AssociationSet>
           <AssociationSet Name="FK_Menu_Restaurant" Association="Self.FK_Menu_Restaurant">
             <End Role="Meal_Category" EntitySet="Meal_Category" />
             <End Role="Menu" EntitySet="Menu" />
@@ -215,22 +241,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TheFoodyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Menu">
-          <Key>
-            <PropertyRef Name="Menu_id" />
-          </Key>
-          <Property Name="Menu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Menu_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="Photo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Meal_Cat_IdFK" Type="Int32" />
-          <NavigationProperty Name="Meal_Category" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Menu" ToRole="Meal_Category" />
-          <Property Name="RestaurantId" Type="Int32" />
-          <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Menu_Restaurant11" FromRole="Menu" ToRole="Restaurant" />
-        </EntityType>
         <EntityContainer Name="TheFoodyContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Menus" EntityType="Self.Menu" />
           <EntitySet Name="Categories" EntityType="TheFoodyModel.Category" />
           <EntitySet Name="Restaurant_Type" EntityType="TheFoodyModel.Restaurant_Type" />
           <AssociationSet Name="FK_Restaurant_Type_Category" Association="TheFoodyModel.FK_Restaurant_Type_Category">
@@ -238,15 +249,7 @@
             <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
           </AssociationSet>
           <EntitySet Name="Meal_Category" EntityType="TheFoodyModel.Meal_Category" />
-          <AssociationSet Name="FK_Menu_Restaurant1" Association="TheFoodyModel.FK_Menu_Restaurant1">
-            <End Role="Meal_Category" EntitySet="Meal_Category" />
-            <End Role="Menu" EntitySet="Menus" />
-          </AssociationSet>
           <EntitySet Name="Restaurants" EntityType="TheFoodyModel.Restaurant" />
-          <AssociationSet Name="FK_Menu_Restaurant11" Association="TheFoodyModel.FK_Menu_Restaurant11">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="Menu" EntitySet="Menus" />
-          </AssociationSet>
           <AssociationSet Name="FK_Restaurant_Type_Restaurant" Association="TheFoodyModel.FK_Restaurant_Type_Restaurant">
             <End Role="Restaurant" EntitySet="Restaurants" />
             <End Role="Restaurant_Type" EntitySet="Restaurant_Type" />
@@ -264,6 +267,20 @@
           <AssociationSet Name="FK_Restaurant_User" Association="TheFoodyModel.FK_Restaurant_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Restaurant" EntitySet="Restaurants" />
+          </AssociationSet>
+          <EntitySet Name="Favourites" EntityType="TheFoodyModel.Favourite" />
+          <EntitySet Name="Menus" EntityType="TheFoodyModel.Menu" />
+          <AssociationSet Name="FK_Favourites_Restaurant" Association="TheFoodyModel.FK_Favourites_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="Favourite" EntitySet="Favourites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Menu_Restaurant" Association="TheFoodyModel.FK_Menu_Restaurant">
+            <End Role="Meal_Category" EntitySet="Meal_Category" />
+            <End Role="Menu" EntitySet="Menus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Menu_Restaurant1" Association="TheFoodyModel.FK_Menu_Restaurant1">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="Menu" EntitySet="Menus" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Category">
@@ -302,20 +319,8 @@
           </Key>
           <Property Name="Meal_Cat_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Menus" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Meal_Category" ToRole="Menu" />
+          <NavigationProperty Name="Menus" Relationship="TheFoodyModel.FK_Menu_Restaurant" FromRole="Meal_Category" ToRole="Menu" />
         </EntityType>
-        <Association Name="FK_Menu_Restaurant1">
-          <End Type="TheFoodyModel.Meal_Category" Role="Meal_Category" Multiplicity="0..1" />
-          <End Type="TheFoodyModel.Menu" Role="Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meal_Category">
-              <PropertyRef Name="Meal_Cat_Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="Meal_Cat_IdFK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Restaurant">
           <Key>
             <PropertyRef Name="Id" />
@@ -337,23 +342,12 @@
           <Property Name="DeliveryEndingTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="TimetakentoDeliver" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MinDelivery" Type="Decimal" Precision="5" Scale="2" />
-          <NavigationProperty Name="Menus" Relationship="TheFoodyModel.FK_Menu_Restaurant11" FromRole="Restaurant" ToRole="Menu" />
           <NavigationProperty Name="Restaurant_Type" Relationship="TheFoodyModel.FK_Restaurant_Type_Restaurant" FromRole="Restaurant" ToRole="Restaurant_Type" />
           <NavigationProperty Name="Ratings" Relationship="TheFoodyModel.FK_Rating_Restaurant" FromRole="Restaurant" ToRole="Rating" />
           <NavigationProperty Name="User" Relationship="TheFoodyModel.FK_Restaurant_User" FromRole="Restaurant" ToRole="User" />
+          <NavigationProperty Name="Favourites" Relationship="TheFoodyModel.FK_Favourites_Restaurant" FromRole="Restaurant" ToRole="Favourite" />
+          <NavigationProperty Name="Menus" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Restaurant" ToRole="Menu" />
         </EntityType>
-        <Association Name="FK_Menu_Restaurant11">
-          <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
-          <End Type="TheFoodyModel.Menu" Role="Menu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Menu">
-              <PropertyRef Name="RestaurantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Restaurant_Type_Restaurant">
           <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
           <End Type="TheFoodyModel.Restaurant_Type" Role="Restaurant_Type" Multiplicity="*" />
@@ -435,25 +429,72 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Favourite">
+          <Key>
+            <PropertyRef Name="Favourite_id" />
+          </Key>
+          <Property Name="Favourite_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FavouriteRestId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Favourites_Restaurant" FromRole="Favourite" ToRole="Restaurant" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="Menu_id" />
+          </Key>
+          <Property Name="Menu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Menu_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Photo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Meal_Cat_IdFK" Type="Int32" />
+          <Property Name="RestaurantId" Type="Int32" />
+          <Property Name="Created_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Meal_Category" Relationship="TheFoodyModel.FK_Menu_Restaurant" FromRole="Menu" ToRole="Meal_Category" />
+          <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Menu" ToRole="Restaurant" />
+        </EntityType>
+        <Association Name="FK_Favourites_Restaurant">
+          <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="1" />
+          <End Type="TheFoodyModel.Favourite" Role="Favourite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favourite">
+              <PropertyRef Name="FavouriteRestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Menu_Restaurant">
+          <End Type="TheFoodyModel.Meal_Category" Role="Meal_Category" Multiplicity="0..1" />
+          <End Type="TheFoodyModel.Menu" Role="Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meal_Category">
+              <PropertyRef Name="Meal_Cat_Id" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="Meal_Cat_IdFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Menu_Restaurant1">
+          <End Type="TheFoodyModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
+          <End Type="TheFoodyModel.Menu" Role="Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TheFoodyModelStoreContainer" CdmEntityContainer="TheFoodyContext">
-          <EntitySetMapping Name="Menus">
-            <EntityTypeMapping TypeName="TheFoodyModel.Menu">
-              <MappingFragment StoreEntitySet="Menu">
-                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
-                <ScalarProperty Name="Meal_Cat_IdFK" ColumnName="Meal_Cat_IdFK" />
-                <ScalarProperty Name="Menu_id" ColumnName="Menu_id" />
-                <ScalarProperty Name="Menu_name" ColumnName="Menu_name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="TheFoodyModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -530,6 +571,29 @@
                 <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favourites">
+            <EntityTypeMapping TypeName="TheFoodyModel.Favourite">
+              <MappingFragment StoreEntitySet="Favourites">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="FavouriteRestId" ColumnName="FavouriteRestId" />
+                <ScalarProperty Name="Favourite_id" ColumnName="Favourite_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="TheFoodyModel.Menu">
+              <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+                <ScalarProperty Name="Meal_Cat_IdFK" ColumnName="Meal_Cat_IdFK" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Menu_name" ColumnName="Menu_name" />
+                <ScalarProperty Name="Menu_id" ColumnName="Menu_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

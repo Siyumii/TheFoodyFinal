@@ -1,0 +1,95 @@
+﻿@model IEnumerable<TheFoody.Models.RestaurantDeatilModel>
+
+@foreach (var item in Model)
+{
+    <div class="restaurant-item-list">
+
+        <div class="image">
+            <img src="images/brands/06.png" alt="image" />
+        </div>
+
+        <div class="content">
+
+            <div class="restaurant-item-list-info">
+
+                <div class="row">
+
+                    <div class="col-sm-7 col-md-8">
+                        
+                        <h4 class="heading">@Html.DisplayFor(model => item.RestaurantName)</h4>
+                        <div class="meta-div clearfix mb-25">
+
+                            <ul style="list-style-type:disc">
+                                @*@foreach (TheFoody.Models.CategoryViewModel category in ViewBag.Categories)
+                                    {
+                                        if (@category.isChecked)
+                                        {
+                                            <li>@category.category</li>
+                                        }
+                                    }*@
+                            </ul>
+                        </div>
+                        <p class="texing">@Html.DisplayFor(model => item.CompanyBackground)</p>
+                    </div>
+
+                    <div class="col-sm-5 col-md-4">
+                        <ul class="meta-list">
+                            <li>
+                                <span>Location:</span>
+                                @Html.DisplayFor(model => item.Address) , @Html.DisplayFor(model => item.City) , @Html.DisplayFor(model => item.District)
+                            </li>
+                            <li>
+                                <span>Min Order:</span>
+                                &pound;15
+                            </li>
+                            <li>
+                                <span>Delivery: </span>
+                                @Html.DisplayFor(model => item.TimetakentoDeliver) min
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="restaurant-item-list-bottom">
+                <div class="row">
+                    <div class="col-sm-5 col-md-4">
+                        @Html.ActionLink("View Details", "AdminProfile", new { partialViewType = "View", restaurantId = item.id }, new { @class = "btn btn-info" })
+
+                        @*@Ajax.ActionLink("View Details", "AdminProfile", new { partialViewType = "View", restaurantId = item.id }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "res-btn label label-success" })*@
+                        </div>
+                    <div class="col-sm-5 col-md-4">
+                        @Html.ActionLink("Accept", "SendAccaptedMail", new { }, new { @class = "btn btn-success" })
+                        @*@Ajax.ActionLink("Accept", "AdminProfile", new { partialViewType = "Accept" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "btn btn-warning" })*@
+                    </div>
+                            <div class="col-sm-5 col-md-4">
+                                @Html.ActionLink("Reject", "SendRejectedMail", new { }, new { @class = "btn btn-danger" })
+                                @*@Ajax.ActionLink("Reject", "AdminProfile", new { partialViewType = "Reject" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "btn btn-primary btn-sm" })*@
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

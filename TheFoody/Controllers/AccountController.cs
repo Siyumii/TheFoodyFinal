@@ -138,6 +138,7 @@ namespace TheFoody.Controllers
             //    Session["Status"] = "Active";
 
             //}
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -152,7 +153,7 @@ namespace TheFoody.Controllers
             using (TheFoodyContext db = new TheFoodyContext())
             {
                 //var usr = db.Users.Single(u => u.email == model.Email && u.password == model.Password);
-                var usr = db.Users.Where(u => u.email == model.Email && u.password == model.Password).FirstOrDefault();
+                var usr = db.Users.Where(u => u.email == model.Email && u.password == model.Password && u.status=="Active").FirstOrDefault();
                 if (usr == null)
                 {
                     ModelState.AddModelError("", "Invalid Email or password");
@@ -163,7 +164,7 @@ namespace TheFoody.Controllers
                     FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
 
                     Session["UserEmail"] = usr.email.ToString();
-                    Session["UserEmail"] = Session["TempEmail"];
+                    Session["UserType"] = usr.user_type.ToString();
                     //Session["FirstName"] = usr.fname.ToString();
                     //Session["LastName"] = usr.lname.ToString();
                     //Session["Address"] = usr.address.ToString();
@@ -207,6 +208,7 @@ namespace TheFoody.Controllers
         public ActionResult LogOff()
         {
             Session["UserEmail"] = null;
+            Session["UserType"] = null;
             if (Request.Cookies["Login"] != null)
             {
                 var cookie = new HttpCookie("Login")

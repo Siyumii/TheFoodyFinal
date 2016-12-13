@@ -1,0 +1,112 @@
+﻿@model TheFoody.Models.ManageViewModel
+
+<div class="admin-section-title">
+    <h2>Profile</h2>
+    <p>Enquire explain another he in brandon enjoyed be service.</p>
+</div>
+
+@using (Html.BeginForm("Manage", "Manage", FormMethod.Post, new { @id = "updateForm", @class = "post-form-wrapper", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="row gap-20">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-sm-6 col-md-4">
+            @*@ViewBag.Error*@
+            <div class="form-group bootstrap-fileinput-style-01">
+                @Html.LabelFor(model => model.photo, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.photo, new { htmlAttributes = new { @class = "form-control", @type = "file", @name = "photo", @id = "photo", @onchange = "show(this)" } })
+
+                @Html.ValidationMessageFor(model => model.photo, "", new { @class = "text-danger" })
+
+                <div class="col-md-6">
+                    <img id="user_img"
+                         height="100"
+                         width="90"
+                         style="border:solid" />
+                </div>
+
+                @Html.HiddenFor(model => model.photo, new { @class = "form-control", disabled = "disabled" })
+                @*<input value="default" id="photo" name="photo" />*@
+                <span class="font12 font-italic">** photo must not bigger than 250kb</span>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>First Name*</label>
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>Last Name*</label>
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>Address*</label>
+                @*<input type="text" class="form-control" value="254" id="address" name="address" disabled>*@
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>District*</label>
+                @*<input type="text" class="form-control" value="254" id="district" name="district" disabled>*@
+                @Html.TextBoxFor(model => model.District, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>City/town*</label>
+                @*<input type="text" class="form-control" value="Somewhere " id="city" name="city" disabled>*@
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>PostCode*</label>
+                @*<input type="text" class="form-control" value="Somewhere " id="postcode" name="postcode" disabled>*@
+                @Html.TextBoxFor(model => model.PostCode, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.PostCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                <label>Phone Number*</label>
+                @*<input type="text" class="form-control" value="+66-85-221-5489" id="phone" name="phone" disabled>*@
+                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="col-sm-12 mt-10">
+            @*<input type="submit" onclick="document.getElementById('updateform').submit()" class="btn btn-primary" value="Save" />*@
+
+            <input type="submit" class="btn btn-primary" value="Save" />
+
+            @*<a href="http://localhost:1672/Home/Index" class="btn btn-primary btn-inverse">Cancel</a>*@
+            @Html.ActionLink("Cancel", "Index", "Home", new { @class = "btn btn-primary btn-inverse" })
+        </div>
+    </div>
+}
+<!--</form>-->

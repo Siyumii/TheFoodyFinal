@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TheFoody.DataAccess.Menu>
+
+@{
+    ViewBag.Title = "MinimumIndex";
+}
+
+<h2>MinimumIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Menu_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Daily_fixed_count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Minimum_count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Current_count)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Menu_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            <img id="user_img" src="~/images/menuimages/@Html.DisplayFor(modelItem => item.Photo)" alt="image" style="width:50px;height:50px" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Daily_fixed_count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Minimum_count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Current_count)
+        </td>
+        
+        <td>
+            @Html.ActionLink("UpdateCurrentStock", "UpdateCurrentStock", new { id=item.Menu_id }) 
+          
+        </td>
+    </tr>
+}
+
+</table>

@@ -23,10 +23,15 @@
         <th>
             @Html.DisplayNameFor(model => model.Photo)
         </th>
-        
         <th>
-            @Html.DisplayNameFor(model => model.Restaurant.OwnerEmail)
-        </th> 
+            @Html.DisplayNameFor(model => model.Daily_fixed_count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Current_count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Minimum_count)
+        </th>
         <th></th>
     </tr>
 
@@ -42,15 +47,22 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Photo)
+            
+            <img id="user_img" src="~/images/menuimages/@Html.DisplayFor(modelItem => item.Photo)" alt="image"style="width:100px;height:120px" />
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Restaurant.OwnerEmail)
+            @Html.DisplayFor(modelItem => item.Daily_fixed_count)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Menu_id }) |
+            @Html.DisplayFor(modelItem => item.Current_count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Minimum_count)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditMenu", new { id=item.Menu_id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Menu_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Menu_id })
+            @Html.ActionLink("Delete", "Delete", new { id=item.Menu_id })        
         </td>
     </tr>
 }

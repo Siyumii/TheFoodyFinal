@@ -75,12 +75,40 @@
                 @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
                 <div class="col-md-6">
                     <img id="menu_img"
-                         height="100"
-                         width="90"
+                         height="170"
+                         width="150"
                          style="border:solid" />
                 </div>
             </div>
         </div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Daily_fixed_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Daily_fixed_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Daily_fixed_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+         <div class="form-group">
+            @Html.LabelFor(model => model.Current_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Current_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Current_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+         <div class="form-group">
+            @Html.LabelFor(model => model.Minimum_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Minimum_count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Minimum_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+          
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

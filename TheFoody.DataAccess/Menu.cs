@@ -22,6 +22,9 @@ namespace TheFoody.DataAccess
         public Nullable<int> Meal_Cat_IdFK { get; set; }
         public Nullable<int> RestaurantId { get; set; }
         public Nullable<System.DateTime> Created_date { get; set; }
+        public Nullable<int> Daily_fixed_count { get; set; }
+        public Nullable<int> Minimum_count { get; set; }
+        public Nullable<int> Current_count { get; set; }
     
         public virtual Meal_Category Meal_Category { get; set; }
         public virtual Restaurant Restaurant { get; set; }

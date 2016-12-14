@@ -10,18 +10,15 @@
 namespace TheFoody.DataAccess
 {
     using System;
-    //using System.Data.SqlClient;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
     public partial class TheFoodyContext : DbContext
     {
-       
         public TheFoodyContext()
             : base("name=TheFoodyContext")
         {
         }
-    
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,5 +32,7 @@ namespace TheFoody.DataAccess
         public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Order_foods> Order_foods { get; set; }
     }
 }

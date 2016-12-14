@@ -9,6 +9,7 @@ using TheFoody.DataAccess;
 using System.IO;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Mvc.Mailer;
 
 
 namespace TheFoody.Controllers
@@ -524,7 +525,7 @@ namespace TheFoody.Controllers
                     user.city = model.city;
                     user.postcode = model.postcode;
                     user.district = model.district;
-                    user.status = "Active";
+                    user.status = "Inactive";
                     user.user_type = "RestaurantOwner";
                     user.created_date = DateTime.Now;
                     db.Users.Add(user);
@@ -547,7 +548,11 @@ namespace TheFoody.Controllers
             return View();
         }
 
-
+        // GET: Restaurant/CreateRestaurant
+        public ActionResult MoveToHome()
+        {
+            return View("RestaurantRegistration");
+        }
 
         // POST: Restaurant/CreateRestaurant
         [HttpPost]
@@ -591,7 +596,7 @@ namespace TheFoody.Controllers
                             restaurant.DeliveryStartingTime = model.DeliveryStartingTime;
                             restaurant.DeliveryEndingTime = model.DeliveryEndingTime;
                             restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
-
+                            restaurant.MinDelivery = model.MinDelivery;
                             db.Restaurants.Add(restaurant);
                             db.SaveChanges();
 
@@ -620,16 +625,19 @@ namespace TheFoody.Controllers
                             }
 
                             db.SaveChanges();
-                            TempData["OwnerEmail"] = restaurant.OwnerEmail;
-                            Session["UserEmail"] = restaurant.OwnerEmail;
-                            return RedirectToAction("EditRestaurant", "Restaurant", new
-                            {
-                                id = (from p in db.Restaurants
-                                      where p.OwnerEmail == restaurant.OwnerEmail
-                                      where p.RestaurantName == restaurant.RestaurantName
-                                      select p.Id).Single()
-                            });
-
+                            //TempData["OwnerEmail"] = restaurant.OwnerEmail;
+                            //Session["UserEmail"] = restaurant.OwnerEmail;
+                            //Session["UserType"] = "RestaurantOwner";
+                            //return RedirectToAction("EditRestaurant", "Restaurant", new
+                            //{
+                            //    id = (from p in db.Restaurants
+                            //          where p.OwnerEmail == restaurant.OwnerEmail
+                            //          where p.RestaurantName == restaurant.RestaurantName
+                            //          select p.Id).Single()
+                            //});
+                            Session["UserEmail"] = null;
+                            Session["UserType"] = null;
+                            return RedirectToAction("MoveToHome");
                         }
                         else
                         {
@@ -708,13 +716,188 @@ namespace TheFoody.Controllers
                 ViewBag.Categories = getSelectedCategories(restaurantDetailModel.id);
                 return PartialView("_EditRestaurantProfile", restaurantDetailModel);
             }
+            else if (partialViewType == "OrdersList")
+            {
+                Session["OrdersList"] = getOrders().list;
+                return PartialView("_OrdersList");
+            }
             else
             {
                 return PartialView("_ChangePassword", restaurantDetailModel);
             }
 
         }
+        public PartialViewResult OrderDetails(int  orderID)
+        {
 
+            OrderDetailsModel order = getOrder(orderID);
+
+            return PartialView("_OrderDetails",order);
+            
+        }
+
+        public class UserMailer : MailerBase
+        {
+            public UserMailer()
+            {
+                //MasterName="_Layout";
+            }
+
+            public virtual MvcMailMessage Dispatch(Models.OrderDispatchMailModel _objModelMail)
+            {
+                //var resources = new Dictionary<string, string>();
+                //resources["logo"] = "~/Img/logo.png";
+                //LinkedResource logo = new LinkedResource(resources["logo"]);
+
+                //PopulateBody(mailMessage, "WelcomeMessage", resources);
+                ViewData.Model = _objModelMail;
+                return Populate(x =>
+                {
+                    x.Subject = _objModelMail.Subject;
+                    x.ViewName = "OrderDispatchEmail";
+                    x.To.Add(_objModelMail.To);
+                    //x.LinkedResources.Add("logo", resources["logo"]);
+                });
+            }
+
+
+        }
+        UserMailer userMailer = new UserMailer();
+        public ActionResult SendDispatchedMail()
+        {
+            TheFoody.Models.OrderDispatchMailModel _objModelMail = new TheFoody.Models.OrderDispatchMailModel();
+            //change email to restaurant owner's email
+            
+            _objModelMail.Subject = "Thank You For Your Order!";
+            _objModelMail.Order = (OrderDetailsModel)Session["Order"];
+            _objModelMail.To = _objModelMail.Order.Cus_email;
+            if (_objModelMail.Order.Order_type == "Delivery")
+            {
+                _objModelMail.Order.Deliver_Man = Session["Order"].ToString();
+            }
+            
+            _objModelMail.Body = "Dear " + _objModelMail.Order.CustomerFirstName + " , Thank you for using TheFoody for odering with " + _objModelMail.Order.RestaurantName + ". Enjoy Your Meal!";
+            userMailer.Dispatch(_objModelMail).Send();
+
+            Order order = (from p in db.Orders
+                          where p.Order_id == _objModelMail.Order.Order_id
+                         select p).FirstOrDefault();
+            order.Order_status = "Dispatched";
+            db.SaveChanges();
+
+            return RedirectToAction("OrderEmailSent");
+
+
+        }
+
+        public ActionResult OrderEmailSent()
+        {
+            return View("OrderEmailSent");
+        }
+        [NonAction]
+        public OrderDetailsModel getOrder(int id)
+        {
+            string email = Session["UserEmail"].ToString();
+            var restaurant = (from p in db.Restaurants
+                              where p.OwnerEmail == email
+                              select p).FirstOrDefault();
+
+            OrderDetailsModel orderDetails = new OrderDetailsModel();
+            
+            if (restaurant != null)
+            {
+                var order = (from p in db.Orders
+                            where p.Order_id == id
+                            select p).FirstOrDefault();
+
+                
+                    
+                    orderDetails.Order_id = order.Order_id;
+                    orderDetails.Rest_id = Convert.ToInt32(order.Rest_id);
+                    orderDetails.RestaurantName = restaurant.RestaurantName;
+                    orderDetails.Cus_email = order.Cus_email;
+                    orderDetails.Total_price = Convert.ToDecimal(order.Total_price);
+                    orderDetails.Order_type = order.Order_type;
+                    orderDetails.Order_status = order.Order_status;
+                    orderDetails.Payment_status = order.Payment_status;
+                    orderDetails.Order_date = Convert.ToDateTime(order.Order_date);
+                    orderDetails.Delivery_address = order.Delivery_address;
+                    orderDetails.Phone = order.Phone;
+                    orderDetails.Landmarks = order.Landmarks;
+                    orderDetails.Dispatched_date = order.Dispatched_date;
+                    orderDetails.Deliver_Man = order.Deliver_Man;
+                
+                    orderDetails.Delivery_time = (TimeSpan)order.Delivery_time;
+                   
+                   
+                    orderDetails.CustomerFirstName = (from p in db.Users
+                                                      where p.email == order.Cus_email
+                                                      select p.fname).FirstOrDefault();
+
+                    var Menus = (from p in db.Order_foods
+                                                      where p.Order_id == order.Order_id
+                                                      select p).ToList();
+
+                    orderDetails.Menus = new List<OrderedMenusModel>();
+                    foreach (Order_foods menu in Menus)
+                    {
+                        OrderedMenusModel menuDetails = new OrderedMenusModel();
+                        menuDetails.Order_food_id = menu.Order_food_id;
+                        menuDetails.Menu_id = menu.Menu_id;
+                        menuDetails.Quantity = menu.Quantity;
+                        menuDetails.Price = menu.Price;
+
+                        menuDetails.Menu = (from p in db.Menus
+                                            where p.Menu_id == menu.Menu_id
+                                            select p.Menu_name).FirstOrDefault();
+
+                        orderDetails.Menus.Add(menuDetails);
+
+                    }
+
+                   
+                
+            }
+
+            return orderDetails;
+        } 
+        [NonAction]
+        public OrderViewModel getOrders()
+        {
+            string email =  Session["UserEmail"].ToString();
+            var restaurant = (from p in db.Restaurants
+                               where p.OwnerEmail == email
+                               select p).FirstOrDefault();
+
+            OrderViewModel orders = new OrderViewModel();
+            orders.list = new List<OrderDetailsModel>();
+            if (restaurant != null)
+            {
+                var list = (from p in db.Orders
+                               where p.Rest_id == restaurant.Id
+                               where p.Order_status == "Pending"
+                               orderby p.Delivery_time,p.Order_date
+                               select p).ToList();
+
+                foreach (Order order in list)
+                {
+                    OrderDetailsModel orderDetails = new OrderDetailsModel();
+                    orderDetails.Order_id = order.Order_id;
+                    orderDetails.Cus_email = order.Cus_email;
+                    orderDetails.Total_price = Convert.ToDecimal(order.Total_price);
+                    orderDetails.Order_type = order.Order_type;
+                    orderDetails.Payment_status = order.Payment_status;
+
+                    orderDetails.CustomerFirstName = (from p in db.Users
+                                        where p.email == order.Cus_email
+                                        select p.fname).FirstOrDefault();
+
+                    orders.list.Add(orderDetails);
+                }
+            }
+
+            return orders;
+        } 
         // GET: Restaurant/Edit/5
         public ActionResult EditRestaurant()
         {
@@ -760,6 +943,7 @@ namespace TheFoody.Controllers
             restaurantDeatilModel.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
 
             restaurantDeatilModel.TimetakentoDeliver = Convert.ToInt32(restaurant.TimetakentoDeliver);
+            restaurantDeatilModel.MinDelivery = Convert.ToDecimal(restaurant.MinDelivery);
 
             TempData["RestaurantId"] = restaurantDeatilModel.id;
             TempData["RestaurantLogo"] = restaurantDeatilModel.Logo;
@@ -833,6 +1017,7 @@ namespace TheFoody.Controllers
                             model.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
 
                             restaurant.TimetakentoDeliver = model.TimetakentoDeliver.ToString();
+                            restaurant.MinDelivery = model.MinDelivery;
 
                             db.Entry(restaurant).State = EntityState.Modified;
                             db.SaveChanges();

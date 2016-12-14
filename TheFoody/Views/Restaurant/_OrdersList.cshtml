@@ -1,0 +1,41 @@
+﻿@model TheFoody.Models.OrderDetailsModel
+
+@if (((List<TheFoody.Models.OrderDetailsModel>)Session["OrdersList"] ).Count > 0) { 
+<table class="table">
+    <tr>
+        <th>@Html.LabelFor(model => model.Order_id)</th>
+        <th>@Html.LabelFor(model => model.CustomerFirstName)</th>
+        <th>@Html.LabelFor(model => model.Total_price)</th>
+        <th>@Html.LabelFor(model => model.Order_type)</th>
+        <th>@Html.LabelFor(model => model.Payment_status)</th>
+        <th></th>
+    </tr>
+
+@foreach (TheFoody.Models.OrderDetailsModel item in (List<TheFoody.Models.OrderDetailsModel>)Session["OrdersList"])
+{
+    <tr>
+        <th>@Html.DisplayFor(model => item.Order_id)</th>
+        <th>@Html.DisplayFor(model => item.CustomerFirstName)</th>
+        <th>@Html.DisplayFor(model => item.Total_price)</th>
+        <th>@Html.DisplayFor(model => item.Order_type)</th>
+        <th>@Html.DisplayFor(model => item.Payment_status)</th>
+        <td>
+            @Ajax.ActionLink("View", "OrderDetails", new
+       {
+           orderID = item.Order_id 
+           }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "btn btn-info" })
+            
+        </td>
+    </tr>
+}
+
+</table>
+}else{
+<h4>No New Orders</h4>
+}

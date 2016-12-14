@@ -30,6 +30,38 @@
           <Property Name="Photo" Type="varchar" MaxLength="200" />
           <Property Name="Meal_Cat_IdFK" Type="int" />
           <Property Name="RestaurantId" Type="int" />
+          <Property Name="Daily_fixed_count" Type="int" />
+          <Property Name="Minimum_count" Type="int" />
+          <Property Name="Current_count" Type="int" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Order_id" />
+          </Key>
+          <Property Name="Order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rest_id" Type="int" />
+          <Property Name="Cus_email" Type="varchar" MaxLength="200" />
+          <Property Name="Order_date" Type="datetime" />
+          <Property Name="Order_type" Type="varchar" MaxLength="50" />
+          <Property Name="Delivery_address" Type="varchar" MaxLength="1000" />
+          <Property Name="Phone" Type="char" MaxLength="10" />
+          <Property Name="Landmarks" Type="varchar" MaxLength="100" />
+          <Property Name="Payment_status" Type="varchar" MaxLength="50" />
+          <Property Name="Order_status" Type="varchar" MaxLength="50" />
+          <Property Name="Dispatched_date" Type="datetime" />
+          <Property Name="Total_price" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Deliver_Man" Type="varchar" MaxLength="20" />
+          <Property Name="Delivery_time" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Order_foods">
+          <Key>
+            <PropertyRef Name="Order_food_id" />
+          </Key>
+          <Property Name="Order_food_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Order_id" Type="int" />
+          <Property Name="Menu_id" Type="int" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="numeric" Precision="8" Scale="2" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -114,6 +146,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Order_foods_Menu">
+          <End Role="Menu" Type="Self.Menu" Multiplicity="0..1" />
+          <End Role="Order_foods" Type="Self.Order_foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menu">
+              <PropertyRef Name="Menu_id" />
+            </Principal>
+            <Dependent Role="Order_foods">
+              <PropertyRef Name="Menu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_foods_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Order_foods" Type="Self.Order_foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Order_id" />
+            </Principal>
+            <Dependent Role="Order_foods">
+              <PropertyRef Name="Order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="Order1" Type="Self.Order" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Order_id" />
+            </Principal>
+            <Dependent Role="Order1">
+              <PropertyRef Name="Order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Cus_email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Rating_Restaurant">
           <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
@@ -178,6 +258,8 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meal_Category" EntityType="Self.Meal_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_foods" EntityType="Self.Order_foods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurant_Type" EntityType="Self.Restaurant_Type" Schema="dbo" store:Type="Tables" />
@@ -189,6 +271,22 @@
           <AssociationSet Name="FK_Menu_Restaurant1" Association="Self.FK_Menu_Restaurant1">
             <End Role="Restaurant" EntitySet="Restaurant" />
             <End Role="Menu" EntitySet="Menu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_foods_Menu" Association="Self.FK_Order_foods_Menu">
+            <End Role="Menu" EntitySet="Menu" />
+            <End Role="Order_foods" EntitySet="Order_foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_foods_Order" Association="Self.FK_Order_foods_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Order_foods" EntitySet="Order_foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order" Association="Self.FK_Order_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Order1" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
           <AssociationSet Name="FK_Rating_Restaurant" Association="Self.FK_Rating_Restaurant">
             <End Role="Restaurant" EntitySet="Restaurant" />
@@ -228,6 +326,10 @@
           <NavigationProperty Name="Meal_Category" Relationship="TheFoodyModel.FK_Menu_Restaurant1" FromRole="Menu" ToRole="Meal_Category" />
           <Property Name="RestaurantId" Type="Int32" />
           <NavigationProperty Name="Restaurant" Relationship="TheFoodyModel.FK_Menu_Restaurant11" FromRole="Menu" ToRole="Restaurant" />
+          <Property Name="Daily_fixed_count" Type="Int32" />
+          <Property Name="Minimum_count" Type="Int32" />
+          <Property Name="Current_count" Type="Int32" />
+          <NavigationProperty Name="Order_foods" Relationship="TheFoodyModel.FK_Order_foods_Menu" FromRole="Menu" ToRole="Order_foods" />
         </EntityType>
         <EntityContainer Name="TheFoodyContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Menus" EntityType="Self.Menu" />
@@ -264,6 +366,24 @@
           <AssociationSet Name="FK_Restaurant_User" Association="TheFoodyModel.FK_Restaurant_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Restaurant" EntitySet="Restaurants" />
+          </AssociationSet>
+          <EntitySet Name="Orders" EntityType="TheFoodyModel.Order" />
+          <EntitySet Name="Order_foods" EntityType="TheFoodyModel.Order_foods" />
+          <AssociationSet Name="FK_Order_foods_Menu" Association="TheFoodyModel.FK_Order_foods_Menu">
+            <End Role="Menu" EntitySet="Menus" />
+            <End Role="Order_foods" EntitySet="Order_foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_foods_Order" Association="TheFoodyModel.FK_Order_foods_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Order_foods" EntitySet="Order_foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order" Association="TheFoodyModel.FK_Order_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Order1" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="TheFoodyModel.FK_Order_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Category">
@@ -410,6 +530,7 @@
           <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Ratings" Relationship="TheFoodyModel.FK_Rating_User" FromRole="User" ToRole="Rating" />
           <NavigationProperty Name="Restaurants" Relationship="TheFoodyModel.FK_Restaurant_User" FromRole="User" ToRole="Restaurant" />
+          <NavigationProperty Name="Orders" Relationship="TheFoodyModel.FK_Order_User" FromRole="User" ToRole="Order" />
         </EntityType>
         <Association Name="FK_Rating_User">
           <End Type="TheFoodyModel.User" Role="User" Multiplicity="0..1" />
@@ -435,6 +556,89 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Order_id" />
+          </Key>
+          <Property Name="Order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rest_id" Type="Int32" />
+          <Property Name="Cus_email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Order_date" Type="DateTime" Precision="3" />
+          <Property Name="Order_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Delivery_address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Landmarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Payment_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Order_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Dispatched_date" Type="DateTime" Precision="3" />
+          <Property Name="Total_price" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Deliver_Man" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Order_foods" Relationship="TheFoodyModel.FK_Order_foods_Order" FromRole="Order" ToRole="Order_foods" />
+          <NavigationProperty Name="Order1" Relationship="TheFoodyModel.FK_Order_Order" FromRole="Order" ToRole="Order1" />
+          <NavigationProperty Name="Order2" Relationship="TheFoodyModel.FK_Order_Order" FromRole="Order1" ToRole="Order" />
+          <NavigationProperty Name="User" Relationship="TheFoodyModel.FK_Order_User" FromRole="Order" ToRole="User" />
+          <Property Name="Delivery_time" Type="Time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Order_foods">
+          <Key>
+            <PropertyRef Name="Order_food_id" />
+          </Key>
+          <Property Name="Order_food_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order_id" Type="Int32" />
+          <Property Name="Menu_id" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="8" Scale="2" />
+          <NavigationProperty Name="Menu" Relationship="TheFoodyModel.FK_Order_foods_Menu" FromRole="Order_foods" ToRole="Menu" />
+          <NavigationProperty Name="Order" Relationship="TheFoodyModel.FK_Order_foods_Order" FromRole="Order_foods" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK_Order_foods_Menu">
+          <End Type="TheFoodyModel.Menu" Role="Menu" Multiplicity="0..1" />
+          <End Type="TheFoodyModel.Order_foods" Role="Order_foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menu">
+              <PropertyRef Name="Menu_id" />
+            </Principal>
+            <Dependent Role="Order_foods">
+              <PropertyRef Name="Menu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_foods_Order">
+          <End Type="TheFoodyModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="TheFoodyModel.Order_foods" Role="Order_foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Order_id" />
+            </Principal>
+            <Dependent Role="Order_foods">
+              <PropertyRef Name="Order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order">
+          <End Type="TheFoodyModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="TheFoodyModel.Order" Role="Order1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Order_id" />
+            </Principal>
+            <Dependent Role="Order1">
+              <PropertyRef Name="Order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Type="TheFoodyModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="TheFoodyModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Cus_email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -444,6 +648,9 @@
           <EntitySetMapping Name="Menus">
             <EntityTypeMapping TypeName="TheFoodyModel.Menu">
               <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="Current_count" ColumnName="Current_count" />
+                <ScalarProperty Name="Minimum_count" ColumnName="Minimum_count" />
+                <ScalarProperty Name="Daily_fixed_count" ColumnName="Daily_fixed_count" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
                 <ScalarProperty Name="Meal_Cat_IdFK" ColumnName="Meal_Cat_IdFK" />
                 <ScalarProperty Name="Menu_id" ColumnName="Menu_id" />
@@ -530,6 +737,37 @@
                 <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="TheFoodyModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Delivery_time" ColumnName="Delivery_time" />
+                <ScalarProperty Name="Deliver_Man" ColumnName="Deliver_Man" />
+                <ScalarProperty Name="Total_price" ColumnName="Total_price" />
+                <ScalarProperty Name="Dispatched_date" ColumnName="Dispatched_date" />
+                <ScalarProperty Name="Order_status" ColumnName="Order_status" />
+                <ScalarProperty Name="Payment_status" ColumnName="Payment_status" />
+                <ScalarProperty Name="Landmarks" ColumnName="Landmarks" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Delivery_address" ColumnName="Delivery_address" />
+                <ScalarProperty Name="Order_type" ColumnName="Order_type" />
+                <ScalarProperty Name="Order_date" ColumnName="Order_date" />
+                <ScalarProperty Name="Cus_email" ColumnName="Cus_email" />
+                <ScalarProperty Name="Rest_id" ColumnName="Rest_id" />
+                <ScalarProperty Name="Order_id" ColumnName="Order_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order_foods">
+            <EntityTypeMapping TypeName="TheFoodyModel.Order_foods">
+              <MappingFragment StoreEntitySet="Order_foods">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Menu_id" ColumnName="Menu_id" />
+                <ScalarProperty Name="Order_id" ColumnName="Order_id" />
+                <ScalarProperty Name="Order_food_id" ColumnName="Order_food_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

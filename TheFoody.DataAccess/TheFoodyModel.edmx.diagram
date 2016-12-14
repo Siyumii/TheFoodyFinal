@@ -16,6 +16,12 @@
         <AssociationConnector Association="TheFoodyModel.FK_Restaurant_Type_Restaurant" />
         <EntityTypeShape EntityType="TheFoodyModel.User" Width="1.5" PointX="0.75" PointY="6.5" />
         <AssociationConnector Association="TheFoodyModel.FK_Restaurant_User" />
+        <EntityTypeShape EntityType="TheFoodyModel.Order" Width="1.5" PointX="3" PointY="12.375" />
+        <EntityTypeShape EntityType="TheFoodyModel.Order_foods" Width="1.5" PointX="7.5" PointY="8.25" />
+        <AssociationConnector Association="TheFoodyModel.FK_Order_foods_Menu" />
+        <AssociationConnector Association="TheFoodyModel.FK_Order_foods_Order" />
+        <AssociationConnector Association="TheFoodyModel.FK_Order_Order" />
+        <AssociationConnector Association="TheFoodyModel.FK_Order_User" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

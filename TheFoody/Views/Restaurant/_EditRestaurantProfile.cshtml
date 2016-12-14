@@ -170,10 +170,18 @@
                 @Html.EditorFor(model => model.TimetakentoDeliver, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.TimetakentoDeliver, "", new { @class = "text-danger" })
             </div>
-
-        </div>
-        <p></p>
-        min
+                            
+            </div>
+        
+        <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinDelivery)
+                @Html.EditorFor(model => model.MinDelivery, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+                @Html.ValidationMessageFor(model => model.MinDelivery, "", new { @class = "text-danger" })
+            </div>
+           
+        </div>        
+        
         <div class="clear"></div>
 
         <div class="col-sm-12 col-md-12">

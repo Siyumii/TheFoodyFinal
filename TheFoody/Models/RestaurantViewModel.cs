@@ -167,9 +167,14 @@ namespace TheFoody.Models
         public System.TimeSpan DeliveryEndingTime { get; set; }
 
         [Required]
-        [Display(Name = "Time taken to Deliver")]
+        [Display(Name = "Time taken to Deliver (min)")]
 
         public int TimetakentoDeliver { get; set; }
+
+        [Required]
+        [Display(Name = "Minimum Delivery (Rs.)")]
+        
+        public decimal MinDelivery { get; set; }
 
         [Display(Name = "Categories")]
         public List<CategoryViewModel> Categories { get; set; }

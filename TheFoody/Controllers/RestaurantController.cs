@@ -496,18 +496,19 @@ namespace TheFoody.Controllers
             return item;
         }
 
-        [HttpGet]
-        public ActionResult GetOrderForm(string deliverypriority)
-        {
-            if (deliverypriority == "Delivery")
-            {
-                return PartialView("_Delivery");
-            }
-            else
-            {
-                return PartialView("_Collection");
-            }
-        }
+        //[HttpPost]
+        //public ActionResult GetOrderForm(string deliverypriority)
+        //{
+        //    if (deliverypriority == "Delivery")
+        //    {
+        //        return PartialView("_Delivery");
+        //    }
+        //    else
+        //    {
+        //        return PartialView("_Collection");
+        //    }
+        //}
+
         public ActionResult Checkout()
         {
             if(Session["UserEmail"]==null)
@@ -516,11 +517,40 @@ namespace TheFoody.Controllers
             }
             else
             {
+                
                 return View();
             }
         }
 
+        [HttpPost]
+        public ActionResult GetCollectionForm(int deliveryFlag)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
 
+            items.Add(new SelectListItem { Text = "Cash on delivery", Value = "Cash on delivery", Selected = true });
+
+            items.Add(new SelectListItem { Text = "Online Payment", Value = "Online Payment" });
+
+
+
+            ViewBag.PaymentType = items;
+            return PartialView("_Collection");
+        }
+
+        [HttpPost]
+        public ActionResult GetDeliveryForm(int deliveryFlag)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem { Text = "Cash on delivery", Value = "Cash on delivery", Selected = true });
+
+            items.Add(new SelectListItem { Text = "Online Payment", Value = "Online Payment" });
+
+
+
+            ViewBag.PaymentType = items;
+            return PartialView("_Delivery");
+        }
 
         // GET: Restaurant/Create
         public ActionResult Create()
@@ -578,6 +608,81 @@ namespace TheFoody.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeliveryOrder(DeliveryViewModel model,FormCollection collection)
+        {
+            Order order = new Order();
+            string cust_email = Session["UserEmail"].ToString();
+            double totalprice = Convert.ToDouble(Session["totalprice"]);
+            int restid = Convert.ToInt32(Session["CurrentRestaurentId"]);
+
+            order.Cus_email = cust_email;
+            order.Rest_id = restid;
+            order.Phone = model.phone;
+            order.Delivery_address = model.address;
+            order.Order_type = "Delivery";
+            order.Payment_status = model.PaymentType;
+            order.Order_status = "Processing";
+            order.Total_price = (Decimal)totalprice;
+            order.Delivery_time = model.DeliveryTime;
+
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            var id = (from p in db.Orders
+                      where p.Cus_email == cust_email
+                      where p.Rest_id == restid
+                      where p.Order_status=="Processing"
+                      select p).Single();
+
+
+            order.Order_foods = new List<Order_foods>();
+            foreach (Item item in (List<Item>)Session["Cart"])
+            {
+                order.Order_foods.Add(new Order_foods { Order_id = id.Order_id, Menu_id = item.Cartitem.MenuID, Quantity = item.Cartitem.Quantity,Price=(decimal)item.Cartitem.MenuPrice  });
+            }
+            db.SaveChanges();
+            return View("OrderSuccessful");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CollectionOrder(CollectionViewModel model, FormCollection collection)
+        {
+            Order order = new Order();
+            string cust_email = Session["UserEmail"].ToString();
+            double totalprice = Convert.ToDouble(Session["totalprice"]);
+            int restid = Convert.ToInt32(Session["CurrentRestaurentId"]);
+
+            order.Cus_email = cust_email;
+            order.Rest_id = restid;
+            order.Order_type = "Collection";
+            order.Payment_status = model.PaymentType;
+            order.Order_status = "Processing";
+            order.Total_price = (Decimal)totalprice;
+            order.Delivery_time = model.PickupTime;
+
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            var id = (from p in db.Orders
+                      where p.Cus_email == cust_email
+                      where p.Rest_id == restid
+                      where p.Order_status == "Processing"
+                      select p).Single();
+
+
+            order.Order_foods = new List<Order_foods>();
+            foreach (Item item in (List<Item>)Session["Cart"])
+            {
+                order.Order_foods.Add(new Order_foods { Order_id = id.Order_id, Menu_id = item.Cartitem.MenuID, Quantity = item.Cartitem.Quantity, Price = (decimal)item.Cartitem.MenuPrice });
+            }
+            db.SaveChanges();
+            return View("OrderSuccessful");
+        }
+
+
         // GET: Restaurant/CreateRestaurant
         public ActionResult CreateRestaurant()
         {
@@ -614,7 +719,7 @@ namespace TheFoody.Controllers
                             {
                                 var extension = Path.GetExtension(photo.FileName);
                                 restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
-                                var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
+                                var path = Path.Combine(Server.MapPath("~/images/restaurant-logo"), restaurant.Logo);
                                 photo.SaveAs(path);
                             }
 
@@ -834,7 +939,7 @@ namespace TheFoody.Controllers
                                 var extension = Path.GetExtension(photo.FileName);
                                 restaurant.Logo = restaurant.OwnerEmail + "_" + restaurant.RestaurantName + extension;
                                 model.Logo = restaurant.Logo;
-                                var path = Path.Combine(Server.MapPath("~/Uploads/RestaurantLogo"), restaurant.Logo);
+                                var path = Path.Combine(Server.MapPath("~/images/restaurant-logo"), restaurant.Logo);
                                 photo.SaveAs(path);
                             }
                             else {

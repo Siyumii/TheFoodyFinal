@@ -12,29 +12,33 @@ namespace TheFoody.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Menu
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Menu()
+        public Order()
         {
             this.Order_foods = new HashSet<Order_foods>();
         }
     
-        public int Menu_id { get; set; }
-        public string Menu_name { get; set; }
-        public string Description { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public string Photo { get; set; }
-        public Nullable<int> Meal_Cat_IdFK { get; set; }
-        public Nullable<int> RestaurantId { get; set; }
-        public Nullable<int> Daily_fixed_count { get; set; }
-        public Nullable<int> Minimum_count { get; set; }
-        public Nullable<int> Current_count { get; set; }
-        public Nullable<System.DateTime> Created_date { get; set; }
+        public int Order_id { get; set; }
+        public Nullable<int> Rest_id { get; set; }
+        public string Cus_email { get; set; }
+        public Nullable<System.DateTime> Order_date { get; set; }
+        public string Order_type { get; set; }
+        public string Delivery_address { get; set; }
+        public string Phone { get; set; }
+        public string Landmarks { get; set; }
+        public string Payment_status { get; set; }
+        public string Order_status { get; set; }
+        public Nullable<System.DateTime> Dispatched_date { get; set; }
+        public Nullable<decimal> Total_price { get; set; }
+        public string Deliver_Man { get; set; }
+        public Nullable<System.TimeSpan> Delivery_time { get; set; }
     
-        public virtual Meal_Category Meal_Category { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order_foods> Order_foods { get; set; }
+        public virtual Order Order1 { get; set; }
+        public virtual Order Order2 { get; set; }
+        public virtual User User { get; set; }
     }
 }

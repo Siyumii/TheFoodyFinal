@@ -184,4 +184,60 @@ namespace TheFoody.Models
 
         public string detailsDeliveryEndingTime { get; set; }
     }
+
+    public class DeliveryViewModel
+    {
+        [Display(Name = "Delivery Charges")]
+        public double deliverycharges { get; set; }
+
+        [Display(Name = "Total Price")]
+        public double totalprice { get; set; }
+
+        [Required]
+        [Display(Name = "Delivery Address")]
+        public string address { get; set; }
+
+        [Required]
+        [Display(Name = "Phone")]
+        public string phone { get; set; }
+
+        [Required]
+        [Display(Name = "Delivery Time")]
+        [DataType(DataType.Time)]
+        public System.TimeSpan DeliveryTime { get; set; }
+
+        [Required]
+        [Display(Name = "Payment Type")]
+        public string PaymentType { get; set; }
+    }
+
+    public class CollectionViewModel
+    {
+        [Display(Name = "Total Price")]
+        public double totalprice { get; set; }
+
+        [Required]
+        [Display(Name = "Pickup Time")]
+        [DataType(DataType.Time)]
+        public System.TimeSpan PickupTime { get; set; }
+
+        [Required]
+        [Display(Name = "Payment Type")]
+        public string PaymentType { get; set; }
+    }
+
+    public class MyOrdersViewModel
+    {
+        public int orderid { get; set; }
+
+        public int restid { get; set; }
+
+        public string cus_email { get; set; }
+
+        public string order_type { get; set; }
+
+        public DateTime order_date { get; set; }
+
+        public string order_status { get; set; }
+    }
 }

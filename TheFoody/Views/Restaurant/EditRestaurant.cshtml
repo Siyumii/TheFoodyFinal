@@ -51,11 +51,11 @@
 
                                             @if (!String.IsNullOrEmpty(Model.Logo))
                                             {
-                                                <img id="user_img" src="~/Uploads/RestaurantLogo/@Html.DisplayFor(model=> model.Logo)" alt="image" class="img-circle" />
+                                                <img id="user_img" src="~/images/restaurant-logo/@Html.DisplayFor(model=> model.Logo)" alt="image" class="img-circle" />
                                             }
                                             else
                                             {
-                                                <img id="user_img" src="" alt="image" class="img-circle" />
+                                                <img id="user_img" src="~/images/restaurant-logo/default-rest.png" alt="image" class="img-circle" />
                                             }
 
                                         </div>

@@ -12,17 +12,15 @@ namespace TheFoody.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Rating
+    public partial class Order_foods
     {
-        public int Id { get; set; }
-        public Nullable<int> RestuarantId { get; set; }
-        public string UserEmail { get; set; }
-        public Nullable<int> Rating1 { get; set; }
-        public string Review { get; set; }
-        public Nullable<System.DateTime> Created_Date { get; set; }
-        public Nullable<int> Count { get; set; }
+        public int Order_food_id { get; set; }
+        public Nullable<int> Order_id { get; set; }
+        public Nullable<int> Menu_id { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<decimal> Price { get; set; }
     
-        public virtual Restaurant Restaurant { get; set; }
-        public virtual User User { get; set; }
+        public virtual Menu Menu { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<TheFoody.Models.MyOrdersViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3>My Orders</h3>
+
+    @*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.orderid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.restid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cus_email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_status)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.orderid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.restid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cus_email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.order_type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.order_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.order_status)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <div style="height:400px">
+
+    </div>
+    </div>

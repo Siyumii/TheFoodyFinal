@@ -58,21 +58,35 @@ namespace TheFoody.Models
 
     public class ManageViewModel
     {
-        
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40})$", ErrorMessage = "Invalid First Name")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "White space is not allowed")]
+        [Display(Name = "FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        [Display(Name = "LastName")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "Phone number is required")]
         public string Phone { get; set; }
 
+        [Required]
         public string photo { get; set; }
 
+        [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; }
 
+        [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
 
+        [Required(ErrorMessage = "Postal is required")]
+        [StringLength(5, MinimumLength = 5)]
         public string PostCode { get; set; }
 
+        [Required(ErrorMessage = "District is required")]
         public string District { get; set; }
 
         

@@ -20,6 +20,7 @@ namespace TheFoody.DataAccess
         public Nullable<int> Rating1 { get; set; }
         public string Review { get; set; }
         public Nullable<System.DateTime> Created_Date { get; set; }
+        public Nullable<int> Count { get; set; }
     
         public virtual Restaurant Restaurant { get; set; }
         public virtual User User { get; set; }

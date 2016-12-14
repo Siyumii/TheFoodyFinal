@@ -14,12 +14,6 @@ namespace TheFoody.DataAccess
     
     public partial class Menu
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Menu()
-        {
-            this.Order_foods = new HashSet<Order_foods>();
-        }
-    
         public int Menu_id { get; set; }
         public string Menu_name { get; set; }
         public string Description { get; set; }
@@ -27,13 +21,12 @@ namespace TheFoody.DataAccess
         public string Photo { get; set; }
         public Nullable<int> Meal_Cat_IdFK { get; set; }
         public Nullable<int> RestaurantId { get; set; }
+        public Nullable<System.DateTime> Created_date { get; set; }
         public Nullable<int> Daily_fixed_count { get; set; }
         public Nullable<int> Minimum_count { get; set; }
         public Nullable<int> Current_count { get; set; }
     
         public virtual Meal_Category Meal_Category { get; set; }
         public virtual Restaurant Restaurant { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_foods> Order_foods { get; set; }
     }
 }

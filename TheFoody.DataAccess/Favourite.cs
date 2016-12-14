@@ -12,11 +12,12 @@ namespace TheFoody.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class C__MigrationHistory
+    public partial class Favourite
     {
-        public string MigrationId { get; set; }
-        public string ContextKey { get; set; }
-        public byte[] Model { get; set; }
-        public string ProductVersion { get; set; }
+        public int Favourite_id { get; set; }
+        public int FavouriteRestId { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+    
+        public virtual Restaurant Restaurant { get; set; }
     }
 }

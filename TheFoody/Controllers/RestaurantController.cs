@@ -18,6 +18,76 @@ namespace TheFoody.Controllers
     {
         TheFoodyContext db = new TheFoodyContext();
 
+     
+        public ActionResult changeAddToFavouritesLabel()
+        {
+           List<int> restaurantIdList = (from f in db.Favourites
+                                       select f.FavouriteRestId).Distinct().ToList();
+       var c=    restaurantIdList.Count();
+           return Json(restaurantIdList);
+        }
+    
+        public int AddToFavourites(int id)
+        {
+
+
+            Favourite f = new Favourite();
+            f.FavouriteRestId = id;
+            
+                DateTime today = DateTime.Today;
+                f.CreatedDate = today;
+
+                if (ModelState.IsValid)
+                {
+                    db.Favourites.Add(f);
+                    db.SaveChanges();
+                }
+                else if (!ModelState.IsValid)
+                {
+
+                    return -1;
+                }
+                return 0;
+
+        }
+        public int removeFromFavourites(int id)
+        {
+            Favourite f = db.Favourites.Find(id);
+            db.Favourites.Remove(f);
+            db.SaveChanges();
+            return 0;
+        }
+
+
+        [HttpPost]
+        public ActionResult searchCuisine(int find)
+        {
+           var model =(from rt in db.Restaurant_Type
+        join r in db.Restaurants
+        on rt.Rest_id
+        equals r.Id 
+        where rt.Category_id == find
+         select new RestaurantViewModel()
+        {
+            RestId = rt.Restaurant.Id,
+            RestaurantName = rt.Restaurant.RestaurantName,
+            Logo = rt.Restaurant.Logo,
+            Address = rt.Restaurant.Address,
+            City = rt.Restaurant.City,
+            District = rt.Restaurant.District,
+            TimetakentoDeliver = rt.Restaurant.TimetakentoDeliver,
+            categories = rt.Restaurant.Restaurant_Type.Select(a => a.Category.category1).ToList(),
+            
+           
+        });
+
+        
+            
+
+         return PartialView("_RestaurantViewer", model.ToList());
+
+        }
+
         [HttpPost]
         public ActionResult searchOpen_Restaurants(int openFlag)
         {
@@ -40,7 +110,7 @@ namespace TheFoody.Controllers
                                  TimetakentoDeliver = p.TimetakentoDeliver,
                                  categories = p.Restaurant_Type.Select(a => a.Category.category1).ToList(),
                              });
-                var no = model.Count();
+                
                 return PartialView("_RestaurantViewer", model.ToList());
 
             }
@@ -127,6 +197,14 @@ namespace TheFoody.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            var x = db.Categories.ToList().Select(c => new SelectListItem
+            {
+                Text = c.category1,
+                Value = c.id.ToString(),
+
+            }).ToList();
+            x.Add(new SelectListItem { Text = "", Value = "" });
+            ViewBag.cuisines = x;
 
             var model = (from p in db.Restaurants // .Includes("Addresses") here?
                          select new RestaurantViewModel()
@@ -148,8 +226,14 @@ namespace TheFoody.Controllers
         [HttpPost]
         public ActionResult Index(string search)
         {
-            //using (TheFoodyContext db = new TheFoodyContext())
-            //{
+            var x = db.Categories.ToList().Select(c => new SelectListItem
+            {
+                Text = c.category1,
+                Value = c.id.ToString(),
+
+            }).ToList();
+            x.Add(new SelectListItem { Text = "", Value = "" });
+            ViewBag.cuisines = x;
 
             var model = (from p in db.Restaurants // .Includes("Addresses") here?
                          where p.City.StartsWith(search) || search == null
@@ -167,14 +251,16 @@ namespace TheFoody.Controllers
 
             return View(model.ToList());
 
-            //}
+
 
         }
    
+       
         [HttpPost]
         public string ratingResponse()
         {
             TheFoodyContext db = new TheFoodyContext();
+            int ratings = db.Ratings.Where(u => u.Count >= 0).Count();
             int restuarantId = Convert.ToInt16(Request["RestuarantId"]);
             string userEmail = Request["UserEmail"];
             int rating = Convert.ToInt16(Request["Rating"]);
@@ -183,6 +269,7 @@ namespace TheFoody.Controllers
             string created_Date = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             Rating rate = new Rating();
             rate.RestuarantId = restuarantId;
+            rate.Count = ratings + 1;
             rate.UserEmail = userEmail;
             rate.Rating1 = rating;
             rate.Review = review;
@@ -190,14 +277,13 @@ namespace TheFoody.Controllers
             db.Ratings.Add(rate);
             db.SaveChanges();
 
-            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
             int id = restuarantId;
 
             string rev = Session["ReviewHtml"].ToString();
 
             for (int x = 5; x > 0; x--)
             {
-                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                Rating theRating = db.Ratings.Where(u => u.Count ==  ratings && u.RestuarantId == id).FirstOrDefault();
                 if (theRating == null) { continue; }
                 rev = rev + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
                     + theRating.Created_Date.ToString()
@@ -233,14 +319,14 @@ namespace TheFoody.Controllers
         public ActionResult ViewMenu(int id)
         {
             TheFoodyContext db = new TheFoodyContext();
-            int ratings = db.Ratings.Where(u => u.Id >= 0).Count();
+            int ratings = db.Ratings.Where(u => u.Count >= 0).Count();
             Session["CurrentRestaurentId"] = id;
 
             string review = "<!-- -->";
 
             for (int x = 5; x > 0 ; x-- )
             {
-                Rating theRating = db.Ratings.Where(u => u.Id == ratings && u.RestuarantId == id).FirstOrDefault();
+                Rating theRating = db.Ratings.Where(u => u.Count == ratings && u.RestuarantId == id).FirstOrDefault();
                 if (theRating == null) { continue; }
                 review = review + "<div class='review-list'><div class='clearfix'><div class='pull-left'><h6><i class='fa fa-calendar'></i>"
                     + theRating.Created_Date.ToString()
@@ -268,9 +354,9 @@ namespace TheFoody.Controllers
                 }
                 review = review + "</ul></div><img src='@Session[\"Path\"].ToString()' alt='Image' class='img-responsive pull-right'></div><div class='review-list-content'><p>";
                 review = review + theRating.Review.ToString() + "</p></div></div>";
-                ratings++;
+                ratings--;
             }
-
+            review = review + "<!-- -->";
             Session["ReviewHtml"] = review;
 
 
@@ -427,9 +513,21 @@ namespace TheFoody.Controllers
             {
                 List<Item> itemList = (List<Item>)Session["Cart"];
                 TheFoodyContext context = new TheFoodyContext();
+                for(int i=0;i<itemList.Count;i++)
+                {
+                    if(itemList[i].Cartitem.MenuID==id)
+                    {
+                        itemList[i].Cartitem.Quantity++;
+                        Session["Cart"] = itemList;
+                        
+                        return PartialView("_AddtoCart");
+                    }
+                    
+                }
                 //{
                 //List<Menu> menulist = context.Menus.Where(x => x.Menu_id == id).ToList();
                 itemList.Add(new Item(TransformToCartItem(context.Menus.Find(id))));
+                
                 Session["Cart"] = itemList;
                 //}
                 return PartialView("_AddtoCart");
@@ -476,6 +574,7 @@ namespace TheFoody.Controllers
             CartItem item = new CartItem();
             item.MenuID = menu.Menu_id;
             item.MenuName = menu.Menu_name;
+            item.Quantity = 1;
             item.MenuPrice = Convert.ToDouble(menu.Price);
 
             //if (menu.Meal_Cat_IdFK.HasValue)
@@ -483,6 +582,32 @@ namespace TheFoody.Controllers
 
             return item;
         }
+
+        [HttpGet]
+        public ActionResult GetOrderForm(string deliverypriority)
+        {
+            if (deliverypriority == "Delivery")
+            {
+                return PartialView("_Delivery");
+            }
+            else
+            {
+                return PartialView("_Collection");
+            }
+        }
+        public ActionResult Checkout()
+        {
+            if(Session["UserEmail"]==null)
+            {
+                return RedirectToAction("Login", "Account",null);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
 
         // GET: Restaurant/Create
         public ActionResult Create()
@@ -758,7 +883,7 @@ namespace TheFoody.Controllers
                     x.To.Add(_objModelMail.To);
                     //x.LinkedResources.Add("logo", resources["logo"]);
                 });
-            }
+        }
 
 
         }

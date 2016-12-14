@@ -446,28 +446,33 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 
 
-<script src="~/scripts/jquery-3.1.1.js"></script>
+@*<script src="~/scripts/jquery-3.1.1.js"></script>*@
 
-<script src="~/Views/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<script type="text/javascript">
+@*<script src="~/Views/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>*@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script><script type="text/javascript">
+   $(function () {
 
-    $(function () {
-
-
-        $("#search").autocomplete({
-
-            source: function (request, response) {
-
-                $.getJSON("/Home/getData?term=" + request.term, function (data) {
-                    response(data);
-                },
-                function (data) {
-                    alert("error")
-                });
-            },
-            minLength: 1,
-        });
+       $("#search").keypress(function () {
+           $("#search").autocomplete({
+              
+               
+               source: function (request, response) {
+                   
+                   $.getJSON("/Home/getData?term=" + request.term, function (data) {
+                       response(data);
+                   },
+                   function (data) {
+                       alert("error")
+                   });
+               },
+               minLength: 1,
+           })
+       });
     });
 
 

@@ -153,7 +153,7 @@ namespace TheFoody.Controllers
             using (TheFoodyContext db = new TheFoodyContext())
             {
                 //var usr = db.Users.Single(u => u.email == model.Email && u.password == model.Password);
-                var usr = db.Users.Where(u => u.email == model.Email && u.password == model.Password).FirstOrDefault();
+                var usr = db.Users.Where(u => u.email == model.Email && u.password == model.Password && u.status=="Active").FirstOrDefault();
                 if (usr == null)
                 {
                     ModelState.AddModelError("", "Invalid Email or password");

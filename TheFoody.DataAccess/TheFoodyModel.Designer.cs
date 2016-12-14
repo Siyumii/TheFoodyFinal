@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'F:\Jayani\SLIIT\3 YEAR\2 sem(3 year)\SEP_2\Before Final last commit\TheFoodyFinal\TheFoody.DataAccess\TheFoodyModel.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\SEPII\UpdatedWorkingCopy_theFoody\Foody_new\TheFoody.DataAccess\TheFoodyModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

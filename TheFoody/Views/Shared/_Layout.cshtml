@@ -18,7 +18,11 @@
             document.getElementById("reviews-box").innerHTML = "@Session["ReviewHtml"]";
         }
     </script>*@
-
+    <script>
+        function loadValues() {
+            run();
+        }
+    </script>
     <title>@ViewBag.Title - Foodie App</title>
     <!-- Fav and Touch Icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/ico/apple-touch-icon-144-precomposed.png">
@@ -47,6 +51,11 @@
 
     <link href="/Scripts/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
     <link href="/Scripts/plugins/datepicker/datepicker.css" rel="stylesheet">
+    @*<script src="/Scripts/jquery.easing.min.js"></script>
+    <script src="/Scripts/jquery.sticky.js"></script>
+    <script src="/Scripts/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/Scripts/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="/Scripts/customs.js"></script>*@
 
     <!-- CSS Custom -->
     <link href="/Content/style.css" rel="stylesheet">
@@ -63,10 +72,14 @@
         @RenderSection("menuimagejavascript");
     }
 
+    @if(IsSectionDefined("mapjavascript"))
+    {
+        @RenderSection("mapjavascript");
+    }
 </head>
 
 @*<body class="home">*@
-<body class="not-transparent-header" onload="loadValues()">
+<body class="not-transparent-header">
 
     @*<div id="introLoader" class="introLoading"></div>*@
 
@@ -141,6 +154,9 @@
     <script type="text/javascript" src="/Scripts/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/Scripts/jquery.validate.unobtrusive.js"></script>
     <script type="text/javascript" src="/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 

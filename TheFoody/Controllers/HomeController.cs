@@ -16,16 +16,19 @@ namespace TheFoody.Controllers
             if ((cookie != null) && (cookie.Value != ""))
             {
                 Session["UserEmail"] = (cookie.Values["UserEmail"].ToString());
-                Session["FirstName"] = (cookie.Values["FirstName"].ToString());
-                Session["LastName"] = (cookie.Values["LastName"].ToString());
-                Session["Phone"] = (cookie.Values["Phone"].ToString());
-                Session["Photo"] = (cookie.Values["Photo"].ToString());
-                Session["Address"] = (cookie.Values["Address"].ToString());
-                Session["City"] = (cookie.Values["City"].ToString());
-                Session["PostCode"] = (cookie.Values["PostCode"].ToString());
-                Session["District"] = (cookie.Values["District"].ToString());
-                Session["UserType"] = (cookie.Values["UserType"].ToString());
-                Session["Status"] = (cookie.Values["Status"].ToString());
+                if ((cookie.Values["FirstName"])!=null)
+                {
+                    Session["FirstName"] = (cookie.Values["FirstName"].ToString());
+                    Session["LastName"] = (cookie.Values["LastName"].ToString());
+                    Session["Phone"] = (cookie.Values["Phone"].ToString());
+                    Session["Photo"] = (cookie.Values["Photo"].ToString());
+                    Session["Address"] = (cookie.Values["Address"].ToString());
+                    Session["City"] = (cookie.Values["City"].ToString());
+                    Session["PostCode"] = (cookie.Values["PostCode"].ToString());
+                    Session["District"] = (cookie.Values["District"].ToString());
+                    Session["UserType"] = (cookie.Values["UserType"].ToString());
+                    Session["Status"] = (cookie.Values["Status"].ToString());
+                }
             }
             if (Session["UserEmail"] == null)
             {

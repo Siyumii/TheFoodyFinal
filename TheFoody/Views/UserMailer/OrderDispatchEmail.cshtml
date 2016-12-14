@@ -1,0 +1,208 @@
+﻿@model TheFoody.Models.OrderDispatchMailModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>@ViewBag.Title - Foodie App</title>
+
+    <!-- CSS Plugins -->
+    <link rel="stylesheet" type="text/css" href="/Content/bootstrap.min.css" media="screen">
+    <link href="/Content/animate.css" rel="stylesheet">
+    <link href="/Content/main.css" rel="stylesheet">
+    <link href="/Content/component.css" rel="stylesheet">
+
+    <!-- CSS Font Icons -->
+    <link rel="stylesheet" href="/icons/linearicons/style.css">
+    <link rel="stylesheet" href="/icons/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/icons/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/icons/ionicons/css/ionicons.css">
+    <link rel="stylesheet" href="/icons/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="/icons/rivolicons/style.css">
+    <link rel="stylesheet" href="/icons/flaticon-line-icon-set/flaticon-line-icon-set.css">
+    <link rel="stylesheet" href="/icons/flaticon-streamline-outline/flaticon-streamline-outline.css">
+    <link rel="stylesheet" href="/icons/flaticon-thick-icons/flaticon-thick.css">
+    <link rel="stylesheet" href="/icons/flaticon-ventures/flaticon-ventures.css">
+
+    <link href="/Scripts/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <link href="/Scripts/plugins/datepicker/datepicker.css" rel="stylesheet">
+
+    <!-- CSS Custom -->
+    <link href="/Content/style.css" rel="stylesheet">
+    <link href="/Content/order-online.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="not-transparent-header" >
+
+    <!-- start Container Wrapper -->
+  
+
+        <table style="border-left:orange solid;border-right:orange solid;border-top:orange solid;border-bottom:orange solid">
+
+            <tr style="background-color:#1a1a1a"><td><img id="logo" src="http://teciobiz.com/tf/food/thefoodyv35/images/logo.png" alt="Logo" /></td></tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Body)
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>
+                    <form class="post-form-wrapper">
+                        <div class="row gap-20">
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Order_id)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Order_id)
+                                </div>
+
+                            </div>
+                            <p></p>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.CustomerFirstName)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.CustomerFirstName)
+
+                                </div>
+
+                            </div>
+                            <p></p>
+                            <div class="clear"></div>
+
+                            @if (Model.Order.Order_type == "Delivery")
+                            {
+                                <div class="col-sm-6 col-md-4">
+
+                                    @Html.LabelFor(model => model.Order.Delivery_address)
+                                    <div class="form-group" style="background-color: #e6ffff;">
+                                        @Html.DisplayFor(model => model.Order.Delivery_address)
+
+                                    </div>
+
+                                </div>
+                                <p></p>
+                                <div class="col-sm-6 col-md-4">
+
+                                    @Html.LabelFor(model => model.Order.Landmarks)
+                                    <div class="form-group" style="background-color: #e6ffff;">
+                                        @Html.DisplayFor(model => model.Order.Landmarks)
+
+                                    </div>
+
+                                </div>
+                                <p></p>
+                                <div class="clear"></div>
+                              
+
+                            }
+
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Delivery_time)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Delivery_time, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+                                </div>
+
+                            </div>
+
+                            <p></p>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Phone)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Phone)
+
+                                </div>
+
+                            </div>
+                            <p></p>
+                            <div class="clear"></div>
+                            <div style="background-color: #e6ffff;">
+
+                                <table class="table table-bordered">
+                                    <tr class="info">
+                                        <th></th>
+                                        <th>Menu</th>
+                                        <th>Quantity</th>
+                                        <th>Price (Rs.)</th>
+                                    </tr>
+
+                                    @foreach (TheFoody.Models.OrderedMenusModel item in Model.Order.Menus)
+                                    {
+                                        <tr class="info">
+                                            <th></th>
+                                            <th>@Html.DisplayFor(model => item.Menu)</th>
+                                            <th>@Html.DisplayFor(model => item.Quantity)</th>
+                                            <th>@Html.DisplayFor(model => item.Price)</th>
+                                        </tr>
+                                    }
+                                    <tr class="info">
+                                        <th>@Html.LabelFor(model => model.Order.Total_price)</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>@Html.DisplayFor(model => model.Order.Total_price)</th>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <p></p>
+                            <div class="clear"></div>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Order_type)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Order_type)
+
+                                </div>
+
+                            </div>
+                            <p></p>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Payment_status)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Payment_status)
+
+                                </div>
+
+                            </div>
+                            <p></p>
+                            <div class="clear"></div>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.LabelFor(model => model.Order.Order_date)
+                                <div class="form-group" style="background-color: #e6ffff;">
+                                    @Html.DisplayFor(model => model.Order.Order_date)
+
+                                </div>
+
+                            </div>
+                            <p></p>
+
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr style="background-color:#1a1a1a"><td style="color: white;">&#169; Copyright 2016 TheFoody</td></tr>
+
+        </table>
+
+<!-- / .wrapper -->
+    <!-- end Container Wrapper -->
+</body>
+</html>

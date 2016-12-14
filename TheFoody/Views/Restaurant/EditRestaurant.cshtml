@@ -97,7 +97,13 @@
                                             <a href="#"><i class="fa fa-bookmark"></i> Favourite Restaurant</a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                                            @Ajax.ActionLink("New Orders", "RestaurantProfile", new { partialViewType = "OrdersList" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "" })
                                         </li>
                                     </ul>
 

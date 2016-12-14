@@ -1,0 +1,147 @@
+﻿@model TheFoody.Models.OrderDetailsModel
+@{
+    Session["Order"] = Model;
+}
+<div class="admin-section-title">
+    <h2>Order Details</h2>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+<form class="post-form-wrapper">
+    <div class="row gap-20">
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Order_id)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Order_id)
+            </div>
+
+        </div>
+        
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.CustomerFirstName)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.CustomerFirstName)
+
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+        @if (Model.Order_type == "Delivery")
+        {
+            <div class="col-sm-6 col-md-4">
+
+                @Html.LabelFor(model => model.Delivery_address)
+                <div class="form-group" style="background-color: #e6ffff;">
+                    @Html.DisplayFor(model => model.Delivery_address)
+
+                </div>
+
+            </div>
+    <div class="col-sm-6 col-md-4">
+
+        @Html.LabelFor(model => model.Landmarks)
+        <div class="form-group" style="background-color: #e6ffff;">
+            @Html.DisplayFor(model => model.Landmarks)
+
+        </div>
+
+    </div>
+    <div class="clear"></div>
+
+           
+        }
+        
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Delivery_time)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Delivery_time, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+
+            </div>
+
+        </div>
+
+
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Phone)
+            <div class="form-group" style="background-color: #e6ffff;">
+               @Html.DisplayFor(model => model.Phone)
+
+            </div>
+
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-8" style="background-color: #e6ffff;">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th></th>
+                    <th>Menu</th>
+                    <th>Quantity</th>
+                    <th>Price (Rs.)</th>
+                </tr>
+
+                @foreach (TheFoody.Models.OrderedMenusModel item in Model.Menus)
+                {
+                    <tr>
+                        <th></th>
+                        <th>@Html.DisplayFor(model => item.Menu)</th>
+                        <th>@Html.DisplayFor(model => item.Quantity)</th>
+                        <th>@Html.DisplayFor(model => item.Price)</th>
+                    </tr>
+                }
+                <tr>
+                    <th>@Html.LabelFor(model => model.Total_price)</th>
+                    <th></th>
+                    <th></th>
+                    <th>@Html.DisplayFor(model => model.Total_price)</th>
+                </tr>
+            </table>
+
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+
+            @Html.LabelFor(model => model.Order_type)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Order_type)
+
+            </div>
+
+        </div>
+        <div class="col-sm-6 col-md-4">
+
+           @Html.LabelFor(model => model.Payment_status)
+            <div class="form-group" style="background-color: #e6ffff;">
+               @Html.DisplayFor(model => model.Payment_status)
+
+            </div>
+
+        </div>
+        <div class="clear"></div>
+        <div class="col-sm-6 col-md-4">
+
+           @Html.LabelFor(model => model.Order_date)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.Order_date)
+
+            </div>
+
+        </div>
+        <div class="form-group col-sm-12 mt-10">
+            
+            @Html.ActionLink("Order Dispatch", "SendDispatchedMail", new { }, new { @class = "btn btn-success" })
+
+            @Ajax.ActionLink("Back to Orders", "RestaurantProfile", new { partialViewType = "OrdersList" }, new AjaxOptions
+                                            {
+                                                UpdateTargetId = "restaurantProfile",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "GET",
+
+                                            }, new { @class = "btn btn-primary" })
+        </div>
+        </div>
+</form>

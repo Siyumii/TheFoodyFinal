@@ -43,33 +43,6 @@ namespace TheFoody.Controllers
 
                 return PartialView("_NewRestaurantDetails", NewRestaurants);
             }
-            else if (partialViewType == "View")
-            {
-
-                var restaurant = (from p in db.Restaurants
-                                  where p.Id == restaurantId
-                                  select p).SingleOrDefault();
-                RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
-
-                Session["RestaurantDetailModel"] = restaurantDeatilModel;
-                restaurantDeatilModel.id = restaurant.Id;
-                restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
-
-                restaurantDeatilModel.Phone = restaurant.Phone.ToString();
-                restaurantDeatilModel.Address = restaurant.Address;
-                restaurantDeatilModel.Logo = restaurant.Logo;
-                restaurantDeatilModel.City = restaurant.City;
-                restaurantDeatilModel.PostCode = restaurant.PostCode;
-                restaurantDeatilModel.District = restaurant.District;
-                restaurantDeatilModel.Website = restaurant.Website;
-                restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
-                restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
-                restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
-                restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
-                restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
-
-                return PartialView("_RestaurantDetails", restaurantDeatilModel);
-            }
             else
             {
                 ManageViewModel manageViewModel = (ManageViewModel)Session["AdminProfile"];
@@ -77,12 +50,55 @@ namespace TheFoody.Controllers
             }
  
         }
+        public PartialViewResult getRestaurantDetails(int restaurantId)
+        {
 
+
+            var restaurant = (from p in db.Restaurants
+                              where p.Id == restaurantId
+                              select p).SingleOrDefault();
+            RestaurantDeatilModel restaurantDeatilModel = new RestaurantDeatilModel();
+
+            Session["RestaurantDetailModel"] = restaurantDeatilModel;
+            restaurantDeatilModel.id = restaurant.Id;
+            restaurantDeatilModel.RestaurantName = restaurant.RestaurantName;
+
+            restaurantDeatilModel.Phone = restaurant.Phone.ToString();
+            restaurantDeatilModel.Address = restaurant.Address;
+            restaurantDeatilModel.Logo = restaurant.Logo;
+            restaurantDeatilModel.City = restaurant.City;
+            restaurantDeatilModel.PostCode = restaurant.PostCode;
+            restaurantDeatilModel.District = restaurant.District;
+            restaurantDeatilModel.Website = restaurant.Website;
+            restaurantDeatilModel.CompanyBackground = restaurant.CompanyBackground;
+            restaurantDeatilModel.OpeningTime = restaurant.OpeningTime;
+            DateTime time = DateTime.Today.Add(restaurantDeatilModel.OpeningTime);
+            restaurantDeatilModel.detailsOpeningTime = time.ToString("hh:mm tt");
+            restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.ClosingTime);
+            restaurantDeatilModel.detailsClosingTime = time.ToString("hh:mm tt");
+            restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryStartingTime);
+            restaurantDeatilModel.detailsDeliveryStartingTime = time.ToString("hh:mm tt");
+            restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+            time = DateTime.Today.Add(restaurantDeatilModel.DeliveryEndingTime);
+            restaurantDeatilModel.detailsDeliveryEndingTime = time.ToString("hh:mm tt");
+
+            restaurantDeatilModel.TimetakentoDeliver = Convert.ToInt32(restaurant.TimetakentoDeliver);
+            restaurantDeatilModel.MinDelivery = Convert.ToDecimal(restaurant.MinDelivery);
+            ViewBag.Categories = getSelectedCategories(restaurantDeatilModel.id);
+            return PartialView("_RestaurantDetails", restaurantDeatilModel);
+
+        }
+        public ActionResult EmailSent()
+        {
+            return View("EmailSent");
+        }
         [NonAction]
         public List<RestaurantDeatilModel> getNewRestaurants()
         {
 
-            var dbNewRestaurantOwners = db.Users.Where(u => u.status == "Deactive").ToList();
+            var dbNewRestaurantOwners = db.Users.Where(u => u.status == "Inactive").ToList();
 
             var newRestaurants = new List<RestaurantDeatilModel>();
 
@@ -110,13 +126,56 @@ namespace TheFoody.Controllers
                     restaurantDeatilModel.ClosingTime = restaurant.ClosingTime;
                     restaurantDeatilModel.DeliveryStartingTime = restaurant.DeliveryStartingTime;
                     restaurantDeatilModel.DeliveryEndingTime = restaurant.DeliveryEndingTime;
+                    ViewBag.Categories = getSelectedCategories(restaurantDeatilModel.id);
                     newRestaurants.Add(restaurantDeatilModel);
                 }
             }
 
             return newRestaurants;
         }
+        [NonAction]
+        public List<CategoryViewModel> getSelectedCategories(int id)
+        {
 
+            List<CategoryViewModel> allCategories = getCategories();
+
+            var categorieID = (from p in db.Restaurant_Type
+                               where p.Rest_id == id
+                               select p).ToList();
+
+            foreach (CategoryViewModel cat in allCategories)
+            {
+                foreach (Restaurant_Type res in categorieID)
+                {
+                    if (res.Category_id.ToString() == cat.id)
+                    {
+                        cat.isChecked = true;
+                    }
+                }
+            }
+
+            return allCategories;
+        }
+        [NonAction]
+        public List<CategoryViewModel> getCategories()
+        {
+
+            var dbCategories = db.Categories.ToList();
+
+            var categories = new List<CategoryViewModel>();
+
+            foreach (var category in dbCategories)
+            {
+                categories.Add(new CategoryViewModel()
+                {
+                    id = category.id.ToString(),
+                    category = category.category1,
+                    isChecked = false //On the add view, no genres are selected by default
+                });
+            }
+
+            return categories;
+        }
         public class UserMailer : MailerBase
         {
             public UserMailer()
@@ -160,12 +219,17 @@ namespace TheFoody.Controllers
             TheFoody.Models.MailModel _objModelMail = new TheFoody.Models.MailModel();
             //change email to restaurant owner's email
             _objModelMail.To = "c.wasala92@gmail.com";
-            _objModelMail.Subject = "Congratulation!";
+            _objModelMail.Subject = "Congratulations!";
             _objModelMail.Body = "Dear user, You have been accepted as a new restaurant owner in TheFoody. You can now proceed with all the tasks available to you.";
             userMailer.Welcome(_objModelMail).Send();
             //UserMailer.Welcome().Send(); //Send() extension method: using Mvc.Mailer
-            return RedirectToAction("Index");
-
+            
+            User user = (from p in db.Users
+                         where p.email == "c.wasala92@gmail.com"
+                         select p).FirstOrDefault();
+            user.status = "Active";
+            db.SaveChanges();
+            return RedirectToAction("EmailSent");
 
         }
 
@@ -178,7 +242,14 @@ namespace TheFoody.Controllers
             _objModelMail.Body = "Dear user, We are sorry to inform you that you have not been accepted as a new restaurant owner in TheFoody.";
             userMailer.Reject(_objModelMail).Send();
             //UserMailer.Welcome().Send(); //Send() extension method: using Mvc.Mailer
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+
+            User user = (from p in db.Users
+                         where p.email == "c.wasala92@gmail.com"
+                         select p).FirstOrDefault();
+            user.status = "Rejected";
+            db.SaveChanges();
+            return RedirectToAction("EmailSent");
 
 
         }

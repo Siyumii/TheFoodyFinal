@@ -13,8 +13,14 @@
                 
                 @if (!String.IsNullOrEmpty(Model.Logo))
                 {
-                    @Html.HiddenFor(model => model.Logo, new { htmlAttributes = new {  @name = "logo", @id = "logo" } })
-                   
+                    @Html.HiddenFor(model => model.Logo, new { htmlAttributes = new { @name = "logo", @id = "logo" } })
+    <img src="~/Uploads/RestaurantLogo/@Html.DisplayFor(model=> model.Logo)" alt="image" height="100"
+         width="90" />
+
+                }
+                else
+                {
+                    <img src="images/brands/06.png" alt="image" />
                 }
                 
             </div>
@@ -157,8 +163,14 @@
             </div>
 
         </div>
-        <p></p>
-        min
+        <div class="col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.MinDelivery)
+            <div class="form-group" style="background-color: #e6ffff;">
+                @Html.DisplayFor(model => model.MinDelivery)
+
+            </div>
+
+        </div>
         <div class="clear"></div>
 
         <div class="col-sm-12 col-md-12">
